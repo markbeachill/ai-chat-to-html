@@ -65,6 +65,16 @@
       <p>The converter shows this as a tidy code box, and never lets the code
         affect the page itself.</p>
 
+      <h2>Maths (optional)</h2>
+      <p>If your conversation includes formulae, you can have them typeset neatly.
+        Write the maths in LaTeX between dollar signs &mdash; <code>$…$</code> for
+        inline, <code>$$…$$</code> for a centred line &mdash; and convert with the
+        <code>--math</code> option:</p>
+      <pre><code>$$F = G\frac{m_1 m_2}{r^2}$$</code></pre>
+      <p>This is optional and only affects the web page (the Word version shows
+        the formula as plain text). Without <code>--math</code>, the dollar signs
+        stay as ordinary text.</p>
+
       <h2>The two special lines</h2>
       <p>The only thing this tool needs that ordinary Markdown doesn't is a line
         marking each speaker. Anything containing <code>[USER]</code> or
