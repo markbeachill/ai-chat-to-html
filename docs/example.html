@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example &mdash; AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="example.html" aria-current="page">Example</a>
+        <a href="word.html">Word</a>
+        <a href="styling.html">Styling</a>
+        <a href="download.html">Download</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Worked example</p>
+      <h1>From this text, to this page.</h1>
+      <p class="lead">A short two-question conversation, run through the tool
+        with no special options. Below is the exact input, then the exact page
+        it produced &mdash; shown live in its own styling.</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="example/aichat.html">Open the rendered page in a new tab</a>
+        <a class="btn btn-ghost" href="instructions.html">How it works</a>
+      </div>
+
+      <h2>1. The input transcript</h2>
+      <p>A plain text file (<code>aichat.txt</code>). Each turn starts with a
+        speaker line; the rest is ordinary Markdown &mdash; including the code blocks
+        in the second answer.</p>
+      <pre><code># **[USER]**
+Tell me about gravity? 
+# **[CHATBOT]**
+Gravity is the force that attracts objects with mass toward each other. It is why things fall to the ground, why planets orbit stars, and why galaxies hold together.
+
+On Earth, gravity pulls objects toward the planet’s center. Near Earth’s surface, falling objects accelerate at about **9.8 m/s²**, meaning their speed increases by 9.8 meters per second every second, ignoring air resistance.
+
+Newton described gravity as a force between masses:
+
+F = G\frac{m_1m_2}{r^2}
+
+This means gravity gets stronger when masses are larger, and weaker when the distance between them increases.
+
+Einstein later gave a deeper explanation: gravity is not just a force, but the effect of mass and energy bending spacetime. Objects like Earth and the Sun curve spacetime, and other objects move along those curves. That is why planets orbit the Sun.
+
+Gravity also explains:
+
+* **Weight:** your weight is the force of gravity acting on your mass.
+* **Orbits:** satellites keep “falling” around Earth rather than straight down.
+* **Tides:** the Moon’s gravity pulls on Earth’s oceans.
+* **Black holes:** regions where gravity is so strong that not even light can escape once inside the event horizon.
+
+Gravity is the weakest of the four fundamental forces, but it dominates on cosmic scales because it always attracts and acts over very long distances.
+# **[USER]**
+Show me a simple explanation of an html page - include code blocks
+# **[CHATBOT]**
+An **HTML page** is a text file that tells a web browser what to display. HTML uses **tags** like `&lt;h1&gt;`, `&lt;p&gt;`, and `&lt;img&gt;` to describe headings, paragraphs, images, links, and sections.
+
+Here is a very simple HTML page:
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;Hello, world!&lt;/h1&gt;
+    &lt;p&gt;This is my first HTML page.&lt;/p&gt;
+    &lt;a href=&quot;https://example.com&quot;&gt;Visit example.com&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+```
+
+What each part means:
+
+```html
+&lt;!DOCTYPE html&gt;
+```
+
+This tells the browser the file is an HTML5 document.
+
+```html
+&lt;html&gt;
+  ...
+&lt;/html&gt;
+```
+
+This wraps the entire page.
+
+```html
+&lt;head&gt;
+  &lt;title&gt;My First Page&lt;/title&gt;
+&lt;/head&gt;
+```
+
+The `&lt;head&gt;` contains information about the page. The `&lt;title&gt;` appears in the browser tab.
+
+```html
+&lt;body&gt;
+  ...
+&lt;/body&gt;
+```
+
+The `&lt;body&gt;` contains the visible page content.
+
+Inside the body:
+
+```html
+&lt;h1&gt;Hello, world!&lt;/h1&gt;
+```
+
+`&lt;h1&gt;` is a main heading.
+
+```html
+&lt;p&gt;This is my first HTML page.&lt;/p&gt;
+```
+
+`&lt;p&gt;` is a paragraph.
+
+```html
+&lt;a href=&quot;https://example.com&quot;&gt;Visit example.com&lt;/a&gt;
+```
+
+`&lt;a&gt;` creates a link. The `href` attribute says where the link goes.
+
+A slightly more complete example with styling:
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Styled Page&lt;/title&gt;
+
+    &lt;style&gt;
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+
+      h1 {
+        color: darkblue;
+      }
+
+      p {
+        font-size: 18px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;Welcome&lt;/h1&gt;
+    &lt;p&gt;This page has some basic CSS styling.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+```
+
+HTML gives the page its **structure**, while CSS controls how it **looks**.</code></pre>
+
+      <h2>2. The generated page</h2>
+      <p>Running <code>python3 aichatprocess.py</code> turns the text above into
+        the page below. The code examples render as visible code blocks rather
+        than being treated as part of the page, so a conversation about HTML
+        displays safely.</p>
+
+      <div class="frame-wrap frame-wide">
+        <div class="demo-bar"><i></i><i></i><i></i></div>
+        <iframe class="demo-frame" src="example/aichat.html" height="760"
+                title="The full rendered example page" loading="lazy"></iframe>
+      </div>
+      <p class="demo-cap">This is the actual <code>aichat.html</code>, styled by
+        the generated <code>aichat.css</code>.</p>
+
+      <div class="note">
+        <strong>About the maths line.</strong> By default the formula in the
+        first answer appears as plain text. If you wrap maths in <code>$…$</code>
+        or <code>$$…$$</code> and run with <code>--math</code>, the web page
+        typesets it with KaTeX &mdash;
+        <a href="example/aichat-math.html">see the same example with maths on</a>.
+        This applies to the web page only; the Word version always shows maths as
+        plain text, and <code>--math</code> adds a small online dependency, so
+        it's off unless you ask for it.
+      </div>
+
+      <h2>Change the look</h2>
+      <p>The same conversation can wear a completely different style by swapping
+        the stylesheet. See the <a href="styling.html">styling page</a> for dark,
+        minimal and warm versions of this exact example.</p>
+
+      <h2 id="word">A version for Word</h2>
+      <p>Running with <code>--word-output</code> produces a second page built for
+        pasting into Microsoft Word &mdash; a clean transcript rather than a chat UI,
+        since Word strips the bubbles and alignment anyway. Open it, select all,
+        and paste. It comes in three looks (set with <code>--word-style</code>):</p>
+      <div class="actions">
+        <a class="btn btn-ghost" href="example/word/word-default.html">Default &rarr;</a>
+        <a class="btn btn-ghost" href="example/word/word-compact.html">Compact &rarr;</a>
+        <a class="btn btn-ghost" href="example/word/word-plain.html">Plain &rarr;</a>
+      </div>
+      <p class="demo-cap">Default has coloured labels and separators; compact
+        tightens everything to fit more on a page; plain is the most neutral.</p>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> &middot; <a href="markdown-guide.html">Markdown guide</a> &middot; <a href="https://github.com/markbeachill/ai-chat-to-html">GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

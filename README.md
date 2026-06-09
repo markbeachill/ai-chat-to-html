@@ -48,6 +48,7 @@ chat, with user turns on the right and chatbot turns on the left.
 | `--write-css` | `if-missing` | `never`, `if-missing`, or `overwrite` |
 | `--word-output` | — | Also write a Word-friendly transcript to this file |
 | `--word-style` | `default` | Word look: `default`, `compact`, `plain` |
+| `--math` | off | Render `$…$` / `$$…$$` with KaTeX (web page only) |
 | `--title` | `AI Chat` | HTML page title |
 
 ```bash
@@ -135,7 +136,8 @@ ai-chat-to-html/
 ├── requirements.txt       Pins Python-Markdown
 ├── aichatprocess.py       The processor
 ├── aichat-template.css    Editable CSS template
-├── sync-example.sh        Copies example/ into docs/ for publishing
+├── build-demos.sh         Regenerates the site's example pages
+├── build-downloads.sh     Builds the download zips
 ├── docs/                  The project website (served by GitHub Pages)
 │   ├── index.html          Home — the two outputs, shown live
 │   ├── setup.html          Installing Python (for newcomers)
@@ -145,21 +147,20 @@ ai-chat-to-html/
 │   ├── styling.html        Themes and how to restyle
 │   ├── reference.html      Developer reference / spec
 │   ├── markdown-guide.html Quick Markdown reference
+│   ├── download.html       Download page
 │   ├── about.html          About / creator / repository
+│   ├── downloads/          Prebuilt zips offered for download
 │   ├── site.css            Site styles
 │   ├── workflow.md         Plain-text source: the workflow
 │   ├── requirements.md     Plain-text source: the spec
-│   └── example/            Published copy of the example (kept in sync)
-└── example/               Canonical tool output (the source of truth)
+│   └── example/            Generated demo output shown by the site
+│       ├── aichat.txt  aichat.html  aichat.css  aichat-word.html
+│       ├── themes/         Theme demo pages
+│       └── word/           Word-style demo pages
     ├── aichat.txt  aichat.html  aichat.css
     └── themes/             Alternate stylesheets + rendered demos
 ```
 
-> **Two copies of `example/`?** The root `example/` is the tool's real output.
-> GitHub Pages serves the site from `docs/`, so the site needs its own copy at
-> `docs/example/`. After regenerating the example, run `./sync-example.sh` and
-> commit both. (If you'd rather not duplicate, you can instead serve Pages from
-> the repo root — but then the docs links would need adjusting.)
 
 ## License
 

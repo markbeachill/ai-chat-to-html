@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="example.html">Example</a>
+        <a href="word.html">Word</a>
+        <a href="styling.html">Styling</a>
+        <a href="download.html">Download</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">A small tool with a simple job</p>
+      <h1>Turn a chat into a web page &mdash; or a Word document.</h1>
+      <p class="lead">Paste a conversation into a text file, run one command, and
+        get it back two ways: a clean web page that looks like a chat window, and
+        a transcript ready to paste into Microsoft Word.</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="instructions.html">How to use it</a>
+        <a class="btn btn-ghost" href="example.html">See a full example</a>
+        <a class="btn btn-ghost" href="download.html">Download</a>
+      </div>
+
+      <h2>One transcript, several outputs</h2>
+      <p>The same conversation, rendered four ways. All are real output from the
+        tool, shown live:</p>
+
+      <div class="themes">
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="example/aichat.html" height="320"
+                    title="Live chat web page, default theme" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Chat page (default)</h3>
+            <p>A self-contained web page styled like a chat window.
+              <a href="example.html">See the example &rarr;</a></p>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="example/word/word-default.html" height="320"
+                    title="Live Word version output" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Word version</h3>
+            <p>A clean transcript to paste straight into Microsoft Word.
+              <a href="word.html">More about Word &rarr;</a></p>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="example/themes/example-warm.html" height="320"
+                    title="Live chat web page, warm theme" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Built-in style: Warm</h3>
+            <p>One of four built-in looks for the web page.
+              <a href="styling.html">See all themes &rarr;</a></p>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="example/themes/example-dark.html" height="320"
+                    title="Live chat web page, dark theme" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Built-in style: Dark</h3>
+            <p>Restyle every page with one switch.
+              <a href="styling.html">See all themes &rarr;</a></p>
+          </div>
+        </div>
+      </div>
+
+      <h2>Why use it</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Write in plain text</h3>
+          <p>Edit the conversation as Markdown &mdash; tidy wording, trim answers,
+            rearrange &mdash; before any HTML exists.</p>
+        </div>
+        <div class="card">
+          <h3>Get a finished page</h3>
+          <p>One command produces a complete HTML page and a matching
+            stylesheet. No setup beyond Python.</p>
+        </div>
+        <div class="card">
+          <h3>Reuse the snippet</h3>
+          <p>The chat section is marked with clear start/end comments, so you
+            can lift it into any other page.</p>
+        </div>
+        <div class="card">
+          <h3>Restyle everything</h3>
+          <p>Swap in a stylesheet template to change the look of every page the
+            tool generates. <a href="styling.html">See the themes &rarr;</a></p>
+        </div>
+      </div>
+
+      <h2>Get started</h2>
+      <p>The whole process is three short steps: copy &amp; paste, edit, convert. From there to
+        reusing the finished page.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="instructions.html">Read the instructions</a>
+        <a class="btn btn-ghost" href="reference.html">Developer reference</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> &middot; <a href="markdown-guide.html">Markdown guide</a> &middot; <a href="https://github.com/markbeachill/ai-chat-to-html">GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>
