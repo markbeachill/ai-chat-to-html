@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Word version — AI Chat to HTML</title>
+  <title>Word version &mdash; AI Chat to HTML</title>
   <link rel="stylesheet" href="site.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
       <p class="eyebrow">Word output</p>
       <h1>Put the conversation into Word.</h1>
       <p class="lead">As well as a chat web page, the tool can produce a version
-        made for pasting straight into Microsoft Word — a clean, editable
+        made for pasting straight into Microsoft Word &mdash; a clean, editable
         transcript that arrives properly formatted instead of as a broken layout.</p>
 
       <div class="actions">
@@ -39,25 +39,39 @@
         chat page <em>and</em> a Word-ready file alongside it:</p>
       <pre><code>python3 aichatprocess.py --word-output aichat-word.html</code></pre>
       <p>Then open that file in a browser, select the whole transcript, and paste
-        it into Word. That's it — no add-ins, no conversion service, no extra
+        it into Word. That's it &mdash; no add-ins, no conversion service, no extra
         software. The file is plain HTML that Word knows how to absorb.</p>
+
+      <h2>Why not just convert the Markdown?</h2>
+      <p>You could run the transcript through a general Markdown-to-Word
+        converter (Pandoc, LibreOffice, an online tool) and get a Word document
+        out. The difference is what happens to the <em>conversation</em>.</p>
+      <p>A general converter doesn't know that <code>[USER]</code> and
+        <code>[CHATBOT]</code> mark speaker turns. It sees headings and
+        paragraphs and runs them together as ordinary text, so the back-and-forth
+        is lost. This tool understands the turns, so it lays the result out as a
+        transcript: each speaker labelled, each turn separated, readable as the
+        conversation it was.</p>
+      <p>So the honest rule of thumb: if you only want the words in a Word file,
+        a converter is fine. If you want it to read as a conversation &mdash; who
+        said what, clearly &mdash; that structure is what this preserves.</p>
 
       <h2>Why it's a transcript, not a chat window</h2>
       <p>The chat web page looks the way it does because of coloured bubbles,
         left/right alignment, rounded corners and shadows. Word's import quietly
-        discards almost all of that — it doesn't understand the layout features
+        discards almost all of that &mdash; it doesn't understand the layout features
         that make a chat UI. If you pasted the chat page directly, you'd get a
         jumbled stack of plain text.</p>
       <p>So the Word version is built differently on purpose. It uses only the
-        things Word keeps — headings, paragraphs, lists, simple tables, bordered
-        code blocks — and writes the formatting directly onto each element, which
+        things Word keeps &mdash; headings, paragraphs, lists, simple tables, bordered
+        code blocks &mdash; and writes the formatting directly onto each element, which
         is what survives the paste. The result is a tidy transcript: who said
         what, clearly laid out, ready to edit.</p>
 
       <div class="note">
         <strong>Done by the tool, not an AI.</strong> Because the tool builds the
         page from a structure it already understands, it can render a Word-safe
-        version directly. There's no external converter and no AI step — so it's
+        version directly. There's no external converter and no AI step &mdash; so it's
         instant, offline, free, and identical every time.
       </div>
 
@@ -87,7 +101,7 @@
           </div>
           <div class="theme-meta">
             <h3>Compact</h3>
-            <p>Tighter spacing and smaller type — fits more on each page.</p>
+            <p>Tighter spacing and smaller type &mdash; fits more on each page.</p>
             <a href="example/word/word-compact.html">Open full page &rarr;</a>
           </div>
         </div>
@@ -100,7 +114,7 @@
           </div>
           <div class="theme-meta">
             <h3>Plain</h3>
-            <p>Black labels, no rules — the most neutral, easy to reformat.</p>
+            <p>Black labels, no rules &mdash; the most neutral, easy to reformat.</p>
             <a href="example/word/word-plain.html">Open full page &rarr;</a>
           </div>
         </div>
@@ -111,8 +125,8 @@
       <div class="note">
         <strong>Themes don't apply here.</strong> The <code>--theme</code> setting
         styles the chat web page; the Word version has its own looks
-        (<code>--word-style</code>), because the screen themes — dark backgrounds,
-        bubbles — wouldn't survive Word anyway. The two are independent.
+        (<code>--word-style</code>), because the screen themes &mdash; dark backgrounds,
+        bubbles &mdash; wouldn't survive Word anyway. The two are independent.
       </div>
 
       <div class="actions">
@@ -124,8 +138,8 @@
 
   <footer class="site-foot">
     <div class="wrap">
-      <span>AI Chat to HTML — MIT licensed.</span>
-      <span><a href="reference.html">For developers</a> · <a href="https://github.com/markbeachill/ai-chat-to-html">Source on GitHub</a></span>
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> &middot; <a href="markdown-guide.html">Markdown guide</a> &middot; <a href="https://github.com/markbeachill/ai-chat-to-html">GitHub</a></span>
     </div>
   </footer>
 </body>

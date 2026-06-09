@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quick Markdown guide &mdash; AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="example.html">Example</a>
+        <a href="word.html">Word</a>
+        <a href="styling.html">Styling</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Quick guide</p>
+      <h1>A little Markdown goes a long way.</h1>
+      <p class="lead">Your transcript is plain text, but a few simple symbols
+        control how it looks once converted. You usually don't need to add any
+        &mdash; AI replies already come with them &mdash; but here's what they mean.</p>
+
+      <h2>The symbols you'll see</h2>
+      <table>
+        <thead>
+          <tr><th>What you want</th><th>Type this</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Bold</td><td><code>**bold**</code></td></tr>
+          <tr><td>Italic</td><td><code>*italic*</code></td></tr>
+          <tr><td>Heading</td><td><code># Heading</code></td></tr>
+          <tr><td>Smaller heading</td><td><code>## Smaller heading</code></td></tr>
+          <tr><td>Bullet list</td><td><code>- item</code></td></tr>
+          <tr><td>Numbered list</td><td><code>1. item</code></td></tr>
+          <tr><td>Link</td><td><code>[text](https://example.com)</code></td></tr>
+          <tr><td>Inline code</td><td><code>`code`</code></td></tr>
+          <tr><td>Web image</td><td><code>![label](https://…/picture.png)</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Code blocks</h2>
+      <p>For a block of code, wrap it in three backticks on their own lines. You
+        can name the language after the first set:</p>
+      <pre><code>```html
+&lt;h1&gt;Hello&lt;/h1&gt;
+```</code></pre>
+      <p>The converter shows this as a tidy code box, and never lets the code
+        affect the page itself.</p>
+
+      <h2>The two special lines</h2>
+      <p>The only thing this tool needs that ordinary Markdown doesn't is a line
+        marking each speaker. Anything containing <code>[USER]</code> or
+        <code>[CHATBOT]</code> starts a new turn:</p>
+      <pre><code># **[USER]**
+your message here
+# **[CHATBOT]**
+the reply here</code></pre>
+
+      <div class="note">
+        <strong>Where to edit it.</strong> A transcript is just text, so any
+        editor works, but a Markdown-aware tool shows the formatting as you go.
+        <a href="https://www.libreoffice.org">LibreOffice Writer</a> is a good
+        free choice that works offline and keeps your files on your own computer
+        &mdash; handy for anything private. Save the file as <code>aichat.md</code>
+        and the tool will pick it up automatically.
+      </div>
+
+      <h2>Want more?</h2>
+      <p>For a fuller guide to Markdown &mdash; including why it works well with AI,
+        and tools for converting between Markdown, Word and PDF &mdash; see the
+        <a href="https://markbeachill.github.io/tutorprompts/student-help/markdown.html">Markdown
+        guide in the AI Personal Tutor Toolkit</a>.</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="instructions.html">Back to the instructions</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> · <a href="https://github.com/markbeachill/ai-chat-to-html">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

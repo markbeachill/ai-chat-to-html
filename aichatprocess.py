@@ -816,9 +816,10 @@ def main(argv=None) -> int:
     parser.add_argument("--write-css", choices=["never", "if-missing", "overwrite"],
                         default="if-missing",
                         help="When to write the CSS file (default: if-missing)")
-    parser.add_argument("--word-output", default=None,
-                        help="Also write a Word-friendly transcript to this file "
-                             "(an .html you can copy-paste into Word). Optional.")
+    parser.add_argument("--word-output", nargs="?", default=None, const="",
+                        help="Also write a Word-friendly transcript. Use the flag "
+                             "alone to auto-name it from the output (e.g. "
+                             "aichat.html -> aichat-word.html), or give a filename.")
     parser.add_argument("--word-style", choices=["default", "compact", "plain"],
                         default="default",
                         help="Look for the Word transcript (default, compact, "
@@ -876,8 +877,14 @@ def main(argv=None) -> int:
     print(f"CSS:  {css_status}")
 
     # Optional Word-friendly transcript alongside the normal page.
-    if args.word_output:
-        word_path = Path(args.word_output)
+    # None = not requested; "" = bare flag (derive name); else = explicit name.
+    if args.word_output is not None:
+        if args.word_output == "":
+            # Derive from the main output: aichat.html -> aichat-word.html
+            word_path = output_path.with_name(output_path.stem + "-word"
+                                              + output_path.suffix)
+        else:
+            word_path = Path(args.word_output)
         word_css_path = word_path.with_name(word_path.stem + ".css")
         word_css_href = os.path.relpath(word_css_path, word_path.parent) \
             if word_path.parent != Path(".") else word_css_path.name

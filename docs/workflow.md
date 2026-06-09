@@ -1,7 +1,7 @@
 # Workflow overview
 
-How a chat becomes a styled HTML page, in five stages. Stages 1–2 are content
-editing in Markdown; stages 3–5 are conversion and presentation.
+How a chat becomes a styled HTML page, in three steps: copy & paste, edit, and
+convert. Polishing the page and reusing the snippet are optional follow-ups.
 
 ## Stage 1 — Capture the chat in Markdown
 

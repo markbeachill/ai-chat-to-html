@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reference — AI Chat to HTML</title>
+  <title>Reference &mdash; AI Chat to HTML</title>
   <link rel="stylesheet" href="site.css">
 </head>
 <body>
@@ -48,7 +48,7 @@
           <tr><td><code>--css-template</code></td><td><code>aichat-template.css</code></td><td>Optional template copied when writing CSS.</td></tr>
           <tr><td><code>--theme</code></td><td><code>default</code></td><td>Built-in look: <code>default</code>, <code>dark</code>, <code>minimal</code>, <code>warm</code>.</td></tr>
           <tr><td><code>--write-css</code></td><td><code>if-missing</code></td><td><code>never</code>, <code>if-missing</code>, or <code>overwrite</code>.</td></tr>
-          <tr><td><code>--word-output</code></td><td>—</td><td>Also write a Word-friendly transcript to this file.</td></tr>
+          <tr><td><code>--word-output</code></td><td>&mdash;</td><td>Also write a Word-friendly transcript to this file.</td></tr>
           <tr><td><code>--word-style</code></td><td><code>default</code></td><td>Word look: <code>default</code>, <code>compact</code>, <code>plain</code>. Needs <code>--word-output</code>.</td></tr>
           <tr><td><code>--title</code></td><td><code>AI Chat</code></td><td>The HTML page title.</td></tr>
         </tbody>
@@ -63,8 +63,8 @@
         and edit it in a Markdown editor with no extra flags.</p>
 
       <h2>Transcript format</h2>
-      <p>Each turn begins with a line containing a role token — <code>[USER]</code>
-        or <code>[CHATBOT]</code> — matched case-insensitively. The rest of that
+      <p>Each turn begins with a line containing a role token &mdash; <code>[USER]</code>
+        or <code>[CHATBOT]</code> &mdash; matched case-insensitively. The rest of that
         line is ignored, so <code># **[USER]**</code>, <code>[user]</code> and
         <code>## [Chatbot]:</code> all work. Everything until the next role line
         is that turn's body, treated as Markdown. Text before the first role line
@@ -76,16 +76,16 @@
         <code>fenced_code</code>, <code>tables</code>, <code>sane_lists</code> and
         <code>nl2br</code> extensions.</p>
       <ul>
-        <li>Fenced code blocks render as <strong>visible, escaped code</strong> —
+        <li>Fenced code blocks render as <strong>visible, escaped code</strong> &mdash;
           never interpreted as page markup. A transcript full of HTML examples
           stays safe.</li>
         <li>A code block's language tag is preserved as a CSS class, so a syntax
           highlighter can be added later; none is bundled.</li>
-        <li>No maths/LaTeX handling — plain-text formulae stay as plain text.</li>
+        <li>No maths/LaTeX handling &mdash; plain-text formulae stay as plain text.</li>
         <li>Markdown images with a web address (<code>![](https://…)</code>) are
           passed through as <code>&lt;img&gt;</code> tags. Local or pasted images
           (<code>![](screenshot.png)</code>, data URIs) are replaced with a small
-          "[image not included]" placeholder — the tool never loads local files.</li>
+          "[image not included]" placeholder &mdash; the tool never loads local files.</li>
         <li>Attachments, native LLM export formats and automatic role detection
           are out of scope.</li>
       </ul>
@@ -101,8 +101,8 @@
           <tr><td><code>overwrite</code></td><td>Always re-write the CSS file.</td></tr>
         </tbody>
       </table>
-      <p>When writing — either <code>overwrite</code>, or <code>if-missing</code>
-        with no file present — the tool copies <code>aichat-template.css</code>
+      <p>When writing &mdash; either <code>overwrite</code>, or <code>if-missing</code>
+        with no file present &mdash; the tool copies <code>aichat-template.css</code>
         verbatim if that file exists, otherwise it writes a stylesheet built into
         the script. So the tool works on a clean folder, and you can customise the
         design by editing the template and re-running with
@@ -118,26 +118,33 @@
       <p>See the <a href="styling.html">styling page</a> for live previews of each.</p>
 
       <h2>Word-friendly output</h2>
-      <p>Pass <code>--word-output &lt;file&gt;</code> to also write a second page
-        designed for pasting into Microsoft Word, alongside the normal chat page:</p>
-      <pre><code>python3 aichatprocess.py --word-output aichat-word.html</code></pre>
-      <p>Word ignores the things that make the chat page look like a chat —
-        flexbox layout, alignment, rounded bubbles, box-shadows — and handles
+      <p>Pass <code>--word-output</code> to also write a second page designed for
+        pasting into Microsoft Word, alongside the normal chat page. Use the flag
+        on its own to name the file automatically from the output
+        (<code>aichat.html</code> becomes <code>aichat-word.html</code>), or give
+        an explicit filename:</p>
+      <pre><code>python3 aichatprocess.py --word-output
+python3 aichatprocess.py --word-output mychat-word.html</code></pre>
+      <p>The matching stylesheet is named from the file with a <code>.css</code>
+        extension (so <code>aichat-word.html</code> links
+        <code>aichat-word.css</code>).</p>
+      <p>Word ignores the things that make the chat page look like a chat &mdash;
+        flexbox layout, alignment, rounded bubbles, box-shadows &mdash; and handles
         linked stylesheets poorly. So this output is a different construction: a
         clean transcript (speaker label, then text) built only from constructs
         Word keeps, with the styling written <em>inline on every element</em> so
         it survives the copy-paste. A linked stylesheet is also included so the
         page looks tidy in the browser before you copy from it. Open the file,
-        select the transcript, and paste into Word. No extra software is needed —
+        select the transcript, and paste into Word. No extra software is needed &mdash;
         the conversion is done by the tool itself, not by an external converter.</p>
       <p>Three looks are available with <code>--word-style</code>:
         <code>default</code> (coloured labels and separators), <code>compact</code>
         (tighter spacing and smaller type, for fitting more on a page) and
-        <code>plain</code> (no rules or colour — most neutral, for reformatting
+        <code>plain</code> (no rules or colour &mdash; most neutral, for reformatting
         into another template).</p>
       <p><strong>Themes and Word looks are separate.</strong> <code>--theme</code>
         styles the chat page; <code>--word-style</code> styles the Word page. They
-        don't overlap — the screen themes (with dark backgrounds and bubbles)
+        don't overlap &mdash; the screen themes (with dark backgrounds and bubbles)
         would not survive Word anyway, which is why the Word output has its own
         neutral looks. If you set <code>--theme</code> alongside
         <code>--word-output</code>, the tool prints a short note making this clear.</p>
@@ -186,8 +193,8 @@
 
   <footer class="site-foot">
     <div class="wrap">
-      <span>AI Chat to HTML — MIT licensed.</span>
-      <span><a href="index.html">Back to home</a></span>
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> &middot; <a href="markdown-guide.html">Markdown guide</a> &middot; <a href="https://github.com/markbeachill/ai-chat-to-html">GitHub</a></span>
     </div>
   </footer>
 </body>

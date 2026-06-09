@@ -89,9 +89,11 @@ customise it.
 To get a copy you can paste into Microsoft Word, add `--word-output`:
 
 ```bash
-python3 aichatprocess.py --word-output aichat-word.html --word-style compact
+python3 aichatprocess.py --word-output --word-style compact
 ```
 
+Used on its own, `--word-output` names the file from the main output
+(`aichat.html` becomes `aichat-word.html`); you can also pass an explicit name.
 Word ignores chat bubbles, alignment and linked stylesheets, so this is a
 separate, plainer build: a clean transcript with styling written inline on each
 element (which is what survives the paste). It's produced by the tool itself —
@@ -120,8 +122,8 @@ This repo is Pages-ready with no build step:
 3. Under **Build and deployment**, set **Source** to *Deploy from a branch*,
    choose branch `main` and folder `/docs`, and save.
 4. After a minute your site is live at
-   `https://markbeachill.github.io/ai-chat-to-html/` — a five-page site
-   (home, instructions, example, styling, reference) aimed at end users, with
+   `https://markbeachill.github.io/ai-chat-to-html/` — a seven-page site
+   (home, setup, instructions, example, word, styling, reference) aimed at end users, with
    developer reference included.
 
 ## Repository layout
@@ -137,13 +139,15 @@ ai-chat-to-html/
 ├── docs/                  The project website (served by GitHub Pages)
 │   ├── index.html          Home — the two outputs, shown live
 │   ├── setup.html          Installing Python (for newcomers)
-│   ├── instructions.html   End-user guide (the five stages)
+│   ├── instructions.html   End-user guide (the three steps)
 │   ├── example.html        Full worked example, input and output
 │   ├── word.html           The Word version, explained
 │   ├── styling.html        Themes and how to restyle
 │   ├── reference.html      Developer reference / spec
+│   ├── markdown-guide.html Quick Markdown reference
+│   ├── about.html          About / creator / repository
 │   ├── site.css            Site styles
-│   ├── workflow.md         Plain-text source: the five stages
+│   ├── workflow.md         Plain-text source: the workflow
 │   ├── requirements.md     Plain-text source: the spec
 │   └── example/            Published copy of the example (kept in sync)
 └── example/               Canonical tool output (the source of truth)
