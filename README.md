@@ -7,7 +7,7 @@ It's built for a simple workflow: paste a conversation into a Markdown file,
 edit it as text, then convert it to a finished web page you can publish or copy
 into another site.
 
-**[Visit the site](https://example.github.io/AI-CHAT-to-Html/)** · [Instructions](https://example.github.io/AI-CHAT-to-Html/instructions.html) · [Example](https://example.github.io/AI-CHAT-to-Html/example.html)
+**[Visit the site](https://markbeachill.github.io/ai-chat-to-html/)** · [Instructions](https://markbeachill.github.io/ai-chat-to-html/instructions.html) · [Example](https://markbeachill.github.io/ai-chat-to-html/example.html)
 [Workflow](docs/workflow.md) · [Requirements](docs/requirements.md)
 
 > Replace the live-example link above with your own GitHub Pages URL once
