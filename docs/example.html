@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example — AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="../example/aichat.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="example.html" aria-current="page">Example</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Worked example</p>
+      <h1>From this text, to this page.</h1>
+      <p class="lead">A short two-question conversation, run through the tool
+        with no special options. Below is the exact input, then the exact
+        output it produced.</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="../example/aichat.html">Open the real page in a new tab</a>
+        <a class="btn btn-ghost" href="instructions.html">How it works</a>
+      </div>
+
+      <h2>1. The input transcript</h2>
+      <p>A plain text file (<code>aichat.txt</code>). Each turn starts with a
+        speaker line; the rest is ordinary Markdown — including code blocks,
+        which the second answer is full of.</p>
+      <pre><code># **[USER]**
+Tell me about gravity? 
+# **[CHATBOT]**
+Gravity is the force that attracts objects with mass toward each other. It is why things fall to the ground, why planets orbit stars, and why galaxies hold together.
+
+On Earth, gravity pulls objects toward the planet’s center. Near Earth’s surface, falling objects accelerate at about **9.8 m/s²**, meaning their speed increases by 9.8 meters per second every second, ignoring air resistance.
+
+Newton described gravity as a force between masses:
+
+F = G\frac{m_1m_2}{r^2}
+
+This means gravity gets stronger when masses are larger, and weaker when the distance between them increases.
+
+Einstein later gave a deeper explanation: gravity is not just a force, but the effect of mass and energy bending spacetime. Objects like Earth and the Sun curve spacetime, and other objects move along those curves. That is why planets orbit the Sun.
+
+Gravity also explains:
+
+* **Weight:** your weight is the force of gravity acting on your mass.
+* **Orbits:** satellites keep “falling” around Earth rather than straight down.
+* **Tides:** the Moon’s gravity pulls on Earth’s oceans.
+* **Black holes:** regions where gravity is so strong that not even light can escape once inside the event horizon.
+
+Gravity is the weakest of the four fundamental forces, but it dominates on cosmic scales because it always attracts and acts over very long distances.
+# **[USER]**
+Show me a simple explanation of an html page - include code blocks
+# **[CHATBOT]**
+An **HTML page** is a text file that tells a web browser what to display. HTML uses **tags** like `&lt;h1&gt;`, `&lt;p&gt;`, and `&lt;img&gt;` to describe headings, paragraphs, images, links, and sections.
+
+Here is a very simple HTML page:
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;Hello, world!&lt;/h1&gt;
+    &lt;p&gt;This is my first HTML page.&lt;/p&gt;
+    &lt;a href=&quot;https://example.com&quot;&gt;Visit example.com&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+```
+
+What each part means:
+
+```html
+&lt;!DOCTYPE html&gt;
+```
+
+This tells the browser the file is an HTML5 document.
+
+```html
+&lt;html&gt;
+  ...
+&lt;/html&gt;
+```
+
+This wraps the entire page.
+
+```html
+&lt;head&gt;
+  &lt;title&gt;My First Page&lt;/title&gt;
+&lt;/head&gt;
+```
+
+The `&lt;head&gt;` contains information about the page. The `&lt;title&gt;` appears in the browser tab.
+
+```html
+&lt;body&gt;
+  ...
+&lt;/body&gt;
+```
+
+The `&lt;body&gt;` contains the visible page content.
+
+Inside the body:
+
+```html
+&lt;h1&gt;Hello, world!&lt;/h1&gt;
+```
+
+`&lt;h1&gt;` is a main heading.
+
+```html
+&lt;p&gt;This is my first HTML page.&lt;/p&gt;
+```
+
+`&lt;p&gt;` is a paragraph.
+
+```html
+&lt;a href=&quot;https://example.com&quot;&gt;Visit example.com&lt;/a&gt;
+```
+
+`&lt;a&gt;` creates a link. The `href` attribute says where the link goes.
+
+A slightly more complete example with styling:
+
+```html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Styled Page&lt;/title&gt;
+
+    &lt;style&gt;
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+
+      h1 {
+        color: darkblue;
+      }
+
+      p {
+        font-size: 18px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;Welcome&lt;/h1&gt;
+    &lt;p&gt;This page has some basic CSS styling.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+```
+
+HTML gives the page its **structure**, while CSS controls how it **looks**.</code></pre>
+
+      <h2>2. The generated page</h2>
+      <p>Running <code>python3 aichatprocess.py</code> turns the text above into
+        the chat below. Notice the code examples render as visible, highlighted
+        code blocks rather than being treated as part of the page — so a
+        conversation about HTML displays safely.</p>
+
+      <div class="demo">
+        <div class="demo-bar"><i></i><i></i><i></i></div>
+<main class="ai-chat-page" style="padding:0;background:transparent;">
+  <div class="ai-chat-window" style="box-shadow:none;border:none;border-radius:0;">
+    <div class="ai-chat-log">
+      <div class="ai-chat-turn ai-chat-turn--user">
+        <div class="ai-chat-role" aria-hidden="true">User</div>
+        <div class="ai-chat-bubble">
+          <p>Tell me about gravity? </p>
+        </div>
+      </div>
+      <div class="ai-chat-turn ai-chat-turn--chatbot">
+        <div class="ai-chat-role" aria-hidden="true">Chatbot</div>
+        <div class="ai-chat-bubble">
+          <p>Gravity is the force that attracts objects with mass toward each other. It is why things fall to the ground, why planets orbit stars, and why galaxies hold together.</p>
+          <p>On Earth, gravity pulls objects toward the planet’s center. Near Earth’s surface, falling objects accelerate at about <strong>9.8 m/s²</strong>, meaning their speed increases by 9.8 meters per second every second, ignoring air resistance.</p>
+          <p>Newton described gravity as a force between masses:</p>
+          <p>F = G\frac{m_1m_2}{r^2}</p>
+          <p>This means gravity gets stronger when masses are larger, and weaker when the distance between them increases.</p>
+          <p>Einstein later gave a deeper explanation: gravity is not just a force, but the effect of mass and energy bending spacetime. Objects like Earth and the Sun curve spacetime, and other objects move along those curves. That is why planets orbit the Sun.</p>
+          <p>Gravity also explains:</p>
+          <ul>
+          <li><strong>Weight:</strong> your weight is the force of gravity acting on your mass.</li>
+          <li><strong>Orbits:</strong> satellites keep “falling” around Earth rather than straight down.</li>
+          <li><strong>Tides:</strong> the Moon’s gravity pulls on Earth’s oceans.</li>
+          <li><strong>Black holes:</strong> regions where gravity is so strong that not even light can escape once inside the event horizon.</li>
+          </ul>
+          <p>Gravity is the weakest of the four fundamental forces, but it dominates on cosmic scales because it always attracts and acts over very long distances.</p>
+        </div>
+      </div>
+      <div class="ai-chat-turn ai-chat-turn--user">
+        <div class="ai-chat-role" aria-hidden="true">User</div>
+        <div class="ai-chat-bubble">
+          <p>Show me a simple explanation of an html page - include code blocks</p>
+        </div>
+      </div>
+      <div class="ai-chat-turn ai-chat-turn--chatbot">
+        <div class="ai-chat-role" aria-hidden="true">Chatbot</div>
+        <div class="ai-chat-bubble">
+          <p>An <strong>HTML page</strong> is a text file that tells a web browser what to display. HTML uses <strong>tags</strong> like <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, and <code>&lt;img&gt;</code> to describe headings, paragraphs, images, links, and sections.</p>
+          <p>Here is a very simple HTML page:</p>
+          <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+          &lt;html&gt;
+            &lt;head&gt;
+              &lt;title&gt;My First Page&lt;/title&gt;
+            &lt;/head&gt;
+
+            &lt;body&gt;
+              &lt;h1&gt;Hello, world!&lt;/h1&gt;
+              &lt;p&gt;This is my first HTML page.&lt;/p&gt;
+              &lt;a href=&quot;https://example.com&quot;&gt;Visit example.com&lt;/a&gt;
+            &lt;/body&gt;
+          &lt;/html&gt;
+          </code></pre>
+          <p>What each part means:</p>
+          <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+          </code></pre>
+          <p>This tells the browser the file is an HTML5 document.</p>
+          <pre><code class="language-html">&lt;html&gt;
+            ...
+          &lt;/html&gt;
+          </code></pre>
+          <p>This wraps the entire page.</p>
+          <pre><code class="language-html">&lt;head&gt;
+            &lt;title&gt;My First Page&lt;/title&gt;
+          &lt;/head&gt;
+          </code></pre>
+          <p>The <code>&lt;head&gt;</code> contains information about the page. The <code>&lt;title&gt;</code> appears in the browser tab.</p>
+          <pre><code class="language-html">&lt;body&gt;
+            ...
+          &lt;/body&gt;
+          </code></pre>
+          <p>The <code>&lt;body&gt;</code> contains the visible page content.</p>
+          <p>Inside the body:</p>
+          <pre><code class="language-html">&lt;h1&gt;Hello, world!&lt;/h1&gt;
+          </code></pre>
+          <p><code>&lt;h1&gt;</code> is a main heading.</p>
+          <pre><code class="language-html">&lt;p&gt;This is my first HTML page.&lt;/p&gt;
+          </code></pre>
+          <p><code>&lt;p&gt;</code> is a paragraph.</p>
+          <pre><code class="language-html">&lt;a href=&quot;https://example.com&quot;&gt;Visit example.com&lt;/a&gt;
+          </code></pre>
+          <p><code>&lt;a&gt;</code> creates a link. The <code>href</code> attribute says where the link goes.</p>
+          <p>A slightly more complete example with styling:</p>
+          <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+          &lt;html&gt;
+            &lt;head&gt;
+              &lt;title&gt;My Styled Page&lt;/title&gt;
+
+              &lt;style&gt;
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f2f2f2;
+                  padding: 20px;
+                }
+
+                h1 {
+                  color: darkblue;
+                }
+
+                p {
+                  font-size: 18px;
+                }
+              &lt;/style&gt;
+            &lt;/head&gt;
+
+            &lt;body&gt;
+              &lt;h1&gt;Welcome&lt;/h1&gt;
+              &lt;p&gt;This page has some basic CSS styling.&lt;/p&gt;
+            &lt;/body&gt;
+          &lt;/html&gt;
+          </code></pre>
+          <p>HTML gives the page its <strong>structure</strong>, while CSS controls how it <strong>looks</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+      </div>
+      <p class="demo-cap">This is the actual output, styled by the tool's own
+        stylesheet.</p>
+
+      <div class="note">
+        <strong>Spot the maths line.</strong> The formula in the first answer
+        appears as plain text — the tool deliberately doesn't typeset
+        mathematical notation.
+      </div>
+
+      <h2>What you'd do next</h2>
+      <p>Open the page to make any final tweaks, then either publish it as-is or
+        copy the marked chat section into another site. The
+        <a href="instructions.html">instructions</a> cover both.</p>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML — MIT licensed.</span>
+      <span><a href="reference.html">For developers</a> · <a href="https://github.com/">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

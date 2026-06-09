@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Instructions — AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html" aria-current="page">Instructions</a>
+        <a href="example.html">Example</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Instructions</p>
+      <h1>How to use it</h1>
+      <p class="lead">From a copied conversation to a finished web page in five
+        stages. The first two are just text editing; the rest is one command and
+        some optional polish.</p>
+
+      <h2>Before you start</h2>
+      <p>You need Python 3 and the tool's one dependency. From the project
+        folder:</p>
+      <pre><code>pip install -r requirements.txt</code></pre>
+      <p>That installs Python-Markdown, which the tool uses to convert your
+        text. Nothing else is required.</p>
+
+      <h2>The five stages</h2>
+      <ol class="steps">
+        <li>
+          <h3>Capture the chat</h3>
+          <p>Copy the conversation turn by turn into a plain text file (the
+            default name is <code>aichat.txt</code>). Mark each turn with a line
+            that says who is speaking:</p>
+          <pre><code># **[USER]**
+Tell me about gravity?
+# **[CHATBOT]**
+Gravity is the force that attracts objects with mass...</code></pre>
+          <p>The marker only needs to contain <code>[USER]</code> or
+            <code>[CHATBOT]</code> — the exact punctuation doesn't matter.
+            Everyday Markdown (paragraphs, lists, links, headings, code blocks)
+            is kept. Images and attachments are ignored.</p>
+        </li>
+        <li>
+          <h3>Edit the transcript</h3>
+          <p>This text file is where you do the real editing: fix wording,
+            shorten long answers, remove anything you don't want. The speaker
+            lines keep the conversation easy to follow while you work.</p>
+        </li>
+        <li>
+          <h3>Convert it</h3>
+          <p>Run the tool. With no options it reads <code>aichat.txt</code> and
+            writes <code>aichat.html</code> plus <code>aichat.css</code>:</p>
+          <pre><code>python3 aichatprocess.py</code></pre>
+          <p>Open <code>aichat.html</code> in any browser and you'll see the
+            conversation laid out as a chat — your turns on one side, the
+            chatbot's on the other. To point at different files or restyle, see
+            the <a href="reference.html">reference</a>.</p>
+        </li>
+        <li>
+          <h3>Polish the page</h3>
+          <p>Open the generated page in an editor or preview tool to make final
+            visual tweaks with the styling already applied. The heavy editing is
+            already done in stage 2, so this is just presentation.</p>
+        </li>
+        <li>
+          <h3>Reuse it elsewhere</h3>
+          <p>Inside the page, the chat section sits between two clearly labelled
+            comment blocks:</p>
+          <pre><code>&lt;!-- COPY CHAT HTML START --&gt;
+   ... the chat ...
+&lt;!-- COPY CHAT HTML END --&gt;</code></pre>
+          <p>Copy everything between them into another page. Bring the styling
+            too: either link <code>aichat.css</code> from that page, or paste its
+            rules into your existing stylesheet. The styles are namespaced so
+            they won't clash with the rest of the page.</p>
+        </li>
+      </ol>
+
+      <div class="note">
+        <strong>A note on maths.</strong> The tool doesn't render mathematical
+        notation. A formula written as plain text will appear exactly as typed,
+        not as a typeset equation.
+      </div>
+
+      <h2>That's it</h2>
+      <p>Most of the work is in stages 1 and 2 — getting the conversation into
+        clean text. The conversion itself is a single command you can re-run any
+        time you change the transcript.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="example.html">See the full example</a>
+        <a class="btn btn-ghost" href="reference.html">All options &amp; settings</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML — MIT licensed.</span>
+      <span><a href="reference.html">For developers</a> · <a href="https://github.com/">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>
