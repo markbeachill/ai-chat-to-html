@@ -44,7 +44,10 @@ chat, with user turns on the right and chatbot turns on the left.
 | `--output` | `aichat.html` | Output HTML file |
 | `--css` | `aichat.css` | CSS file the HTML links to |
 | `--css-template` | `aichat-template.css` | Optional template copied when writing CSS |
+| `--theme` | `default` | Built-in look: `default`, `dark`, `minimal`, `warm` |
 | `--write-css` | `if-missing` | `never`, `if-missing`, or `overwrite` |
+| `--word-output` | — | Also write a Word-friendly transcript to this file |
+| `--word-style` | `default` | Word look: `default`, `compact`, `plain` |
 | `--title` | `AI Chat` | HTML page title |
 
 ```bash
@@ -68,6 +71,35 @@ transcript full of HTML examples displays safely instead of breaking the page.
 It does **not** handle images, attachments, native LLM export formats,
 automatic role detection, or math/LaTeX. Math written as plain text stays plain
 text.
+
+## Themes and a Word version
+
+Pick a built-in look with `--theme`:
+
+```bash
+python3 aichatprocess.py --theme dark --write-css overwrite
+```
+
+The bundled themes are `default`, `dark`, `minimal` and `warm`. An explicit
+`--css-template` file still takes precedence, so you can start from a theme and
+customise it.
+
+To get a copy you can paste into Microsoft Word, add `--word-output`:
+
+```bash
+python3 aichatprocess.py --word-output aichat-word.html --word-style compact
+```
+
+Word ignores chat bubbles, alignment and linked stylesheets, so this is a
+separate, plainer build: a clean transcript with styling written inline on each
+element (which is what survives the paste). It's produced by the tool itself —
+no external converter or extra dependency. Three looks are available via
+`--word-style`: `default`, `compact` and `plain`.
+
+Themes and Word looks are independent: `--theme` styles the chat page,
+`--word-style` styles the Word page. The screen themes don't carry into Word
+(its dark backgrounds and bubbles wouldn't survive), so the Word output has its
+own neutral looks instead.
 
 ## Reusing the chat in another page
 

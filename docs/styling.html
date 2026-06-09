@@ -29,10 +29,14 @@
         it — the conversation content stays exactly the same.</p>
 
       <h2>How it works</h2>
-      <p>When the tool writes its stylesheet, it first looks for a template file
-        called <code>aichat-template.css</code>. If that file exists, it's copied
-        in as the page's styling; if not, a built-in default is used. So to
-        restyle, you create or edit the template and re-run:</p>
+      <p>The quickest way to change the look is the <code>--theme</code> switch,
+        which picks one of the built-in themes below:</p>
+      <pre><code>python3 aichatprocess.py --theme dark --write-css overwrite</code></pre>
+      <p>For a fully custom look, the tool also reads a template file. When it
+        writes its stylesheet it first looks for <code>aichat-template.css</code>;
+        if that exists it's copied in, otherwise the chosen theme (or the default)
+        is used. So you can start from a theme file, edit it, and pass it as your
+        template:</p>
       <pre><code>python3 aichatprocess.py --css-template my-theme.css --write-css overwrite</code></pre>
       <p>Because the styles are namespaced under <code>.ai-chat-page</code>, a
         theme stays self-contained — you can drop the result into a larger site
