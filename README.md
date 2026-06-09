@@ -68,9 +68,11 @@ It preserves Markdown inside each turn (paragraphs, lists, links, headings,
 tables) and renders fenced code blocks as **visible, escaped code** — so a
 transcript full of HTML examples displays safely instead of breaking the page.
 
-It does **not** handle images, attachments, native LLM export formats,
-automatic role detection, or math/LaTeX. Math written as plain text stays plain
-text.
+Markdown images with a web address (`![](https://…)`) are passed through; local
+or pasted images become a small "[image not included]" placeholder, since the
+tool never loads local files. It does **not** handle attachments, native LLM
+export formats, automatic role detection, or math/LaTeX — math written as plain
+text stays plain text.
 
 ## Themes and a Word version
 
@@ -133,9 +135,11 @@ ai-chat-to-html/
 ├── aichat-template.css    Editable CSS template
 ├── sync-example.sh        Copies example/ into docs/ for publishing
 ├── docs/                  The project website (served by GitHub Pages)
-│   ├── index.html          Home — intro + live sample output
+│   ├── index.html          Home — the two outputs, shown live
+│   ├── setup.html          Installing Python (for newcomers)
 │   ├── instructions.html   End-user guide (the five stages)
 │   ├── example.html        Full worked example, input and output
+│   ├── word.html           The Word version, explained
 │   ├── styling.html        Themes and how to restyle
 │   ├── reference.html      Developer reference / spec
 │   ├── site.css            Site styles

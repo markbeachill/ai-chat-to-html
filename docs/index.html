@@ -14,6 +14,7 @@
         <a href="index.html" aria-current="page">Home</a>
         <a href="instructions.html">Instructions</a>
         <a href="example.html">Example</a>
+        <a href="word.html">Word</a>
         <a href="styling.html">Styling</a>
         <a href="reference.html">Reference</a>
       </nav>
@@ -23,10 +24,10 @@
   <main>
     <div class="wrap">
       <p class="eyebrow">A small tool with a simple job</p>
-      <h1>Turn a chat into a web page.</h1>
+      <h1>Turn a chat into a web page — or a Word document.</h1>
       <p class="lead">Paste a conversation into a text file, run one command, and
-        get a clean, self-contained HTML page that looks like a chat window —
-        ready to publish or drop into another site.</p>
+        get it back two ways: a clean web page that looks like a chat window, and
+        a transcript ready to paste into Microsoft Word.</p>
 
       <div class="actions">
         <a class="btn btn-primary" href="instructions.html">How to use it</a>
@@ -34,33 +35,36 @@
         <a class="btn btn-ghost" href="https://github.com/markbeachill/ai-chat-to-html">Get it on GitHub</a>
       </div>
 
-      <h2>What the output looks like</h2>
-      <p>This is the tool's actual output — the real generated page, shown in its
-        own styling. Scroll it like any chat window:</p>
-
-      <div class="frame-wrap frame-wide">
-        <div class="demo-bar"><i></i><i></i><i></i></div>
-        <iframe class="demo-frame" src="example/aichat.html" height="560"
-                title="Live rendered example of the tool's output" loading="lazy"></iframe>
-      </div>
-      <p class="demo-cap">The full conversation — including code blocks — is on the
-        <a href="example.html">example page</a>.</p>
-
       <h2>Two kinds of output</h2>
-      <p>From the same transcript, the tool can produce two different things,
-        depending on where the conversation needs to go:</p>
-      <div class="cards">
-        <div class="card">
-          <h3>A chat web page</h3>
-          <p>A self-contained HTML page styled like a chat window — to publish,
-            embed, or copy into another site. Comes in four
-            <a href="styling.html">themes</a>.</p>
+      <p>The same transcript, two destinations. Both are real output from the
+        tool, shown live:</p>
+
+      <div class="themes">
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="example/aichat.html" height="360"
+                    title="Live chat web page output" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>A chat web page</h3>
+            <p>A self-contained HTML page styled like a chat window — to publish,
+              embed, or copy elsewhere. Four <a href="styling.html">themes</a>.</p>
+            <a href="example.html">See the example &rarr;</a>
+          </div>
         </div>
-        <div class="card">
-          <h3>A Word version</h3>
-          <p>A clean transcript built to paste straight into Microsoft Word,
-            in your choice of default, compact or plain. See the
-            <a href="example.html#word">example</a>.</p>
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="example/word/word-default.html" height="360"
+                    title="Live Word version output" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>A Word version</h3>
+            <p>A clean transcript to paste straight into Microsoft Word, in three
+              looks. <a href="word.html">More about Word &rarr;</a></p>
+            <a href="word.html">See the Word page &rarr;</a>
+          </div>
         </div>
       </div>
 

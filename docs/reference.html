@@ -14,6 +14,7 @@
         <a href="index.html">Home</a>
         <a href="instructions.html">Instructions</a>
         <a href="example.html">Example</a>
+        <a href="word.html">Word</a>
         <a href="styling.html">Styling</a>
         <a href="reference.html" aria-current="page">Reference</a>
       </nav>
@@ -81,8 +82,12 @@
         <li>A code block's language tag is preserved as a CSS class, so a syntax
           highlighter can be added later; none is bundled.</li>
         <li>No maths/LaTeX handling — plain-text formulae stay as plain text.</li>
-        <li>Images, attachments, native LLM export formats and automatic role
-          detection are out of scope.</li>
+        <li>Markdown images with a web address (<code>![](https://…)</code>) are
+          passed through as <code>&lt;img&gt;</code> tags. Local or pasted images
+          (<code>![](screenshot.png)</code>, data URIs) are replaced with a small
+          "[image not included]" placeholder — the tool never loads local files.</li>
+        <li>Attachments, native LLM export formats and automatic role detection
+          are out of scope.</li>
       </ul>
 
       <h2>How the CSS is written</h2>
