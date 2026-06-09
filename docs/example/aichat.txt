@@ -1,0 +1,130 @@
+# **[USER]**
+Tell me about gravity? 
+# **[CHATBOT]**
+Gravity is the force that attracts objects with mass toward each other. It is why things fall to the ground, why planets orbit stars, and why galaxies hold together.
+
+On Earth, gravity pulls objects toward the planet’s center. Near Earth’s surface, falling objects accelerate at about **9.8 m/s²**, meaning their speed increases by 9.8 meters per second every second, ignoring air resistance.
+
+Newton described gravity as a force between masses:
+
+F = G\frac{m_1m_2}{r^2}
+
+This means gravity gets stronger when masses are larger, and weaker when the distance between them increases.
+
+Einstein later gave a deeper explanation: gravity is not just a force, but the effect of mass and energy bending spacetime. Objects like Earth and the Sun curve spacetime, and other objects move along those curves. That is why planets orbit the Sun.
+
+Gravity also explains:
+
+* **Weight:** your weight is the force of gravity acting on your mass.
+* **Orbits:** satellites keep “falling” around Earth rather than straight down.
+* **Tides:** the Moon’s gravity pulls on Earth’s oceans.
+* **Black holes:** regions where gravity is so strong that not even light can escape once inside the event horizon.
+
+Gravity is the weakest of the four fundamental forces, but it dominates on cosmic scales because it always attracts and acts over very long distances.
+# **[USER]**
+Show me a simple explanation of an html page - include code blocks
+# **[CHATBOT]**
+An **HTML page** is a text file that tells a web browser what to display. HTML uses **tags** like `<h1>`, `<p>`, and `<img>` to describe headings, paragraphs, images, links, and sections.
+
+Here is a very simple HTML page:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Page</title>
+  </head>
+
+  <body>
+    <h1>Hello, world!</h1>
+    <p>This is my first HTML page.</p>
+    <a href="https://example.com">Visit example.com</a>
+  </body>
+</html>
+```
+
+What each part means:
+
+```html
+<!DOCTYPE html>
+```
+
+This tells the browser the file is an HTML5 document.
+
+```html
+<html>
+  ...
+</html>
+```
+
+This wraps the entire page.
+
+```html
+<head>
+  <title>My First Page</title>
+</head>
+```
+
+The `<head>` contains information about the page. The `<title>` appears in the browser tab.
+
+```html
+<body>
+  ...
+</body>
+```
+
+The `<body>` contains the visible page content.
+
+Inside the body:
+
+```html
+<h1>Hello, world!</h1>
+```
+
+`<h1>` is a main heading.
+
+```html
+<p>This is my first HTML page.</p>
+```
+
+`<p>` is a paragraph.
+
+```html
+<a href="https://example.com">Visit example.com</a>
+```
+
+`<a>` creates a link. The `href` attribute says where the link goes.
+
+A slightly more complete example with styling:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Styled Page</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+
+      h1 {
+        color: darkblue;
+      }
+
+      p {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Welcome</h1>
+    <p>This page has some basic CSS styling.</p>
+  </body>
+</html>
+```
+
+HTML gives the page its **structure**, while CSS controls how it **looks**.

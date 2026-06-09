@@ -1,0 +1,57 @@
+/* aichat-template.css — MINIMAL theme
+ * Flat, borderless, typographic. No bubbles — speaker labels carry the
+ * structure. Scoped under .ai-chat-page.
+ */
+
+.ai-chat-page {
+  --ai-bg: #ffffff;
+  --ai-ink: #1a1a1a;
+  --ai-user-ink: #1a1a1a;
+  --ai-role: #999999;
+  --ai-rule: #ececec;
+  --ai-code-bg: #f5f5f5;
+  --ai-code-text: #1a1a1a;
+  --ai-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ai-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+
+  box-sizing: border-box;
+  display: flex; justify-content: center;
+  padding: 32px 16px;
+  background: var(--ai-bg);
+  font-family: var(--ai-font);
+  color: var(--ai-ink);
+  line-height: 1.7;
+}
+.ai-chat-page *, .ai-chat-page *::before, .ai-chat-page *::after { box-sizing: border-box; }
+
+.ai-chat-window { width: 100%; max-width: 680px; background: var(--ai-bg); }
+.ai-chat-log { display: flex; flex-direction: column; gap: 0; }
+
+.ai-chat-turn {
+  display: block; max-width: 100%;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--ai-rule);
+}
+.ai-chat-turn:last-child { border-bottom: none; }
+
+.ai-chat-role {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ai-role); margin: 0 0 8px;
+}
+.ai-chat-turn--user .ai-chat-role { color: #1a1a1a; }
+
+.ai-chat-bubble { padding: 0; background: none; }
+.ai-chat-turn--user .ai-chat-bubble { font-weight: 500; }
+.ai-chat-bubble > :first-child { margin-top: 0; }
+.ai-chat-bubble > :last-child { margin-bottom: 0; }
+.ai-chat-bubble p { margin: 0 0 0.7em; }
+.ai-chat-bubble h1, .ai-chat-bubble h2, .ai-chat-bubble h3, .ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }
+.ai-chat-bubble ul, .ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.3em; }
+.ai-chat-bubble li { margin: 0.2em 0; }
+.ai-chat-bubble a { color: #1a1a1a; text-decoration: underline; text-underline-offset: 2px; }
+.ai-chat-bubble code { font-family: var(--ai-mono); font-size: 0.88em; background: var(--ai-code-bg); padding: 0.12em 0.36em; border-radius: 3px; }
+.ai-chat-bubble pre { background: var(--ai-code-bg); color: var(--ai-code-text); padding: 14px 16px; border-radius: 4px; overflow-x: auto; margin: 0 0 0.7em; border-left: 2px solid #1a1a1a; }
+.ai-chat-bubble pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; white-space: pre; }
+.ai-chat-bubble table { border-collapse: collapse; margin: 0 0 0.7em; font-size: 0.92em; }
+.ai-chat-bubble th, .ai-chat-bubble td { border: 1px solid var(--ai-rule); padding: 6px 10px; text-align: left; }
+@media (prefers-reduced-motion: reduce) { .ai-chat-page * { animation: none !important; transition: none !important; } }

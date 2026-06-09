@@ -221,6 +221,7 @@ th { background: #f3f4f2; font-weight: 600; color: var(--ink); }
 /* ---- embedded real-output frames ---- */
 .demo-frame {
   width: 100%;
+  min-width: 100%;
   border: 0;
   display: block;
   background: #fff;
@@ -230,6 +231,14 @@ th { background: #f3f4f2; font-weight: 600; color: var(--ink); }
   border-radius: var(--radius);
   overflow: hidden;
   margin: 1.4em 0 0.6em;
+}
+/* Let the demo frames use more width than the reading column so the embedded
+   chat isn't pinched. Falls back to full width on smaller screens. */
+.frame-wide {
+  width: min(96vw, 1040px);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .frame-wrap .demo-bar { margin: 0; }
 

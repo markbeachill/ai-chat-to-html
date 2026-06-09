@@ -99,19 +99,27 @@ ai-chat-to-html/
 ├── requirements.txt       Pins Python-Markdown
 ├── aichatprocess.py       The processor
 ├── aichat-template.css    Editable CSS template
+├── sync-example.sh        Copies example/ into docs/ for publishing
 ├── docs/                  The project website (served by GitHub Pages)
-│   ├── index.html          Home — intro + sample output
+│   ├── index.html          Home — intro + live sample output
 │   ├── instructions.html   End-user guide (the five stages)
 │   ├── example.html        Full worked example, input and output
+│   ├── styling.html        Themes and how to restyle
 │   ├── reference.html      Developer reference / spec
 │   ├── site.css            Site styles
 │   ├── workflow.md         Plain-text source: the five stages
-│   └── requirements.md     Plain-text source: the spec
-└── example/
-    ├── aichat.txt          Sample transcript
-    ├── aichat.html         Generated page (the live demo)
-    └── aichat.css          Generated stylesheet
+│   ├── requirements.md     Plain-text source: the spec
+│   └── example/            Published copy of the example (kept in sync)
+└── example/               Canonical tool output (the source of truth)
+    ├── aichat.txt  aichat.html  aichat.css
+    └── themes/             Alternate stylesheets + rendered demos
 ```
+
+> **Two copies of `example/`?** The root `example/` is the tool's real output.
+> GitHub Pages serves the site from `docs/`, so the site needs its own copy at
+> `docs/example/`. After regenerating the example, run `./sync-example.sh` and
+> commit both. (If you'd rather not duplicate, you can instead serve Pages from
+> the repo root — but then the docs links would need adjusting.)
 
 ## License
 
