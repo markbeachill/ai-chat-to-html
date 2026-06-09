@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Styling — AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="example.html">Example</a>
+        <a href="styling.html" aria-current="page">Styling</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Styling</p>
+      <h1>One conversation, any look.</h1>
+      <p class="lead">The page's appearance lives entirely in a separate
+        stylesheet. Change that file and every page the tool makes changes with
+        it — the conversation content stays exactly the same.</p>
+
+      <h2>How it works</h2>
+      <p>When the tool writes its stylesheet, it first looks for a template file
+        called <code>aichat-template.css</code>. If that file exists, it's copied
+        in as the page's styling; if not, a built-in default is used. So to
+        restyle, you create or edit the template and re-run:</p>
+      <pre><code>python3 aichatprocess.py --css-template my-theme.css --write-css overwrite</code></pre>
+      <p>Because the styles are namespaced under <code>.ai-chat-page</code>, a
+        theme stays self-contained — you can drop the result into a larger site
+        without its styles leaking out. Full details are in the
+        <a href="reference.html">reference</a>.</p>
+
+      <h2>Four looks, same chat</h2>
+      <p>Each of these is the <a href="example.html">example conversation</a>,
+        rendered live with a different stylesheet. Nothing about the transcript
+        changed — only the template.</p>
+
+      <div class="themes">
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="../example/aichat.html" height="320"
+                    title="Default theme" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Default</h3>
+            <p>The built-in look: light, rounded bubbles, blue user turns.</p>
+            <a href="../example/aichat.html">Open full page &rarr;</a>
+          </div>
+        </div>
+
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="../example/themes/example-dark.html" height="320"
+                    title="Dark theme" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Dark</h3>
+            <p>Low-light palette with a bright accent and deep code blocks.</p>
+            <a href="../example/themes/example-dark.html">Open full page &rarr;</a>
+          </div>
+        </div>
+
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="../example/themes/example-minimal.html" height="320"
+                    title="Minimal theme" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Minimal</h3>
+            <p>No bubbles — hairline rules and labels carry the structure.</p>
+            <a href="../example/themes/example-minimal.html">Open full page &rarr;</a>
+          </div>
+        </div>
+
+        <div class="theme-card">
+          <div class="frame-wrap">
+            <div class="demo-bar"><i></i><i></i><i></i></div>
+            <iframe class="demo-frame" src="../example/themes/example-warm.html" height="320"
+                    title="Warm theme" loading="lazy"></iframe>
+          </div>
+          <div class="theme-meta">
+            <h3>Warm</h3>
+            <p>Soft paper background, rounded terracotta bubbles.</p>
+            <a href="../example/themes/example-warm.html">Open full page &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>Make your own.</strong> Copy any of the theme files in
+        <code>example/themes/</code> as a starting point, change the colours and
+        fonts at the top, and pass it with <code>--css-template</code>. Each one
+        is a complete, self-contained stylesheet.
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="instructions.html">Back to instructions</a>
+        <a class="btn btn-ghost" href="reference.html">CSS reference</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML — MIT licensed.</span>
+      <span><a href="reference.html">For developers</a> · <a href="https://github.com/markbeachill/ai-chat-to-html">Source on GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

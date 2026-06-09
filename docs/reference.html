@@ -14,6 +14,7 @@
         <a href="index.html">Home</a>
         <a href="instructions.html">Instructions</a>
         <a href="example.html">Example</a>
+        <a href="styling.html">Styling</a>
         <a href="reference.html" aria-current="page">Reference</a>
       </nav>
     </div>
@@ -40,7 +41,7 @@
           <tr><th>Option</th><th>Default</th><th>Purpose</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>--source</code></td><td><code>aichat.txt</code></td><td>Input transcript.</td></tr>
+          <tr><td><code>--source</code></td><td><code>aichat.txt</code>, then <code>aichat.md</code></td><td>Input transcript. See note below.</td></tr>
           <tr><td><code>--output</code></td><td><code>aichat.html</code></td><td>Output HTML file.</td></tr>
           <tr><td><code>--css</code></td><td><code>aichat.css</code></td><td>CSS file the HTML links to.</td></tr>
           <tr><td><code>--css-template</code></td><td><code>aichat-template.css</code></td><td>Optional template copied when writing CSS.</td></tr>
@@ -49,6 +50,13 @@
         </tbody>
       </table>
       <pre><code>python3 aichatprocess.py --source mychat.txt --output mychat.html --write-css overwrite</code></pre>
+
+      <p><strong>Source resolution.</strong> If you pass <code>--source</code>,
+        the tool uses exactly that file. If you don't, it reads
+        <code>aichat.txt</code>, falling back to <code>aichat.md</code> when the
+        <code>.txt</code> is absent. If neither exists, it stops with an error
+        naming both. This lets you keep the transcript as <code>aichat.md</code>
+        and edit it in a Markdown editor with no extra flags.</p>
 
       <h2>Transcript format</h2>
       <p>Each turn begins with a line containing a role token — <code>[USER]</code>
@@ -114,20 +122,22 @@
 &lt;!-- ******************************************** --&gt;</code></pre>
 
       <h2>Project layout</h2>
-      <pre><code>AI-CHAT-to-Html/
+      <pre><code>ai-chat-to-html/
 ├── aichatprocess.py       The processor
 ├── aichat-template.css    Editable CSS template
 ├── requirements.txt       Pins Python-Markdown
 ├── docs/                  This website
-│   ├── index.html  instructions.html  example.html  reference.html
+│   ├── index.html  instructions.html  example.html
+│   ├── styling.html  reference.html
 │   ├── site.css
 │   ├── workflow.md  requirements.md   (plain-text source docs)
 └── example/
-    ├── aichat.txt  aichat.html  aichat.css</code></pre>
+    ├── aichat.txt  aichat.html  aichat.css
+    └── themes/           Alternate stylesheets + rendered demos</code></pre>
 
       <div class="actions">
-        <a class="btn btn-primary" href="https://github.com/">Download the tool</a>
-        <a class="btn btn-ghost" href="https://github.com/">Source on GitHub</a>
+        <a class="btn btn-primary" href="https://github.com/markbeachill/ai-chat-to-html">Download the tool</a>
+        <a class="btn btn-ghost" href="https://github.com/markbeachill/ai-chat-to-html">Source on GitHub</a>
       </div>
     </div>
   </main>

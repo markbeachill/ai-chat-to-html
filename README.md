@@ -7,11 +7,8 @@ It's built for a simple workflow: paste a conversation into a Markdown file,
 edit it as text, then convert it to a finished web page you can publish or copy
 into another site.
 
-**[Visit the site](https://example.github.io/AI-CHAT-to-Html/)** · [Instructions](https://example.github.io/AI-CHAT-to-Html/instructions.html) · [Example](https://example.github.io/AI-CHAT-to-Html/example.html)
+**[Visit the site](https://markbeachill.github.io/ai-chat-to-html/)** · [Instructions](https://markbeachill.github.io/ai-chat-to-html/instructions.html) · [Example](https://markbeachill.github.io/ai-chat-to-html/example.html)
 [Workflow](docs/workflow.md) · [Requirements](docs/requirements.md)
-
-> Replace the live-example link above with your own GitHub Pages URL once
-> published (see [Publishing with GitHub Pages](#publishing-with-github-pages)).
 
 ## Quickstart
 
@@ -33,6 +30,8 @@ Tell me about gravity?
 # **[CHATBOT]**
 Gravity is the force that attracts objects with mass toward each other...
 ```
+
+> Tip: you can keep the transcript as `aichat.md` and edit it in a Markdown editor — with no `--source`, the tool uses `aichat.txt` if present, otherwise `aichat.md`.
 
 Open `aichat.html` in a browser and you'll see the conversation laid out as a
 chat, with user turns on the right and chatbot turns on the left.
@@ -87,14 +86,14 @@ This repo is Pages-ready with no build step:
 3. Under **Build and deployment**, set **Source** to *Deploy from a branch*,
    choose branch `main` and folder `/docs`, and save.
 4. After a minute your site is live at
-   `https://<your-username>.github.io/AI-CHAT-to-Html/` — a four-page site
-   (home, instructions, example, reference) aimed at end users, with developer
-   reference included.
+   `https://markbeachill.github.io/ai-chat-to-html/` — a five-page site
+   (home, instructions, example, styling, reference) aimed at end users, with
+   developer reference included.
 
 ## Repository layout
 
 ```
-AI-CHAT-to-Html/
+ai-chat-to-html/
 ├── README.md              This file
 ├── LICENSE                MIT
 ├── requirements.txt       Pins Python-Markdown

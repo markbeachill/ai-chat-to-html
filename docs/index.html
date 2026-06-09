@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Chat to HTML</title>
   <link rel="stylesheet" href="site.css">
-  <!-- The example stylesheet styles the embedded demo below so it matches the real tool output. -->
-  <link rel="stylesheet" href="../example/aichat.css">
 </head>
 <body>
   <header class="site-head">
@@ -16,6 +14,7 @@
         <a href="index.html" aria-current="page">Home</a>
         <a href="instructions.html">Instructions</a>
         <a href="example.html">Example</a>
+        <a href="styling.html">Styling</a>
         <a href="reference.html">Reference</a>
       </nav>
     </div>
@@ -32,53 +31,20 @@
       <div class="actions">
         <a class="btn btn-primary" href="instructions.html">How to use it</a>
         <a class="btn btn-ghost" href="example.html">See a full example</a>
-        <a class="btn btn-ghost" href="https://github.com/">Download the tool</a>
+        <a class="btn btn-ghost" href="https://github.com/markbeachill/ai-chat-to-html">Get it on GitHub</a>
       </div>
 
       <h2>What the output looks like</h2>
-      <p>This is real output from the tool — the opening of the sample
-        conversation, styled exactly as the page produces it:</p>
+      <p>This is the tool's actual output — the real generated page, shown in its
+        own styling. Scroll it like any chat window:</p>
 
-      <!-- ============================================================= -->
-      <!-- DEMO SNIPPET: generated from example/aichat.html. If the tool's -->
-      <!-- output style changes, regenerate the example and refresh this.  -->
-      <!-- ============================================================= -->
-      <div class="demo">
+      <div class="frame-wrap">
         <div class="demo-bar"><i></i><i></i><i></i></div>
-<main class="ai-chat-page" style="padding:0;background:transparent;">
-  <div class="ai-chat-window" style="box-shadow:none;border:none;border-radius:0;">
-    <div class="ai-chat-log">
-      <div class="ai-chat-turn ai-chat-turn--user">
-        <div class="ai-chat-role" aria-hidden="true">User</div>
-        <div class="ai-chat-bubble">
-          <p>Tell me about gravity? </p>
-        </div>
+        <iframe class="demo-frame" src="../example/aichat.html" height="520"
+                title="Live rendered example of the tool's output" loading="lazy"></iframe>
       </div>
-      <div class="ai-chat-turn ai-chat-turn--chatbot">
-        <div class="ai-chat-role" aria-hidden="true">Chatbot</div>
-        <div class="ai-chat-bubble">
-          <p>Gravity is the force that attracts objects with mass toward each other. It is why things fall to the ground, why planets orbit stars, and why galaxies hold together.</p>
-          <p>On Earth, gravity pulls objects toward the planet’s center. Near Earth’s surface, falling objects accelerate at about <strong>9.8 m/s²</strong>, meaning their speed increases by 9.8 meters per second every second, ignoring air resistance.</p>
-          <p>Newton described gravity as a force between masses:</p>
-          <p>F = G\frac{m_1m_2}{r^2}</p>
-          <p>This means gravity gets stronger when masses are larger, and weaker when the distance between them increases.</p>
-          <p>Einstein later gave a deeper explanation: gravity is not just a force, but the effect of mass and energy bending spacetime. Objects like Earth and the Sun curve spacetime, and other objects move along those curves. That is why planets orbit the Sun.</p>
-          <p>Gravity also explains:</p>
-          <ul>
-          <li><strong>Weight:</strong> your weight is the force of gravity acting on your mass.</li>
-          <li><strong>Orbits:</strong> satellites keep “falling” around Earth rather than straight down.</li>
-          <li><strong>Tides:</strong> the Moon’s gravity pulls on Earth’s oceans.</li>
-          <li><strong>Black holes:</strong> regions where gravity is so strong that not even light can escape once inside the event horizon.</li>
-          </ul>
-          <p>Gravity is the weakest of the four fundamental forces, but it dominates on cosmic scales because it always attracts and acts over very long distances.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-      </div>
-      <p class="demo-cap">Trimmed to the first two turns. The
-        <a href="example.html">full example</a> shows code blocks, lists and links too.</p>
+      <p class="demo-cap">The full conversation — including code blocks — is on the
+        <a href="example.html">example page</a>.</p>
 
       <h2>Why use it</h2>
       <div class="cards">
@@ -98,9 +64,9 @@
             can lift it into any other page.</p>
         </div>
         <div class="card">
-          <h3>Make it yours</h3>
-          <p>Swap in your own stylesheet template to restyle every page the
-            tool generates.</p>
+          <h3>Restyle everything</h3>
+          <p>Swap in a stylesheet template to change the look of every page the
+            tool generates. <a href="styling.html">See the themes &rarr;</a></p>
         </div>
       </div>
 
@@ -117,7 +83,7 @@
   <footer class="site-foot">
     <div class="wrap">
       <span>AI Chat to HTML — MIT licensed.</span>
-      <span><a href="reference.html">For developers</a> · <a href="https://github.com/">Source on GitHub</a></span>
+      <span><a href="reference.html">For developers</a> · <a href="https://github.com/markbeachill/ai-chat-to-html">Source on GitHub</a></span>
     </div>
   </footer>
 </body>

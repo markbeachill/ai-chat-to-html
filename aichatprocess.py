@@ -21,6 +21,10 @@ as page markup — so transcripts that contain HTML examples stay safe.
 
 No LaTeX/math handling: math written as plain text is left as plain text.
 
+If no --source is given, the tool reads aichat.txt, falling back to aichat.md
+when aichat.txt is absent. A user who prefers a Markdown editor can keep the
+transcript as aichat.md with no extra flags.
+
 CSS behaviour (--write-css):
     never       Leave the CSS file untouched; only link to it. Template ignored.
     if-missing  Write the CSS file only if it does not already exist (default).
@@ -60,6 +64,7 @@ except ImportError:  # pragma: no cover
 # --------------------------------------------------------------------------- #
 
 DEFAULT_SOURCE = "aichat.txt"
+DEFAULT_SOURCE_FALLBACK = "aichat.md"
 DEFAULT_OUTPUT = "aichat.html"
 DEFAULT_CSS = "aichat.css"
 DEFAULT_CSS_TEMPLATE = "aichat-template.css"
@@ -391,8 +396,9 @@ def main(argv=None) -> int:
         description="Convert a marked-up AI chat transcript into a complete "
                     "HTML page plus CSS.",
     )
-    parser.add_argument("--source", default=DEFAULT_SOURCE,
-                        help=f"Input transcript (default: {DEFAULT_SOURCE})")
+    parser.add_argument("--source", default=None,
+                        help=f"Input transcript (default: {DEFAULT_SOURCE}, "
+                             f"falling back to {DEFAULT_SOURCE_FALLBACK})")
     parser.add_argument("--output", default=DEFAULT_OUTPUT,
                         help=f"Output HTML file (default: {DEFAULT_OUTPUT})")
     parser.add_argument("--css", default=DEFAULT_CSS,
@@ -407,14 +413,31 @@ def main(argv=None) -> int:
                         help="HTML <title> (default: 'AI Chat')")
     args = parser.parse_args(argv)
 
-    source_path = Path(args.source)
+    # Source resolution. If --source is given, use exactly that. If not,
+    # default to aichat.txt, falling back to aichat.md when the .txt is absent.
+    if args.source is not None:
+        source_path = Path(args.source)
+        if not source_path.exists():
+            sys.stderr.write(f"Error: source file not found: {source_path}\n")
+            return 1
+    else:
+        primary = Path(DEFAULT_SOURCE)
+        fallback = Path(DEFAULT_SOURCE_FALLBACK)
+        if primary.exists():
+            source_path = primary
+        elif fallback.exists():
+            source_path = fallback
+        else:
+            sys.stderr.write(
+                f"Error: no source file found. Looked for {DEFAULT_SOURCE} "
+                f"then {DEFAULT_SOURCE_FALLBACK} in the current folder.\n"
+                f"Create one, or pass --source <file>.\n"
+            )
+            return 1
+
     output_path = Path(args.output)
     css_path = Path(args.css)
     template_path = Path(args.css_template)
-
-    if not source_path.exists():
-        sys.stderr.write(f"Error: source file not found: {source_path}\n")
-        return 1
 
     text = source_path.read_text(encoding="utf-8")
     turns = parse_transcript(text)
