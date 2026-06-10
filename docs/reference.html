@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference &mdash; AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="collector.html">Collector</a>
+        <a href="example.html">Example</a>
+        <a href="word.html">Word</a>
+        <a href="styling.html">Styling</a>
+        <a href="download.html">Download</a>
+        <a href="reference.html" aria-current="page">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">For developers</p>
+      <h1>Reference</h1>
+      <p class="lead">The full specification: command-line options, the
+        transcript format, how the CSS is written, and what the tool does and
+        doesn't handle. If you just want to make a page, the
+        <a href="instructions.html">instructions</a> are friendlier.</p>
+
+      <h2>Command</h2>
+      <pre><code>python3 aichatprocess.py [options]</code></pre>
+      <p>With no options it reads <code>aichat.txt</code> and writes
+        <code>aichat.html</code> (linking <code>aichat.css</code>) in the current
+        folder.</p>
+
+      <h2>Options</h2>
+      <table>
+        <thead>
+          <tr><th>Option</th><th>Default</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--source</code></td><td><code>aichat.txt</code>, then <code>aichat.md</code></td><td>Input transcript. See note below.</td></tr>
+          <tr><td><code>--output</code></td><td><code>aichat.html</code></td><td>Output HTML file.</td></tr>
+          <tr><td><code>--css</code></td><td><code>aichat.css</code></td><td>CSS file the HTML links to.</td></tr>
+          <tr><td><code>--css-template</code></td><td><code>aichat-template.css</code></td><td>Optional template copied when writing CSS.</td></tr>
+          <tr><td><code>--theme</code></td><td><code>default</code></td><td>Built-in look: <code>default</code>, <code>dark</code>, <code>minimal</code>, <code>warm</code>.</td></tr>
+          <tr><td><code>--write-css</code></td><td><code>if-missing</code></td><td><code>never</code>, <code>if-missing</code>, or <code>overwrite</code>.</td></tr>
+          <tr><td><code>--word-output</code></td><td>&mdash;</td><td>Also write a Word-friendly transcript to this file.</td></tr>
+          <tr><td><code>--word-style</code></td><td><code>default</code></td><td>Word look: <code>default</code>, <code>compact</code>, <code>plain</code>. Needs <code>--word-output</code>.</td></tr>
+          <tr><td><code>--math</code></td><td>off</td><td>Render <code>$…$</code> / <code>$$…$$</code> with KaTeX (web page only, CDN).</td></tr>
+          <tr><td><code>--title</code></td><td><code>AI Chat</code></td><td>The HTML page title.</td></tr>
+        </tbody>
+      </table>
+      <pre><code>python3 aichatprocess.py --source mychat.txt --output mychat.html --write-css overwrite</code></pre>
+
+      <p><strong>Source resolution.</strong> If you pass <code>--source</code>,
+        the tool uses exactly that file. If you don't, it reads
+        <code>aichat.txt</code>, falling back to <code>aichat.md</code> when the
+        <code>.txt</code> is absent. If neither exists, it stops with an error
+        naming both. This lets you keep the transcript as <code>aichat.md</code>
+        and edit it in a Markdown editor with no extra flags.</p>
+
+      <h2>Transcript format</h2>
+      <p>Each turn begins with a line containing a role token &mdash; <code>[USER]</code>
+        or <code>[CHATBOT]</code> &mdash; matched case-insensitively. The rest of that
+        line is ignored, so <code># **[USER]**</code>, <code>[user]</code> and
+        <code>## [Chatbot]:</code> all work. Everything until the next role line
+        is that turn's body, treated as Markdown. Text before the first role line
+        is ignored with a warning.</p>
+
+      <h2>Conversation Collector Prompt</h2>
+      <p>The normal capture method is manual copy and paste. As an optional helper,
+        the <a href="collector.html">Conversation Collector Prompt</a> can be
+        pasted at the end of a chatbot conversation to ask for a draft
+        <code>aichat.md</code> transcript using the right role markers. The result
+        should still be checked before processing.</p>
+
+      <h2>Conversion</h2>
+      <p>Turn bodies are converted with
+        <a href="https://pypi.org/project/Markdown/">Python-Markdown</a> using the
+        <code>fenced_code</code>, <code>tables</code>, <code>sane_lists</code> and
+        <code>nl2br</code> extensions.</p>
+      <ul>
+        <li>Fenced code blocks render as <strong>visible, escaped code</strong> &mdash;
+          never interpreted as page markup. A transcript full of HTML examples
+          stays safe.</li>
+        <li>A code block's language tag is preserved as a CSS class, so a syntax
+          highlighter can be added later; none is bundled.</li>
+        <li>No maths/LaTeX handling &mdash; plain-text formulae stay as plain text.</li>
+        <li>Markdown images with a web address (<code>![](https://…)</code>) are
+          passed through as <code>&lt;img&gt;</code> tags. Local, pasted, uploaded,
+          internal or non-portable images (<code>![](screenshot.png)</code>, data
+          URIs) are replaced with a small "[image not included]" placeholder
+          &mdash; the tool never loads local files.</li>
+        <li>Attachments, native LLM export formats and automatic role detection
+          are out of scope.</li>
+      </ul>
+
+      <h2>How the CSS is written</h2>
+      <p>The <code>--write-css</code> setting controls this, and it is safe by
+        default.</p>
+      <table>
+        <thead><tr><th>Mode</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td><code>never</code></td><td>Leave the CSS file untouched; only link to it. The template is ignored.</td></tr>
+          <tr><td><code>if-missing</code></td><td>Write the CSS file only if it does not already exist (default).</td></tr>
+          <tr><td><code>overwrite</code></td><td>Always re-write the CSS file.</td></tr>
+        </tbody>
+      </table>
+      <p>When writing &mdash; either <code>overwrite</code>, or <code>if-missing</code>
+        with no file present &mdash; the tool copies <code>aichat-template.css</code>
+        verbatim if that file exists, otherwise it writes a stylesheet built into
+        the script. So the tool works on a clean folder, and you can customise the
+        design by editing the template and re-running with
+        <code>--write-css overwrite</code>.</p>
+
+      <h3>Choosing a look</h3>
+      <p>Three things can decide the stylesheet, in this order of precedence: an
+        existing <code>--css-template</code> file wins; otherwise the
+        <code>--theme</code> you name is used; otherwise the built-in default.
+        The bundled themes are <code>default</code>, <code>dark</code>,
+        <code>minimal</code> and <code>warm</code>.</p>
+      <pre><code>python3 aichatprocess.py --theme dark --write-css overwrite</code></pre>
+      <p>See the <a href="styling.html">styling page</a> for live previews of each.</p>
+
+      <h2>Word-friendly output</h2>
+      <p>Pass <code>--word-output</code> to also write a second page designed for
+        pasting into Microsoft Word, alongside the normal chat page. Use the flag
+        on its own to name the file automatically from the output
+        (<code>aichat.html</code> becomes <code>aichat-word.html</code>), or give
+        an explicit filename:</p>
+      <pre><code>python3 aichatprocess.py --word-output
+python3 aichatprocess.py --word-output mychat-word.html</code></pre>
+      <p>The matching stylesheet is named from the file with a <code>.css</code>
+        extension (so <code>aichat-word.html</code> links
+        <code>aichat-word.css</code>).</p>
+      <p>Word ignores the things that make the chat page look like a chat &mdash;
+        flexbox layout, alignment, rounded bubbles, box-shadows &mdash; and handles
+        linked stylesheets poorly. So this output is a different construction: a
+        clean transcript (speaker label, then text) built only from constructs
+        Word keeps, with the styling written <em>inline on every element</em> so
+        it survives the copy-paste. A linked stylesheet is also included so the
+        page looks tidy in the browser before you copy from it. Open the file,
+        select the transcript, and paste into Word. No extra software is needed &mdash;
+        the conversion is done by the tool itself, not by an external converter.</p>
+      <p>Three looks are available with <code>--word-style</code>:
+        <code>default</code> (coloured labels and separators), <code>compact</code>
+        (tighter spacing and smaller type, for fitting more on a page) and
+        <code>plain</code> (no rules or colour &mdash; most neutral, for reformatting
+        into another template).</p>
+      <p><strong>Themes and Word looks are separate.</strong> <code>--theme</code>
+        styles the chat page; <code>--word-style</code> styles the Word page. They
+        don't overlap &mdash; the screen themes (with dark backgrounds and bubbles)
+        would not survive Word anyway, which is why the Word output has its own
+        neutral looks. If you set <code>--theme</code> alongside
+        <code>--word-output</code>, the tool prints a short note making this clear.</p>
+
+      <h2>Maths (optional)</h2>
+      <p>By default the tool doesn't typeset mathematics &mdash; reliably detecting
+        which text is a formula isn't possible, so a line like
+        <code>9.8 m/s²</code> should never be guessed at. Instead, maths is
+        opt-in: wrap it in <code>$…$</code> (inline) or <code>$$…$$</code>
+        (display) and pass <code>--math</code>. The page then loads
+        <a href="https://katex.org/">KaTeX</a> from a CDN and renders it in the
+        browser.</p>
+      <p>Two caveats: <code>--math</code> makes the page depend on that online
+        resource, which is why it's off by default (the page is otherwise fully
+        self-contained); and it applies to the chat web page only &mdash; the Word
+        version pastes static content and shows maths as plain <code>$…$</code>
+        text.</p>
+
+      <h2>Scoping, not isolation</h2>
+      <p>The generated CSS is scoped under <code>.ai-chat-page</code> so the
+        snippet can be pasted into pages that already have their own styles
+        without the two interfering. This is scoping, not guaranteed isolation:
+        full isolation would require an iframe or Shadow DOM, which would defeat
+        the goal of copying a plain HTML snippet.</p>
+
+      <h2>Output structure</h2>
+      <p>The output is a complete HTML page (not a fragment) linking the CSS file.
+        The reusable chat section is wrapped in large repeated comment blocks so
+        it's easy to find and copy:</p>
+      <pre><code>&lt;!-- ******************************************** --&gt;
+&lt;!-- COPY CHAT HTML START                         --&gt;
+&lt;!-- ******************************************** --&gt;
+
+&lt;main class="ai-chat-page"&gt; ... &lt;/main&gt;
+
+&lt;!-- ******************************************** --&gt;
+&lt;!-- COPY CHAT HTML END                           --&gt;
+&lt;!-- ******************************************** --&gt;</code></pre>
+
+      <h2>Project layout</h2>
+      <pre><code>ai-chat-to-html/
+├── aichatprocess.py       The processor
+├── aichat-template.css    Editable CSS template
+├── requirements.txt       Pins Python-Markdown
+├── docs/                  This website
+│   ├── index.html  instructions.html  example.html
+│   ├── styling.html  reference.html
+│   ├── site.css
+│   ├── workflow.md  requirements.md   (plain-text source docs)
+└── example/
+    ├── aichat.txt  aichat.html  aichat.css
+    └── themes/           Alternate stylesheets + rendered demos</code></pre>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/markbeachill/ai-chat-to-html">Download the tool</a>
+        <a class="btn btn-ghost" href="https://github.com/markbeachill/ai-chat-to-html">Source on GitHub</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> &middot; <a href="markdown-guide.html">Markdown guide</a> &middot; <a href="https://github.com/markbeachill/ai-chat-to-html">GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

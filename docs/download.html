@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download &mdash; AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="collector.html">Collector</a>
+        <a href="example.html">Example</a>
+        <a href="word.html">Word</a>
+        <a href="styling.html">Styling</a>
+        <a href="download.html" aria-current="page">Download</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Download</p>
+      <h1>Get the tool.</h1>
+      <p class="lead">Pick the download that suits you. Both contain the tool and
+        run the same way; the fuller one just adds the worked example and a
+        getting-started note.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Just the tool</h3>
+          <p>The script, the style template, the dependency list and a short
+            readme &mdash; the minimum needed to run it.</p>
+          <p style="margin-top:14px;">
+            <a class="btn btn-primary" href="downloads/ai-chat-to-html-tool.zip" download>Download tool (.zip)</a>
+          </p>
+        </div>
+        <div class="card">
+          <h3>Tool + example</h3>
+          <p>Everything above, plus the example transcript with its generated
+            chat and Word pages, and a plain-text instructions file.</p>
+          <p style="margin-top:14px;">
+            <a class="btn btn-primary" href="downloads/ai-chat-to-html-full.zip" download>Download full (.zip)</a>
+          </p>
+        </div>
+      </div>
+
+      <h2>Before it will run</h2>
+      <p>The tool needs Python 3 and one small add-on. If you're new to Python,
+        the <a href="setup.html">setup page</a> walks through installing it and
+        opening a terminal. Once Python is ready, unzip the download and, in that
+        folder, run:</p>
+      <pre><code>pip install -r requirements.txt
+python3 aichatprocess.py</code></pre>
+      <p>Then follow the <a href="instructions.html">instructions</a> to make your
+        first page, or use the <a href="collector.html">Conversation Collector Prompt</a>
+        to create a draft transcript.</p>
+
+      <div class="simple-path">
+        <h3>That's the whole core</h3>
+        <pre><code># put your conversation in aichat.txt, then:
+python3 aichatprocess.py
+# open aichat.html</code></pre>
+        <p>Themes, a Word version and maths are all
+          <span class="opt">optional extras</span> &mdash; the
+          <a href="instructions.html">instructions</a> cover them.</p>
+      </div>
+
+      <h2>Prefer the source?</h2>
+      <p>The full project &mdash; tool, website and history &mdash; lives on GitHub.
+        You can browse it, or download the whole repository as a zip from there.</p>
+      <div class="actions">
+        <a class="btn btn-ghost" href="https://github.com/markbeachill/ai-chat-to-html">View on GitHub</a>
+        <a class="btn btn-ghost" href="https://github.com/markbeachill/ai-chat-to-html/archive/refs/heads/main.zip">Download repository (.zip)</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> &middot; <a href="markdown-guide.html">Markdown guide</a> &middot; <a href="https://github.com/markbeachill/ai-chat-to-html">GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>
