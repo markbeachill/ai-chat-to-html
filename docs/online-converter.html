@@ -244,6 +244,7 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
         let inCode = false;
         let code = [];
         let listType = null;
+        let currentItem = null;
 
         function flushParagraph() {
           if (paragraph.length) {
@@ -252,33 +253,74 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
           }
         }
 
+        function renderLooseBlocks(blocks) {
+          const cleaned = blocks.map(block => block.trim()).filter(Boolean);
+          if (!cleaned.length) return '';
+
+          if (cleaned.length === 1) {
+            return inlineMarkdown(cleaned[0]);
+          }
+
+          return cleaned
+            .map(block => `<p>${inlineMarkdown(block.replace(/\n+/g, ' ').trim())}</p>`)
+            .join('');
+        }
+
         function openList(type) {
           flushParagraph();
-          if (listType && listType !== type) closeList();
+
+          if (listType && listType !== type) {
+            closeList();
+          }
+
           if (!listType) {
             output += `<${type}>\n`;
             listType = type;
           }
         }
 
+        function startListItem(type, content) {
+          openList(type);
+          closeListItem();
+          currentItem = {
+            type,
+            blocks: [content]
+          };
+        }
+
+        function addListContinuation(line) {
+          if (!currentItem) return false;
+
+          if (!line.trim()) {
+            if (currentItem.blocks[currentItem.blocks.length - 1] !== '') {
+              currentItem.blocks.push('');
+            }
+            return true;
+          }
+
+          if (currentItem.blocks.length && currentItem.blocks[currentItem.blocks.length - 1] === '') {
+            currentItem.blocks[currentItem.blocks.length - 1] = line.trim();
+          } else {
+            currentItem.blocks[currentItem.blocks.length - 1] += '\n' + line.trim();
+          }
+
+          return true;
+        }
+
+        function closeListItem() {
+          if (currentItem) {
+            output += `<li>${renderLooseBlocks(currentItem.blocks)}</li>\n`;
+            currentItem = null;
+          }
+        }
+
         function closeList() {
+          closeListItem();
+
           if (listType) {
             output += `</${listType}>\n`;
             listType = null;
           }
-        }
-
-        function nextNonBlankListType(fromIndex) {
-          for (let j = fromIndex + 1; j < lines.length; j += 1) {
-            const next = lines[j].trim();
-
-            if (!next) continue;
-            if (/^[-*]\s+/.test(next)) return 'ul';
-            if (/^\d+\.\s+/.test(next)) return 'ol';
-            return null;
-          }
-
-          return null;
         }
 
         for (let i = 0; i < lines.length; i += 1) {
@@ -304,32 +346,31 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
             continue;
           }
 
-          if (!trimmed) {
-            flushParagraph();
-
-            if (listType && nextNonBlankListType(i) === listType) {
-              continue;
-            }
-
-            closeList();
-            continue;
-          }
-
           const bullet = trimmed.match(/^[-*]\s+(.+)$/);
           if (bullet) {
-            openList('ul');
-            output += `<li>${inlineMarkdown(bullet[1])}</li>\n`;
+            startListItem('ul', bullet[1]);
             continue;
           }
 
           const ordered = trimmed.match(/^\d+\.\s+(.+)$/);
           if (ordered) {
-            openList('ol');
-            output += `<li>${inlineMarkdown(ordered[1])}</li>\n`;
+            startListItem('ol', ordered[1]);
             continue;
           }
 
-          closeList();
+          if (listType) {
+            if (!trimmed || /^\s+/.test(line)) {
+              addListContinuation(line);
+              continue;
+            }
+
+            closeList();
+          }
+
+          if (!trimmed) {
+            flushParagraph();
+            continue;
+          }
 
           const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
           if (heading) {
@@ -349,8 +390,8 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
         }
 
         if (inCode) output += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
-        flushParagraph();
         closeList();
+        flushParagraph();
         return output.trim();
       }
 
