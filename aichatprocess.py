@@ -302,7 +302,7 @@ def build_html(turns, css_href: str, title: str, math: bool = False) -> str:
 WORD_STYLES = {
     "default": {
         "turn":  "margin:0 0 18px 0; padding:0 0 14px 0; "
-                 "border-bottom:1px solid #dddddd;",
+                 "",
         "role_user": "margin:0 0 6px 0; font-family:Arial,sans-serif; "
                      "font-size:11pt; font-weight:bold; color:#1a4f8b;",
         "role_bot":  "margin:0 0 6px 0; font-family:Arial,sans-serif; "

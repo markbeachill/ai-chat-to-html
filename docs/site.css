@@ -797,3 +797,28 @@ button[hidden],
 button[hidden] {
   display: none !important;
 }
+
+
+/* ---- online converter: Word copy/source clarity ---- */
+.source-output-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.source-output-head label {
+  margin: 0;
+}
+
+.preview-area .word-transcript {
+  background: #ffffff;
+}
+
+
+/* ---- Word output copy/paste guidance ---- */
+.word-paste-note {
+  max-width: 48rem;
+  margin: 0.35rem 0 0;
+}

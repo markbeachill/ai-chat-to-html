@@ -4,8 +4,8 @@
  */
 body { background: #ffffff; margin: 24px; }
 .word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }
-.wt { margin:0 0 18px 0; padding:0 0 14px 0; border-bottom:1px solid #dddddd; }
-.wt:last-child { border-bottom: none; }
+.wt { margin:0 0 18px 0; padding:0; }
+
 .wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444; }
 .wt--user .wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#1a4f8b; }
 .wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5; }

@@ -108,10 +108,12 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
 
       <section class="converter-panel">
         <div class="converter-headline">
-          <h2>4. Copy output</h2>
+          <h2 id="copySectionTitle">4. Copy output</h2>
           <p id="copyModeHint" class="status-line copy-mode-hint"></p>
+          <p id="wordPasteNote" class="status-line word-paste-note" hidden>Rich paste behaviour varies. LibreOffice often preserves more formatting from browser copy/paste than Microsoft Word. For Word, downloading the Word HTML file may be more reliable.</p>
           <div class="converter-actions">
             <button class="btn btn-primary btn-small" type="button" id="copyHtmlButton">Copy HTML</button>
+            <button class="btn btn-ghost btn-small" type="button" id="downloadWordHtmlButton" hidden>Download Word HTML</button>
             <button class="btn btn-ghost btn-small" type="button" id="copyCssButton">Copy CSS</button>
             <button class="btn btn-ghost btn-small" type="button" id="downloadCssButton">Download CSS</button>
           </div>
@@ -119,7 +121,10 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
 
         <div class="output-layout">
           <div>
-            <label for="htmlOutput"><strong id="htmlOutputLabel">Generated HTML</strong></label>
+            <div class="source-output-head">
+              <label for="htmlOutput"><strong id="htmlOutputLabel">Generated HTML</strong></label>
+              <button class="btn btn-ghost btn-small" type="button" id="copySourceButton" hidden>Copy HTML source</button>
+            </div>
             <textarea id="htmlOutput" class="generated-output" spellcheck="false" readonly></textarea>
           </div>
           <div id="cssOutputWrap" class="css-output-wrap">
@@ -133,7 +138,7 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
       const USER_MARKER = '# **[USER]**';
       const CHATBOT_MARKER = '# **[CHATBOT]**';
 
-      const WORD_BROWSER_CSS = {"default": "/* Word-friendly transcript styles (default) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 18px 0; padding:0 0 14px 0; border-bottom:1px solid #dddddd; }\n.wt:last-child { border-bottom: none; }\n.wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:10px 12px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; background:#f3f3f3; }\n.wt-body pre code { background: none; }\n", "compact": "/* Word-friendly transcript styles (compact) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 9px 0; padding:0; }\n.wt:last-child { border-bottom: none; }\n.wt-role { margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:10pt; color:#1a1a1a; line-height:1.35; }\n.wt-body p { margin:0 0 5px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 5px 0; padding-left:20px; }\n.wt-body li { margin:0 0 1px 0; }\n.wt-body pre { margin:0 0 6px 0; padding:7px 9px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:9pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:9pt; background:#f3f3f3; }\n.wt-body pre code { background: none; }\n", "plain": "/* Word-friendly transcript styles (plain) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 14px 0; padding:0; }\n.wt:last-child { border-bottom: none; }\n.wt-role { margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000; }\n.wt--user .wt-role { margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#000000; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:8px 10px; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; }\n.wt-body pre code { background: none; }\n"};
+      const WORD_BROWSER_CSS = {"default": "/* Word-friendly transcript styles (default) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 18px 0; padding:0; }\n\n.wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:10px 12px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; background:#f3f3f3; }\n.wt-body pre code { background: none; }\n", "compact": "/* Word-friendly transcript styles (compact) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 9px 0; padding:0; }\n\n.wt-role { margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:10pt; color:#1a1a1a; line-height:1.35; }\n.wt-body p { margin:0 0 5px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 5px 0; padding-left:20px; }\n.wt-body li { margin:0 0 1px 0; }\n.wt-body pre { margin:0 0 6px 0; padding:7px 9px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:9pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:9pt; background:#f3f3f3; }\n.wt-body pre code { background: none; }\n", "plain": "/* Word-friendly transcript styles (plain) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 14px 0; padding:0; }\n\n.wt-role { margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000; }\n.wt--user .wt-role { margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#000000; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:8px 10px; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; }\n.wt-body pre code { background: none; }\n"};
 
       const sourceText = document.getElementById('sourceText');
       const previewArea = document.getElementById('previewArea');
@@ -148,7 +153,11 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
       const cssModeGroup = document.querySelector('.css-mode-group');
       const chatStyleGroup = document.querySelector('.chat-style-group');
       const wordStyleGroup = document.querySelector('.word-style-group');
+      const copySectionTitle = document.getElementById('copySectionTitle');
       const copyHtmlButton = document.getElementById('copyHtmlButton');
+      const copySourceButton = document.getElementById('copySourceButton');
+      const downloadWordHtmlButton = document.getElementById('downloadWordHtmlButton');
+      const wordPasteNote = document.getElementById('wordPasteNote');
       const copyCssButton = document.getElementById('copyCssButton');
       const downloadCssButton = document.getElementById('downloadCssButton');
       const copyModeHint = document.getElementById('copyModeHint');
@@ -384,7 +393,7 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
 
         return {
           ...common,
-          turn: 'margin:0 0 18px 0; padding:0 0 14px 0; border-bottom:1px solid #dddddd;',
+          turn: 'margin:0 0 18px 0; padding:0;',
           roleUser: 'margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#1a4f8b;',
           roleChatbot: 'margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444;',
           body: 'margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5;',
@@ -609,9 +618,13 @@ ${parts.join('\n')}
         copyCssButton.hidden = wordMode || cssModeSelect.value !== 'separate';
         downloadCssButton.hidden = wordMode || cssModeSelect.value !== 'separate';
 
-        copyHtmlButton.textContent = wordMode ? 'Copy Word output' : 'Copy HTML';
+        copySectionTitle.textContent = wordMode ? '4. Copy or download Word version' : '4. Copy output';
+        copyHtmlButton.textContent = wordMode ? 'Select Word preview' : 'Copy HTML';
+        copySourceButton.hidden = !wordMode;
+        downloadWordHtmlButton.hidden = !wordMode;
+        wordPasteNote.hidden = !wordMode;
         copyModeHint.textContent = wordMode
-          ? 'Copies the formatted Word-style output from the preview, ready to paste into Word.'
+          ? 'Select the Word preview, then copy and paste into Word or LibreOffice. LibreOffice may preserve formatting better.'
           : 'Copy the generated HTML for use in a web page.';
         htmlOutputLabel.textContent = wordMode ? 'HTML source (advanced)' : 'Generated HTML';
       }
@@ -642,7 +655,7 @@ ${parts.join('\n')}
           htmlOutput.value = generatedHtml;
           cssOutput.value = '';
           cssOutputWrap.style.display = 'none';
-          previewArea.innerHTML = `<style>${css}</style>${body}`;
+          previewArea.innerHTML = body;
           currentWordCopyHtml = body;
           currentWordCopyText = previewArea.innerText;
           messageArea.textContent = `Converted ${turns.length} turns to Word output.`;
@@ -666,35 +679,36 @@ ${parts.join('\n')}
         updateModeControls();
       }
 
-      async function copyWordOutput() {
-        if (!currentWordCopyHtml) return;
+      function selectWordPreview() {
+        if (!previewArea.innerText.trim()) return;
 
-        try {
-          if (window.ClipboardItem && navigator.clipboard.write) {
-            const htmlBlob = new Blob([currentWordCopyHtml], { type: 'text/html' });
-            const textBlob = new Blob([currentWordCopyText], { type: 'text/plain' });
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                'text/html': htmlBlob,
-                'text/plain': textBlob
-              })
-            ]);
-            messageArea.textContent = 'Word output copied. Paste it into Word.';
-          } else {
-            await navigator.clipboard.writeText(currentWordCopyText);
-            messageArea.textContent = 'Plain text copied. Paste it into Word.';
-          }
-        } catch (error) {
-          const range = document.createRange();
-          range.selectNodeContents(previewArea);
-          const selection = window.getSelection();
-          selection.removeAllRanges();
-          selection.addRange(range);
-          messageArea.textContent = 'Browser copy was blocked. The Word output is selected; press Ctrl+C or Cmd+C, then paste into Word.';
-        }
+        const range = document.createRange();
+        range.selectNodeContents(previewArea);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        messageArea.textContent = 'Word preview selected. Press Ctrl+C or Cmd+C, then paste into Word or LibreOffice.';
       }
 
-      async function copyText(text, label) {
+      function downloadWordHtml() {
+        if (!isWordMode() || !htmlOutput.value) return;
+
+        const blob = new Blob([htmlOutput.value], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = 'aichat-word.html';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+
+        messageArea.textContent = 'Word HTML downloaded. Open it in Word or LibreOffice, or copy from it.';
+      }
+
+      async function copyText      async function copyText(text, label) {
         if (!text) return;
         await navigator.clipboard.writeText(text);
         messageArea.textContent = `${label} copied.`;
@@ -738,11 +752,13 @@ ${parts.join('\n')}
 
       copyHtmlButton.addEventListener('click', () => {
         if (isWordMode()) {
-          copyWordOutput();
+          selectWordPreview();
         } else {
           copyText(htmlOutput.value, 'HTML');
         }
       });
+      downloadWordHtmlButton.addEventListener('click', downloadWordHtml);
+      copySourceButton.addEventListener('click', () => copyText(htmlOutput.value, 'HTML source'));
       copyCssButton.addEventListener('click', () => copyText(cssOutput.value, 'CSS'));
       downloadCssButton.addEventListener('click', downloadCss);
 
@@ -771,7 +787,7 @@ ${parts.join('\n')}
 
   <script>
     const CHAT_THEMES = {"default": "/* aichat.css — generated by aichatprocess.py (internal default)\n *\n * All rules are scoped under .ai-chat-page so this snippet can be pasted into\n * a page that already has its own CSS without the two interfering. This is\n * scoping, not true isolation: for guaranteed isolation use an iframe or\n * Shadow DOM (which would defeat the copy-a-snippet goal).\n *\n * To customise the look, create aichat-template.css next to aichatprocess.py and\n * re-run with --write-css overwrite; the template is copied verbatim.\n */\n\n.ai-chat-page {\n  --ai-bg: #f5f6f8;\n  --ai-window: #ffffff;\n  --ai-border: #e4e7ec;\n  --ai-user-bubble: #2563eb;\n  --ai-user-text: #ffffff;\n  --ai-bot-bubble: #f1f3f5;\n  --ai-bot-text: #1a1d21;\n  --ai-role: #8a909a;\n  --ai-code-bg: #1e2530;\n  --ai-code-text: #e7ecf3;\n  --ai-radius: 16px;\n  --ai-font: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica,\n             Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex;\n  justify-content: center;\n  padding: 24px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-bot-text);\n  line-height: 1.55;\n}\n\n.ai-chat-page *,\n.ai-chat-page *::before,\n.ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window {\n  width: 100%;\n  max-width: 760px;\n  background: var(--ai-window);\n  border: 1px solid var(--ai-border);\n  border-radius: var(--ai-radius);\n  overflow: hidden;\n  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06),\n              0 8px 24px rgba(16, 24, 40, 0.06);\n}\n\n.ai-chat-log {\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  padding: 24px;\n}\n\n.ai-chat-turn { display: flex; flex-direction: column; max-width: 85%; }\n.ai-chat-turn--user { align-self: flex-end; align-items: flex-end; }\n.ai-chat-turn--chatbot { align-self: flex-start; align-items: flex-start; }\n\n.ai-chat-role {\n  font-size: 0.72rem;\n  font-weight: 600;\n  letter-spacing: 0.04em;\n  text-transform: uppercase;\n  color: var(--ai-role);\n  margin: 0 4px 4px;\n}\n\n.ai-chat-bubble {\n  padding: 12px 16px;\n  border-radius: var(--ai-radius);\n  word-wrap: break-word;\n  overflow-wrap: anywhere;\n}\n\n.ai-chat-turn--user .ai-chat-bubble {\n  background: var(--ai-user-bubble);\n  color: var(--ai-user-text);\n  border-bottom-right-radius: 4px;\n}\n\n.ai-chat-turn--chatbot .ai-chat-bubble {\n  background: var(--ai-bot-bubble);\n  color: var(--ai-bot-text);\n  border-bottom-left-radius: 4px;\n}\n\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1,\n.ai-chat-bubble h2,\n.ai-chat-bubble h3,\n.ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul,\n.ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.4em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: inherit; text-decoration: underline; }\n.ai-chat-turn--chatbot .ai-chat-bubble a { color: var(--ai-user-bubble); }\n\n/* Inline code */\n.ai-chat-bubble code {\n  font-family: var(--ai-mono);\n  font-size: 0.88em;\n  background: rgba(135, 144, 154, 0.18);\n  padding: 0.12em 0.36em;\n  border-radius: 5px;\n}\n.ai-chat-turn--user .ai-chat-bubble code {\n  background: rgba(255, 255, 255, 0.22);\n}\n\n/* Fenced code blocks: visible, escaped, scrollable */\n.ai-chat-bubble pre {\n  background: var(--ai-code-bg);\n  color: var(--ai-code-text);\n  padding: 14px 16px;\n  border-radius: 10px;\n  overflow-x: auto;\n  margin: 0 0 0.7em;\n}\n.ai-chat-bubble pre code {\n  background: none;\n  padding: 0;\n  font-size: 0.85em;\n  color: inherit;\n  white-space: pre;\n}\n\n.ai-chat-bubble table {\n  border-collapse: collapse;\n  margin: 0 0 0.7em;\n  font-size: 0.92em;\n}\n.ai-chat-bubble th,\n.ai-chat-bubble td {\n  border: 1px solid var(--ai-border);\n  padding: 6px 10px;\n  text-align: left;\n}\n\n.ai-chat-bubble img {\n  max-width: 100%;\n  height: auto;\n  border-radius: 8px;\n  margin: 0 0 0.7em;\n}\n\n@media (max-width: 520px) {\n  .ai-chat-turn { max-width: 100%; }\n  .ai-chat-log { padding: 16px; }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .ai-chat-page * { animation: none !important; transition: none !important; }\n}\n", "dark": "/* aichat-template.css — DARK theme\n * A swap-in stylesheet for aichatprocess.py. Copy it to aichat-template.css\n * (or pass --css-template) and run with --write-css overwrite.\n * All rules scoped under .ai-chat-page.\n */\n\n.ai-chat-page {\n  --ai-bg: #0f1419;\n  --ai-window: #161b22;\n  --ai-border: #2a313c;\n  --ai-user-bubble: #2f81f7;\n  --ai-user-text: #ffffff;\n  --ai-bot-bubble: #21262d;\n  --ai-bot-text: #e6edf3;\n  --ai-role: #7d8590;\n  --ai-code-bg: #0a0d12;\n  --ai-code-text: #d6e0ea;\n  --ai-radius: 14px;\n  --ai-font: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex; justify-content: center;\n  padding: 24px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-bot-text);\n  line-height: 1.55;\n}\n.ai-chat-page *, .ai-chat-page *::before, .ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window {\n  width: 100%; max-width: 760px;\n  background: var(--ai-window);\n  border: 1px solid var(--ai-border);\n  border-radius: var(--ai-radius);\n  overflow: hidden;\n  box-shadow: 0 0 0 1px rgba(0,0,0,0.3), 0 16px 40px rgba(0,0,0,0.45);\n}\n.ai-chat-log { display: flex; flex-direction: column; gap: 18px; padding: 24px; }\n.ai-chat-turn { display: flex; flex-direction: column; max-width: 85%; }\n.ai-chat-turn--user { align-self: flex-end; align-items: flex-end; }\n.ai-chat-turn--chatbot { align-self: flex-start; align-items: flex-start; }\n.ai-chat-role {\n  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;\n  text-transform: uppercase; color: var(--ai-role); margin: 0 4px 4px;\n}\n.ai-chat-bubble { padding: 12px 16px; border-radius: var(--ai-radius); overflow-wrap: anywhere; }\n.ai-chat-turn--user .ai-chat-bubble { background: var(--ai-user-bubble); color: var(--ai-user-text); border-bottom-right-radius: 4px; }\n.ai-chat-turn--chatbot .ai-chat-bubble { background: var(--ai-bot-bubble); color: var(--ai-bot-text); border-bottom-left-radius: 4px; }\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1, .ai-chat-bubble h2, .ai-chat-bubble h3, .ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul, .ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.4em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: inherit; text-decoration: underline; }\n.ai-chat-turn--chatbot .ai-chat-bubble a { color: #79c0ff; }\n.ai-chat-bubble code { font-family: var(--ai-mono); font-size: 0.88em; background: rgba(125,133,144,0.22); padding: 0.12em 0.36em; border-radius: 5px; }\n.ai-chat-turn--user .ai-chat-bubble code { background: rgba(255,255,255,0.2); }\n.ai-chat-bubble pre { background: var(--ai-code-bg); color: var(--ai-code-text); padding: 14px 16px; border-radius: 10px; overflow-x: auto; margin: 0 0 0.7em; border: 1px solid var(--ai-border); }\n.ai-chat-bubble pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; white-space: pre; }\n.ai-chat-bubble table { border-collapse: collapse; margin: 0 0 0.7em; font-size: 0.92em; }\n.ai-chat-bubble th, .ai-chat-bubble td { border: 1px solid var(--ai-border); padding: 6px 10px; text-align: left; }\n@media (max-width: 520px) { .ai-chat-turn { max-width: 100%; } .ai-chat-log { padding: 16px; } }\n@media (prefers-reduced-motion: reduce) { .ai-chat-page * { animation: none !important; transition: none !important; } }\n", "minimal": "/* aichat-template.css — MINIMAL theme\n * Flat, borderless, typographic. No bubbles — speaker labels carry the\n * structure. Scoped under .ai-chat-page.\n */\n\n.ai-chat-page {\n  --ai-bg: #ffffff;\n  --ai-ink: #1a1a1a;\n  --ai-user-ink: #1a1a1a;\n  --ai-role: #999999;\n  --ai-rule: #ececec;\n  --ai-code-bg: #f5f5f5;\n  --ai-code-text: #1a1a1a;\n  --ai-font: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex; justify-content: center;\n  padding: 32px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-ink);\n  line-height: 1.7;\n}\n.ai-chat-page *, .ai-chat-page *::before, .ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window { width: 100%; max-width: 680px; background: var(--ai-bg); }\n.ai-chat-log { display: flex; flex-direction: column; gap: 0; }\n\n.ai-chat-turn {\n  display: block; max-width: 100%;\n  padding: 22px 0;\n  border-bottom: 1px solid var(--ai-rule);\n}\n.ai-chat-turn:last-child { border-bottom: none; }\n\n.ai-chat-role {\n  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em;\n  text-transform: uppercase; color: var(--ai-role); margin: 0 0 8px;\n}\n.ai-chat-turn--user .ai-chat-role { color: #1a1a1a; }\n\n.ai-chat-bubble { padding: 0; background: none; }\n.ai-chat-turn--user .ai-chat-bubble { font-weight: 500; }\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1, .ai-chat-bubble h2, .ai-chat-bubble h3, .ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul, .ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.3em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: #1a1a1a; text-decoration: underline; text-underline-offset: 2px; }\n.ai-chat-bubble code { font-family: var(--ai-mono); font-size: 0.88em; background: var(--ai-code-bg); padding: 0.12em 0.36em; border-radius: 3px; }\n.ai-chat-bubble pre { background: var(--ai-code-bg); color: var(--ai-code-text); padding: 14px 16px; border-radius: 4px; overflow-x: auto; margin: 0 0 0.7em; border-left: 2px solid #1a1a1a; }\n.ai-chat-bubble pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; white-space: pre; }\n.ai-chat-bubble table { border-collapse: collapse; margin: 0 0 0.7em; font-size: 0.92em; }\n.ai-chat-bubble th, .ai-chat-bubble td { border: 1px solid var(--ai-rule); padding: 6px 10px; text-align: left; }\n@media (prefers-reduced-motion: reduce) { .ai-chat-page * { animation: none !important; transition: none !important; } }\n", "warm": "/* aichat-template.css — WARM theme\n * Soft paper background, rounded warm bubbles, friendly. Scoped under .ai-chat-page.\n */\n\n.ai-chat-page {\n  --ai-bg: #f7f1e8;\n  --ai-window: #fffdf9;\n  --ai-border: #ece2d2;\n  --ai-user-bubble: #c9622f;\n  --ai-user-text: #fffaf4;\n  --ai-bot-bubble: #f0e7d8;\n  --ai-bot-text: #3b3326;\n  --ai-role: #a7937a;\n  --ai-code-bg: #2c2519;\n  --ai-code-text: #f2e9d8;\n  --ai-radius: 20px;\n  --ai-font: \"Avenir Next\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex; justify-content: center;\n  padding: 28px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-bot-text);\n  line-height: 1.6;\n}\n.ai-chat-page *, .ai-chat-page *::before, .ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window {\n  width: 100%; max-width: 720px;\n  background: var(--ai-window);\n  border: 1px solid var(--ai-border);\n  border-radius: 24px;\n  overflow: hidden;\n  box-shadow: 0 2px 4px rgba(120,90,50,0.06), 0 14px 36px rgba(120,90,50,0.12);\n}\n.ai-chat-log { display: flex; flex-direction: column; gap: 20px; padding: 28px; }\n.ai-chat-turn { display: flex; flex-direction: column; max-width: 84%; }\n.ai-chat-turn--user { align-self: flex-end; align-items: flex-end; }\n.ai-chat-turn--chatbot { align-self: flex-start; align-items: flex-start; }\n.ai-chat-role {\n  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;\n  text-transform: uppercase; color: var(--ai-role); margin: 0 6px 5px;\n}\n.ai-chat-bubble { padding: 13px 18px; border-radius: var(--ai-radius); overflow-wrap: anywhere; }\n.ai-chat-turn--user .ai-chat-bubble { background: var(--ai-user-bubble); color: var(--ai-user-text); border-bottom-right-radius: 6px; }\n.ai-chat-turn--chatbot .ai-chat-bubble { background: var(--ai-bot-bubble); color: var(--ai-bot-text); border-bottom-left-radius: 6px; }\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1, .ai-chat-bubble h2, .ai-chat-bubble h3, .ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul, .ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.4em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: inherit; text-decoration: underline; }\n.ai-chat-turn--chatbot .ai-chat-bubble a { color: var(--ai-user-bubble); }\n.ai-chat-bubble code { font-family: var(--ai-mono); font-size: 0.88em; background: rgba(167,147,122,0.22); padding: 0.12em 0.36em; border-radius: 5px; }\n.ai-chat-turn--user .ai-chat-bubble code { background: rgba(255,255,255,0.24); }\n.ai-chat-bubble pre { background: var(--ai-code-bg); color: var(--ai-code-text); padding: 14px 16px; border-radius: 12px; overflow-x: auto; margin: 0 0 0.7em; }\n.ai-chat-bubble pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; white-space: pre; }\n.ai-chat-bubble table { border-collapse: collapse; margin: 0 0 0.7em; font-size: 0.92em; }\n.ai-chat-bubble th, .ai-chat-bubble td { border: 1px solid var(--ai-border); padding: 6px 10px; text-align: left; }\n@media (max-width: 520px) { .ai-chat-turn { max-width: 100%; } .ai-chat-log { padding: 18px; } }\n@media (prefers-reduced-motion: reduce) { .ai-chat-page * { animation: none !important; transition: none !important; } }\n"};
-    const WORD_CSS = "body { background:#ffffff; margin:24px; }\n.word-transcript { max-width:680px; font-family:Calibri,Arial,sans-serif; }\n.wt { margin:0 0 18px 0; padding:0 0 14px 0; border-bottom:1px solid #dddddd; }\n.wt:last-child { border-bottom:none; }\n.wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:10px 12px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; background:#f3f3f3; }\n.wt-body img { max-width:100%; height:auto; }";
+    const WORD_CSS = "body { background:#ffffff; margin:24px; }\n.word-transcript { max-width:680px; font-family:Calibri,Arial,sans-serif; }\n.wt { margin:0 0 18px 0; padding:0; }\n\n.wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:10px 12px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; background:#f3f3f3; }\n.wt-body img { max-width:100%; height:auto; }";
     const roleLine = /\[\s*(USER|CHATBOT)\s*\]/i;
 
     function escapeHtml(value) {
