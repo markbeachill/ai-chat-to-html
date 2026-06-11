@@ -42,7 +42,7 @@
               </div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group css-mode-group">
               <label class="control-label" for="cssModeSelect">CSS</label>
               <select id="cssModeSelect">
                 <option value="inline">Inline CSS</option>
@@ -52,13 +52,22 @@
               <input type="radio" name="cssMode" value="separate" hidden>
             </div>
 
-            <div class="control-group">
+            <div class="control-group chat-style-group">
               <label class="control-label" for="chatStyle">Chat style</label>
               <select id="chatStyle">
                 <option value="default">Default</option>
                 <option value="dark">Dark</option>
                 <option value="minimal">Minimal</option>
                 <option value="warm">Warm</option>
+              </select>
+            </div>
+
+            <div class="control-group word-style-group" hidden>
+              <label class="control-label" for="wordStyle">Word style</label>
+              <select id="wordStyle">
+                <option value="default">Default</option>
+                <option value="compact">Compact</option>
+                <option value="plain">Plain</option>
               </select>
             </div>
           </div>
@@ -100,6 +109,7 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
       <section class="converter-panel">
         <div class="converter-headline">
           <h2>4. Copy output</h2>
+          <p id="copyModeHint" class="status-line copy-mode-hint"></p>
           <div class="converter-actions">
             <button class="btn btn-primary btn-small" type="button" id="copyHtmlButton">Copy HTML</button>
             <button class="btn btn-ghost btn-small" type="button" id="copyCssButton">Copy CSS</button>
@@ -109,7 +119,7 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
 
         <div class="output-layout">
           <div>
-            <label for="htmlOutput"><strong>Generated HTML</strong></label>
+            <label for="htmlOutput"><strong id="htmlOutputLabel">Generated HTML</strong></label>
             <textarea id="htmlOutput" class="generated-output" spellcheck="false" readonly></textarea>
           </div>
           <div id="cssOutputWrap" class="css-output-wrap">
@@ -123,14 +133,28 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
       const USER_MARKER = '# **[USER]**';
       const CHATBOT_MARKER = '# **[CHATBOT]**';
 
+      const WORD_BROWSER_CSS = {"default": "/* Word-friendly transcript styles (default) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 18px 0; padding:0 0 14px 0; border-bottom:1px solid #dddddd; }\n.wt:last-child { border-bottom: none; }\n.wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:10px 12px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; background:#f3f3f3; }\n.wt-body pre code { background: none; }\n", "compact": "/* Word-friendly transcript styles (compact) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 9px 0; padding:0; }\n.wt:last-child { border-bottom: none; }\n.wt-role { margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:10pt; color:#1a1a1a; line-height:1.35; }\n.wt-body p { margin:0 0 5px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 5px 0; padding-left:20px; }\n.wt-body li { margin:0 0 1px 0; }\n.wt-body pre { margin:0 0 6px 0; padding:7px 9px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:9pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:9pt; background:#f3f3f3; }\n.wt-body pre code { background: none; }\n", "plain": "/* Word-friendly transcript styles (plain) \u2014 browser view only.\n * Inline styles on each element are what survive a paste into Word; these\n * rules just tidy the browser view.\n */\nbody { background: #ffffff; margin: 24px; }\n.word-transcript { max-width: 680px; font-family: Calibri, Arial, sans-serif; }\n.wt { margin:0 0 14px 0; padding:0; }\n.wt:last-child { border-bottom: none; }\n.wt-role { margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000; }\n.wt--user .wt-role { margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#000000; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:8px 10px; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; }\n.wt-body pre code { background: none; }\n"};
+
       const sourceText = document.getElementById('sourceText');
       const previewArea = document.getElementById('previewArea');
       const messageArea = document.getElementById('messageArea');
       const htmlOutput = document.getElementById('htmlOutput');
+      const htmlOutputLabel = document.getElementById('htmlOutputLabel');
       const cssOutput = document.getElementById('cssOutput');
       const cssOutputWrap = document.getElementById('cssOutputWrap');
       const chatStyle = document.getElementById('chatStyle');
+      const wordStyle = document.getElementById('wordStyle');
       const cssModeSelect = document.getElementById('cssModeSelect');
+      const cssModeGroup = document.querySelector('.css-mode-group');
+      const chatStyleGroup = document.querySelector('.chat-style-group');
+      const wordStyleGroup = document.querySelector('.word-style-group');
+      const copyHtmlButton = document.getElementById('copyHtmlButton');
+      const copyCssButton = document.getElementById('copyCssButton');
+      const downloadCssButton = document.getElementById('downloadCssButton');
+      const copyModeHint = document.getElementById('copyModeHint');
+
+      let currentWordCopyHtml = '';
+      let currentWordCopyText = '';
 
       function getRadio(name) {
         return document.querySelector(`input[name="${name}"]:checked`).value;
@@ -140,6 +164,10 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
         document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
           input.checked = input.value === value;
         });
+      }
+
+      function isWordMode() {
+        return getRadio('outputType') === 'word';
       }
 
       function escapeHtml(value) {
@@ -208,8 +236,17 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
         return value;
       }
 
+      function wordInlineMarkdown(text, paraStyle) {
+        let value = inlineMarkdown(text);
+        value = value.replace(/<a /g, '<a style="color:#0563c1; text-decoration:underline;" ');
+        value = value.replace(/<code>/g, '<code style="font-family:Consolas,monospace; font-size:10pt;">');
+        value = value.replace(/<img /g, '<img style="max-width:100%; height:auto;" ');
+        return value;
+      }
+
       function markdownToHtml(markdown) {
         markdown = normaliseImages(markdown);
+
         const lines = markdown.split(/\r?\n/);
         let output = '';
         let paragraph = [];
@@ -304,6 +341,158 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
         if (inCode) {
           output += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
         }
+
+        flushParagraph();
+        closeList();
+
+        return output.trim();
+      }
+
+      function wordStyles(styleName) {
+        const common = {
+          transcript: 'max-width:680px; font-family:Calibri,Arial,sans-serif;',
+          link: 'color:#0563c1; text-decoration:underline;',
+          code: 'font-family:Consolas,monospace; font-size:10pt;',
+          ul: 'margin:0 0 8px 0; padding-left:22px;',
+          ol: 'margin:0 0 8px 0; padding-left:22px;',
+          li: 'margin:0 0 3px 0;'
+        };
+
+        if (styleName === 'compact') {
+          return {
+            ...common,
+            turn: 'margin:0 0 9px 0; padding:0;',
+            roleUser: 'margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#1a4f8b;',
+            roleChatbot: 'margin:0 0 2px 0; font-family:Arial,sans-serif; font-size:10pt; font-weight:bold; color:#444444;',
+            body: 'margin:0; font-family:Calibri,Arial,sans-serif; font-size:10pt; color:#1a1a1a; line-height:1.35;',
+            p: 'margin:0 0 5px 0;',
+            heading: 'margin:0 0 5px 0; font-family:Calibri,Arial,sans-serif; font-weight:bold; color:#1a1a1a;'
+          };
+        }
+
+        if (styleName === 'plain') {
+          return {
+            ...common,
+            turn: 'margin:0 0 14px 0; padding:0;',
+            roleUser: 'margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000;',
+            roleChatbot: 'margin:0 0 4px 0; font-family:Calibri,Arial,sans-serif; font-size:11pt; font-weight:bold; color:#000000;',
+            body: 'margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#000000; line-height:1.5;',
+            p: 'margin:0 0 8px 0;',
+            heading: 'margin:0 0 8px 0; font-family:Calibri,Arial,sans-serif; font-weight:bold; color:#000000;'
+          };
+        }
+
+        return {
+          ...common,
+          turn: 'margin:0 0 18px 0; padding:0 0 14px 0; border-bottom:1px solid #dddddd;',
+          roleUser: 'margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#1a4f8b;',
+          roleChatbot: 'margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444;',
+          body: 'margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5;',
+          p: 'margin:0 0 8px 0;',
+          heading: 'margin:0 0 8px 0; font-family:Calibri,Arial,sans-serif; font-weight:bold; color:#1a1a1a;'
+        };
+      }
+
+      function markdownToWordHtml(markdown, styleName) {
+        markdown = normaliseImages(markdown);
+        const s = wordStyles(styleName);
+        const lines = markdown.split(/\r?\n/);
+        let output = '';
+        let paragraph = [];
+        let inCode = false;
+        let code = [];
+        let listType = null;
+
+        function flushParagraph() {
+          if (paragraph.length) {
+            output += `<p style="${s.p}">${wordInlineMarkdown(paragraph.join(' ').trim(), s.p)}</p>\n`;
+            paragraph = [];
+          }
+        }
+
+        function closeList() {
+          if (listType) {
+            output += `</${listType}>\n`;
+            listType = null;
+          }
+        }
+
+        function openList(type) {
+          if (listType !== type) {
+            closeList();
+            const style = type === 'ul' ? s.ul : s.ol;
+            output += `<${type} style="${style}">\n`;
+            listType = type;
+          }
+        }
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+
+          if (trimmed.startsWith('```')) {
+            flushParagraph();
+            closeList();
+            if (inCode) {
+              output += `<pre style="margin:0 0 8px 0; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap;"><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
+              code = [];
+              inCode = false;
+            } else {
+              inCode = true;
+            }
+            continue;
+          }
+
+          if (inCode) {
+            code.push(line);
+            continue;
+          }
+
+          if (!trimmed) {
+            flushParagraph();
+            closeList();
+            continue;
+          }
+
+          const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
+          if (heading) {
+            flushParagraph();
+            closeList();
+            const level = heading[1].length;
+            const size = level === 1 ? '16pt' : level === 2 ? '14pt' : '12pt';
+            output += `<p style="${s.heading} font-size:${size};">${wordInlineMarkdown(heading[2], s.p)}</p>\n`;
+            continue;
+          }
+
+          const bullet = trimmed.match(/^[-*]\s+(.+)$/);
+          if (bullet) {
+            flushParagraph();
+            openList('ul');
+            output += `<li style="${s.li}">${wordInlineMarkdown(bullet[1], s.p)}</li>\n`;
+            continue;
+          }
+
+          const ordered = trimmed.match(/^\d+\.\s+(.+)$/);
+          if (ordered) {
+            flushParagraph();
+            openList('ol');
+            output += `<li style="${s.li}">${wordInlineMarkdown(ordered[1], s.p)}</li>\n`;
+            continue;
+          }
+
+          if (trimmed.startsWith('>')) {
+            flushParagraph();
+            closeList();
+            output += `<p style="${s.p} margin-left:18px; color:#555555;">${wordInlineMarkdown(trimmed.replace(/^>\s?/, ''), s.p)}</p>\n`;
+            continue;
+          }
+
+          paragraph.push(line);
+        }
+
+        if (inCode) {
+          output += `<pre style="margin:0 0 8px 0; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap;"><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
+        }
+
         flushParagraph();
         closeList();
         return output.trim();
@@ -365,19 +554,8 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
 }`;
       }
 
-      function wordCss() {
-        return `.ai-word-transcript {
-  font-family: Georgia, "Times New Roman", serif;
-  line-height: 1.5;
-  color: #111827;
-}
-.ai-word-turn { margin: 1rem 0; }
-.ai-word-role {
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-}
-.ai-word-body > :first-child { margin-top: 0; }
-.ai-word-body > :last-child { margin-bottom: 0; }`;
+      function wordCss(styleName) {
+        return WORD_BROWSER_CSS[styleName] || WORD_BROWSER_CSS.default;
       }
 
       function renderChat(turns) {
@@ -401,24 +579,44 @@ ${parts.join('\n\n')}
 </main>`;
       }
 
-      function renderWord(turns) {
+      function renderWord(turns, styleName) {
+        const s = wordStyles(styleName);
         const parts = turns.map(turn => {
           const label = turn.role === 'user' ? 'User' : 'Chatbot';
-          return `  <section class="ai-word-turn">
-    <p class="ai-word-role">${label}</p>
-    <div class="ai-word-body">
-      ${markdownToHtml(turn.content).replace(/\n/g, '\n      ')}
+          const cls = turn.role === 'user' ? 'wt--user' : 'wt--chatbot';
+          const roleStyle = turn.role === 'user' ? s.roleUser : s.roleChatbot;
+          return `  <div class="wt ${cls}" style="${s.turn}">
+    <p class="wt-role" style="${roleStyle}">${label}</p>
+    <div class="wt-body" style="${s.body}">
+      ${markdownToWordHtml(turn.content, styleName).replace(/\n/g, '\n      ')}
     </div>
-  </section>`;
+  </div>`;
         });
 
-        return `<main class="ai-word-transcript">
-${parts.join('\n\n')}
-</main>`;
+        return `<div class="word-transcript" style="${s.transcript}">
+${parts.join('\n')}
+</div>`;
+      }
+
+      function updateModeControls() {
+        const wordMode = isWordMode();
+
+        cssModeGroup.hidden = wordMode;
+        chatStyleGroup.hidden = wordMode;
+        wordStyleGroup.hidden = !wordMode;
+        chatStyle.disabled = wordMode;
+
+        copyCssButton.hidden = wordMode || cssModeSelect.value !== 'separate';
+        downloadCssButton.hidden = wordMode || cssModeSelect.value !== 'separate';
+
+        copyHtmlButton.textContent = wordMode ? 'Copy Word output' : 'Copy HTML';
+        copyModeHint.textContent = wordMode
+          ? 'Copies the formatted Word-style output from the preview, ready to paste into Word.'
+          : 'Copy the generated HTML for use in a web page.';
+        htmlOutputLabel.textContent = wordMode ? 'HTML source (advanced)' : 'Generated HTML';
       }
 
       function convert() {
-        setRadio('cssMode', cssModeSelect.value);
         const turns = parseTranscript(sourceText.value);
 
         if (!turns.length) {
@@ -427,24 +625,73 @@ ${parts.join('\n\n')}
           htmlOutput.value = '';
           cssOutput.value = '';
           cssOutputWrap.style.display = 'none';
+          currentWordCopyHtml = '';
+          currentWordCopyText = '';
+          updateModeControls();
           return;
         }
 
-        const outputType = getRadio('outputType');
-        const cssMode = getRadio('cssMode');
-        const body = outputType === 'word' ? renderWord(turns) : renderChat(turns);
-        const css = outputType === 'word' ? wordCss() : chatCss(chatStyle.value);
+        const wordMode = isWordMode();
+
+        if (wordMode) {
+          const styleName = wordStyle.value;
+          const body = renderWord(turns, styleName);
+          const css = wordCss(styleName);
+          const generatedHtml = `<style>\n${css}\n</style>\n\n${body}`;
+
+          htmlOutput.value = generatedHtml;
+          cssOutput.value = '';
+          cssOutputWrap.style.display = 'none';
+          previewArea.innerHTML = `<style>${css}</style>${body}`;
+          currentWordCopyHtml = body;
+          currentWordCopyText = previewArea.innerText;
+          messageArea.textContent = `Converted ${turns.length} turns to Word output.`;
+          updateModeControls();
+          return;
+        }
+
+        setRadio('cssMode', cssModeSelect.value);
+        const body = renderChat(turns);
+        const css = chatCss(chatStyle.value);
+        const cssMode = cssModeSelect.value;
         const generatedHtml = cssMode === 'inline' ? `<style>\n${css}\n</style>\n\n${body}` : body;
 
         htmlOutput.value = generatedHtml;
         cssOutput.value = cssMode === 'separate' ? css : '';
         cssOutputWrap.style.display = cssMode === 'separate' ? 'block' : 'none';
         previewArea.innerHTML = `<style>${css}</style>${body}`;
+        currentWordCopyHtml = '';
+        currentWordCopyText = '';
         messageArea.textContent = `Converted ${turns.length} turns.`;
+        updateModeControls();
       }
 
-      function updateStyleAvailability() {
-        chatStyle.disabled = getRadio('outputType') !== 'chat';
+      async function copyWordOutput() {
+        if (!currentWordCopyHtml) return;
+
+        try {
+          if (window.ClipboardItem && navigator.clipboard.write) {
+            const htmlBlob = new Blob([currentWordCopyHtml], { type: 'text/html' });
+            const textBlob = new Blob([currentWordCopyText], { type: 'text/plain' });
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': htmlBlob,
+                'text/plain': textBlob
+              })
+            ]);
+            messageArea.textContent = 'Word output copied. Paste it into Word.';
+          } else {
+            await navigator.clipboard.writeText(currentWordCopyText);
+            messageArea.textContent = 'Plain text copied. Paste it into Word.';
+          }
+        } catch (error) {
+          const range = document.createRange();
+          range.selectNodeContents(previewArea);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          messageArea.textContent = 'Browser copy was blocked. The Word output is selected; press Ctrl+C or Cmd+C, then paste into Word.';
+        }
       }
 
       async function copyText(text, label) {
@@ -454,7 +701,7 @@ ${parts.join('\n\n')}
       }
 
       function downloadCss() {
-        if (!cssOutput.value) return;
+        if (!cssOutput.value || isWordMode()) return;
         const blob = new Blob([cssOutput.value], { type: 'text/css' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -475,10 +722,7 @@ ${parts.join('\n\n')}
         }
       });
 
-      document.getElementById('convertButton').addEventListener('click', () => {
-        updateStyleAvailability();
-        convert();
-      });
+      document.getElementById('convertButton').addEventListener('click', convert);
 
       document.getElementById('clearButton').addEventListener('click', () => {
         sourceText.value = '';
@@ -486,24 +730,31 @@ ${parts.join('\n\n')}
         htmlOutput.value = '';
         cssOutput.value = '';
         cssOutputWrap.style.display = 'none';
+        currentWordCopyHtml = '';
+        currentWordCopyText = '';
         messageArea.textContent = '';
+        updateModeControls();
       });
 
-      document.getElementById('copyHtmlButton').addEventListener('click', () => copyText(htmlOutput.value, 'HTML'));
-      document.getElementById('copyCssButton').addEventListener('click', () => copyText(cssOutput.value, 'CSS'));
-      document.getElementById('downloadCssButton').addEventListener('click', downloadCss);
+      copyHtmlButton.addEventListener('click', () => {
+        if (isWordMode()) {
+          copyWordOutput();
+        } else {
+          copyText(htmlOutput.value, 'HTML');
+        }
+      });
+      copyCssButton.addEventListener('click', () => copyText(cssOutput.value, 'CSS'));
+      downloadCssButton.addEventListener('click', downloadCss);
 
       document.querySelectorAll('input[name="outputType"]').forEach(input => {
-        input.addEventListener('change', () => {
-          updateStyleAvailability();
-          convert();
-        });
+        input.addEventListener('change', convert);
       });
 
       cssModeSelect.addEventListener('change', convert);
       chatStyle.addEventListener('change', convert);
+      wordStyle.addEventListener('change', convert);
 
-      updateStyleAvailability();
+      updateModeControls();
       convert();
     </script>
 

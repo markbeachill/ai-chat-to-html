@@ -774,3 +774,26 @@ button.btn:disabled,
 .gallery-meta a:hover {
   text-decoration: underline;
 }
+
+
+/* ---- online converter: hidden mode controls ---- */
+.control-group[hidden],
+button[hidden],
+.css-output-wrap[hidden] {
+  display: none !important;
+}
+
+
+/* ---- online converter: copy mode hint ---- */
+.copy-mode-hint {
+  margin: 0;
+  max-width: 34rem;
+}
+
+
+/* ---- online converter: Word style controls ---- */
+.word-style-group[hidden],
+.control-group[hidden],
+button[hidden] {
+  display: none !important;
+}
