@@ -24,25 +24,62 @@
 
   <main>
     <div class="wrap">
+
       <p class="eyebrow">Two ways to convert</p>
       <h1>Turn AI chats into HTML pages.</h1>
-      <p class="lead">Paste a marked conversation and convert it online, or use the Python tool for a repeatable local workflow. Both routes use the same transcript markers and can produce chat-style or Word-friendly HTML.</p>
+      <p class="lead">Use the online converter for a quick paste-and-copy workflow, or use the Python tool for local file-based conversion.</p>
 
       <div class="route-cards">
         <section class="route-card route-card-primary">
           <p class="eyebrow">Fastest route</p>
           <h2>Do it online</h2>
-          <p>Paste your marked transcript into the browser-only converter, choose chat-style or Word-friendly HTML, preview the result, and copy the generated HTML.</p>
-          <p class="route-meta">No install. No command line. Nothing uploaded.</p>
+          <p>Paste your marked transcript, choose chat-style or Word-friendly HTML, preview the result, and copy the generated HTML.</p>
           <a class="btn btn-primary" href="online-converter.html">Open online converter</a>
         </section>
 
         <section class="route-card">
           <p class="eyebrow">Local route</p>
           <h2>Use the Python tool</h2>
-          <p>Download the tool and run it locally when you want file-based processing, repeatable outputs, CSS templates, and a more controlled workflow.</p>
-          <p class="route-meta">Best for regular use or repository workflows.</p>
+          <p>Download the tool when you want repeatable file outputs, CSS templates, themes, and command-line control.</p>
           <a class="btn btn-ghost" href="tool.html">Get the Python tool</a>
+        </section>
+      </div>
+
+      <h2>What it produces</h2>
+      <p>The same marked transcript can become a styled chat page, a different visual theme, or a Word-friendly transcript.</p>
+
+      <div class="output-gallery">
+        <section class="gallery-card gallery-card-large">
+          <div class="gallery-frame">
+            <iframe src="example/aichat.html" title="Default chat-style output preview" loading="lazy"></iframe>
+          </div>
+          <div class="gallery-meta">
+            <h3>Chat-style HTML</h3>
+            <p>A complete HTML page styled like a generic AI chat window.</p>
+            <a href="example/aichat.html">Open example</a>
+          </div>
+        </section>
+
+        <section class="gallery-card">
+          <div class="gallery-frame gallery-frame-small">
+            <iframe src="example/themes/example-dark.html" title="Dark theme output preview" loading="lazy"></iframe>
+          </div>
+          <div class="gallery-meta">
+            <h3>Themes</h3>
+            <p>Built-in styles such as dark, minimal and warm change the look without changing the transcript.</p>
+            <a href="styling.html">See styles</a>
+          </div>
+        </section>
+
+        <section class="gallery-card">
+          <div class="gallery-frame gallery-frame-small">
+            <iframe src="example/word/word-default.html" title="Word-friendly output preview" loading="lazy"></iframe>
+          </div>
+          <div class="gallery-meta">
+            <h3>Word-friendly HTML</h3>
+            <p>A cleaner transcript layout designed for copying into Word or another document editor.</p>
+            <a href="word.html">See Word output</a>
+          </div>
         </section>
       </div>
 
@@ -65,11 +102,13 @@ Yes. Here is the explanation.</code></pre>
         </div>
 
         <div class="card">
-          <h3>Need Word output?</h3>
-          <p>Use the online converter or Python tool to create Word-friendly HTML designed for copying into Word or another document editor.</p>
-          <p style="margin-top:14px;"><a class="btn btn-ghost" href="word.html">Read about Word output</a></p>
+          <h3>Need the local tool?</h3>
+          <p>The Python route creates local HTML and CSS files and supports repeatable command-line conversion.</p>
+          <p style="margin-top:14px;"><a class="btn btn-ghost" href="tool.html">Use the Python tool</a></p>
         </div>
       </div>
+
+    
 
     </div>
   </main>
