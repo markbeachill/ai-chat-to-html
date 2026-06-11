@@ -24,104 +24,106 @@
 
   <main>
     <div class="wrap wrap-wide">
+
       <p class="eyebrow">Online route</p>
       <h1>Convert in the browser.</h1>
-      <p class="lead">Paste a marked transcript, choose chat-style or Word-friendly HTML, preview the result, and copy the generated HTML. This is the fastest way to use AI Chat to HTML.</p>
+      <p class="lead">Paste a marked transcript, choose an output type, preview the result, and copy the HTML.</p>
 
-      <div class="note"><strong>Use this for quick conversions.</strong> For repeatable local files, templates and command-line options, use the <a href="tool.html">Python tool</a>.</div>
+      <section class="converter-panel converter-options-panel compact-options-panel">
+        <div class="options-toolbar">
+          <h2>1. Choose options</h2>
 
-      <div class="converter-grid">
+          <div class="compact-settings">
+            <div class="control-group">
+              <span class="control-label">Output</span>
+              <div class="segmented-control" role="group" aria-label="Output type">
+                <label><input type="radio" name="outputType" value="chat" checked><span>Chat</span></label>
+                <label><input type="radio" name="outputType" value="word"><span>Word</span></label>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="cssModeSelect">CSS</label>
+              <select id="cssModeSelect">
+                <option value="inline">Inline CSS</option>
+                <option value="separate">Separate file</option>
+              </select>
+              <input type="radio" name="cssMode" value="inline" checked hidden>
+              <input type="radio" name="cssMode" value="separate" hidden>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label" for="chatStyle">Chat style</label>
+              <select id="chatStyle">
+                <option value="default">Default</option>
+                <option value="dark">Dark</option>
+                <option value="minimal">Minimal</option>
+                <option value="warm">Warm</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="compact-actions">
+            <button class="btn btn-primary" type="button" id="convertButton">Convert</button>
+            <button class="btn btn-ghost" type="button" id="clearButton">Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="converter-grid converter-grid-after-options">
         <section class="converter-panel">
           <div class="converter-headline">
-            <h2>1. Paste transcript</h2>
+            <h2>2. Paste transcript</h2>
             <button class="btn btn-ghost btn-small" type="button" id="pasteButton">Paste from clipboard</button>
           </div>
-          <p>Use the same markers as the main tool: <code># **[USER]**</code> and <code># **[CHATBOT]**</code>. The converter also recognises any line containing <code>[USER]</code> or <code>[CHATBOT]</code>, matching the Python tool's flexible input.</p>
+          <p>Use <code># **[USER]**</code> and <code># **[CHATBOT]**</code> before each turn.</p>
           <textarea id="sourceText" spellcheck="false"># **[USER]**
 
 Can you explain what this online converter does?
 
 # **[CHATBOT]**
 
-It converts a marked AI chat transcript into HTML in your browser.
+It turns a marked AI chat transcript into HTML directly in the browser.
 
-You can choose:
-
-- chat-style HTML
-- Word-friendly HTML
-- inline CSS
-- separate CSS
-
-# **[USER]**
-
-Can it handle code blocks?
-
-# **[CHATBOT]**
-
-Yes. For example:
-
-```python
-print("Hello from a chat example")
-```</textarea>
-
-          <h2>2. Options</h2>
-          <div class="converter-options">
-            <fieldset class="option-box">
-              <legend>Output type</legend>
-              <label><input type="radio" name="outputType" value="chat" checked> Chat-style HTML</label>
-              <label><input type="radio" name="outputType" value="word"> Word-friendly HTML</label>
-            </fieldset>
-            <fieldset class="option-box">
-              <legend>CSS mode</legend>
-              <label><input type="radio" name="cssMode" value="inline" checked> Inline CSS</label>
-              <label><input type="radio" name="cssMode" value="separate"> Separate CSS</label>
-            </fieldset>
-            <fieldset class="option-box">
-              <legend>Chat style</legend>
-              <label for="chatTheme" class="option-label">Theme</label>
-              <select id="chatTheme">
-                <option value="default">Default</option>
-                <option value="dark">Dark</option>
-                <option value="minimal">Minimal</option>
-                <option value="warm">Warm</option>
-              </select>
-              <p class="help-small" id="themeHelp">Chat style applies to chat-style HTML only.</p>
-            </fieldset>
-          </div>
-
-          <div class="converter-actions">
-            <button class="btn btn-primary" type="button" id="convertButton">Convert</button>
-            <button class="btn btn-ghost" type="button" id="clearButton">Clear</button>
-          </div>
-          <p id="statusLine" class="status-line" role="status" aria-live="polite"></p>
+You can choose chat-style HTML or Word-friendly HTML.</textarea>
         </section>
 
         <section class="converter-panel">
-          <h2>3. Preview</h2>
-          <iframe id="previewFrame" class="preview-frame" title="Generated HTML preview"></iframe>
+          <div class="converter-headline">
+            <h2>3. Preview</h2>
+            <p id="messageArea" class="status-line" role="status" aria-live="polite"></p>
+          </div>
+          <iframe id="previewFrame" class="preview-frame" title="Generated preview"></iframe>
         </section>
       </div>
 
-      <section class="converter-panel output-layout">
-        <div>
+      <section class="converter-panel">
+        <div class="converter-headline">
           <h2>4. Copy output</h2>
-          <p class="help-small">Copy the generated HTML. If you chose separate CSS, copy or download the CSS as well.</p>
           <div class="converter-actions">
-            <button class="btn btn-primary" type="button" id="copyHtmlButton">Copy HTML</button>
-            <button class="btn btn-ghost" type="button" id="downloadHtmlButton">Download HTML</button>
+            <button class="btn btn-primary btn-small" type="button" id="copyHtmlButton">Copy HTML</button>
+            <button class="btn btn-ghost btn-small" type="button" id="copyCssButton">Copy CSS</button>
+            <button class="btn btn-ghost btn-small" type="button" id="downloadCssButton">Download CSS</button>
           </div>
-          <textarea id="htmlOutput" class="generated-output" spellcheck="false" readonly></textarea>
         </div>
 
-        <div id="cssOutputWrap" class="css-output-wrap">
-          <h3>Separate CSS</h3>
-          <div class="converter-actions">
-            <button class="btn btn-primary" type="button" id="copyCssButton">Copy CSS</button>
-            <button class="btn btn-ghost" type="button" id="downloadCssButton">Download CSS</button>
+        <div class="output-layout">
+          <div>
+            <label for="htmlOutput"><strong>Generated HTML</strong></label>
+            <textarea id="htmlOutput" class="generated-output" spellcheck="false" readonly></textarea>
           </div>
-          <textarea id="cssOutput" class="generated-output" spellcheck="false" readonly></textarea>
+          <div id="cssOutputWrap" class="css-output-wrap">
+            <label for="cssOutput"><strong>Generated CSS</strong></label>
+            <textarea id="cssOutput" class="generated-output" spellcheck="false" readonly></textarea>
+          </div>
         </div>
       </section>
+
+    <script>
+
+    </script>
+
+    
     </div>
   </main>
 
