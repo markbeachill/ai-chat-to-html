@@ -27,26 +27,39 @@
     <div class="wrap">
       <p class="eyebrow">Optional helper</p>
       <h1>Conversation Collector Prompt</h1>
-      <p class="lead">You can copy turns manually, or paste this prompt at the
-        end of a chatbot conversation and ask the chatbot to create a draft
-        <code>aichat.md</code> transcript for you.</p>
+      <p class="lead">Paste this prompt at the end of a chatbot conversation to ask the AI to produce a draft <code>aichat.md</code> transcript using the correct markers.</p>
 
       <div class="note">
-        <strong>Check the result before processing.</strong> The collector is a
-        convenience, not guaranteed evidence. Scan the transcript and fix any
-        missing or mislabelled turns before running the converter.
+        <strong>Check the result.</strong> This is an assisted capture method. The transcript is produced by the chatbot, so it may miss turns or alter formatting. Review it before running the converter.
       </div>
 
-      <h2>Copy the prompt</h2>
-      <p>The box below is deliberately scrollable so the page stays readable.
-        Use the button to copy the whole prompt.</p>
-      <div class="copy-row">
-        <button class="btn btn-primary copy-button" type="button" data-copy-target="collector-prompt">Copy collector prompt</button>
-      </div>
-      <div class="prompt-box" aria-label="Conversation collector prompt">
-        <pre><code id="collector-prompt">The conversation is now finished.
+      <h2>How to use it</h2>
+      <ol class="steps">
+        <li>
+          <h3>Finish the conversation</h3>
+          <p>Use the collector only after the conversation you want to capture is complete.</p>
+        </li>
+        <li>
+          <h3>Copy the prompt below</h3>
+          <p>Paste it into the same chat. The AI should return a marked transcript.</p>
+        </li>
+        <li>
+          <h3>Save and check</h3>
+          <p>Copy the returned transcript into <code>aichat.md</code>, then check the turns, code blocks, links and image placeholders before converting.</p>
+        </li>
+      </ol>
 
-Your task is to produce a clean Markdown transcript of this conversation that can be saved as `aichat.md` and used with an AI Chat to HTML converter.
+      <h2>Copy the collector prompt</h2>
+      <p>The box is scrollable, but the button copies the whole prompt.</p>
+      <div class="actions">
+        <button class="btn btn-primary" type="button" id="copy-collector">Copy collector prompt</button>
+        <a class="btn btn-ghost" href="conversation-collector-prompt.md">Open prompt file</a>
+      </div>
+
+      <div style="max-height: 24rem; overflow: auto; border-radius: var(--radius); border: 1px solid var(--line-strong); margin: 1.2em 0;">
+        <pre style="margin: 0; border-radius: 0;"><code id="collector-prompt">The conversation is now finished.
+
+Your task is to produce a clean Markdown transcript of this conversation that can be saved as `aichat.md` and used with AI Chat to HTML.
 
 Follow these rules exactly:
 
@@ -95,11 +108,16 @@ Continue until the conversation has been reproduced.
 </code></pre>
       </div>
 
-      <h2>How it fits the workflow</h2>
-      <p>Manual capture is still the most reliable method. The collector prompt
-        is simply an alternative way to make the first draft of the transcript.
-        In both cases, the file that goes into the tool should use the same role
-        headings: <code># **[USER]**</code> and <code># **[CHATBOT]**</code>.</p>
+      <h2>Image handling</h2>
+      <p>The collector prompt asks the AI to preserve external Markdown image links, such as <code>![alt text](https://example.com/image.png)</code>. Pasted images, uploads, screenshots, attachments, local files and internal chatbot-hosted images are not portable, so the prompt asks for a plain placeholder instead.</p>
+
+      <h2>Where this fits</h2>
+      <p>You can either collect the transcript manually, or use this prompt as a shortcut. Either way, the result should be a Markdown transcript using <code># **[USER]**</code> and <code># **[CHATBOT]**</code>, ready to edit and convert.</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="instructions.html">Back to the instructions</a>
+        <a class="btn btn-ghost" href="reference.html">See the reference</a>
+      </div>
     </div>
   </main>
 
@@ -111,19 +129,17 @@ Continue until the conversation has been reproduced.
   </footer>
 
   <script>
-    document.querySelectorAll('[data-copy-target]').forEach((button) => {
-      button.addEventListener('click', async () => {
-        const target = document.getElementById(button.dataset.copyTarget);
-        if (!target) return;
-        try {
-          await navigator.clipboard.writeText(target.innerText);
-          const original = button.textContent;
-          button.textContent = 'Copied';
-          setTimeout(() => { button.textContent = original; }, 1500);
-        } catch (error) {
-          button.textContent = 'Select and copy from the box';
-        }
-      });
+    const copyButton = document.getElementById('copy-collector');
+    const promptBox = document.getElementById('collector-prompt');
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(promptBox.textContent);
+        const oldText = copyButton.textContent;
+        copyButton.textContent = 'Copied';
+        setTimeout(() => { copyButton.textContent = oldText; }, 1500);
+      } catch (error) {
+        window.prompt('Copy this prompt:', promptBox.textContent);
+      }
     });
   </script>
 </body>

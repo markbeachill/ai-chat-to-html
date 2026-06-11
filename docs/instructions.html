@@ -14,6 +14,7 @@
         <a href="index.html">Home</a>
         <a href="instructions.html" aria-current="page">Instructions</a>
         <a href="collector.html">Collector</a>
+        <a href="online-converter.html">Online</a>
         <a href="example.html">Example</a>
         <a href="word.html">Word</a>
         <a href="styling.html">Styling</a>
@@ -28,7 +29,7 @@
       <p class="eyebrow">Instructions</p>
       <h1>How to use it</h1>
       <p class="lead">From a copied conversation to a finished web page in three
-        steps: capture, edit, convert. The first two are just text
+        steps: copy &amp; paste, edit, convert. The first two are just text
         editing; the third is one command.</p>
 
       <div class="simple-path">
@@ -51,12 +52,10 @@ python3 aichatprocess.py
       <h2>The three steps</h2>
       <ol class="steps">
         <li>
-          <h3>Capture the chat</h3>
-          <p>Either copy the conversation turn by turn into a plain text file,
-            or use the <a href="collector.html">Conversation Collector Prompt</a>
-            to ask the chatbot for a draft transcript. The default filename is
-            <code>aichat.txt</code>, but <code>aichat.md</code> also works. Mark
-            each turn with a line that says who is speaking:</p>
+          <h3>Copy &amp; paste from the chat</h3>
+          <p>Copy the conversation turn by turn into a plain text file (the
+            default name is <code>aichat.txt</code>). Mark each turn with a line
+            that says who is speaking:</p>
           <pre><code># **[USER]**
 Tell me about gravity?
 # **[CHATBOT]**
@@ -64,8 +63,8 @@ Gravity is the force that attracts objects with mass...</code></pre>
           <p>The marker only needs to contain <code>[USER]</code> or
             <code>[CHATBOT]</code> &mdash; the exact punctuation doesn't matter.
             Everyday Markdown formatting is kept (see the
-            <a href="markdown-guide.html">quick Markdown guide</a>). External Markdown image links are kept, while local, pasted, uploaded,
-            internal images and attachments are not included.</p>
+            <a href="markdown-guide.html">quick Markdown guide</a>). Images and
+            attachments are ignored.</p>
           <div class="note">
             <strong>Prefer to edit in a document tool?</strong> Save the file as
             <code>aichat.md</code> instead of <code>aichat.txt</code> and open it
@@ -73,6 +72,13 @@ Gravity is the force that attracts objects with mass...</code></pre>
             options, the tool uses <code>aichat.txt</code> if it's there and
             otherwise falls back to <code>aichat.md</code>, so either name works.
           </div>
+        </li>
+        <li>
+          <h3>Or use the Conversation Collector Prompt</h3>
+          <p>If you do not want to copy each turn manually, finish the chat and paste the
+            <a href="collector.html">Conversation Collector Prompt</a> into the same chatbot.
+            It asks the AI to produce a draft <code>aichat.md</code> using the correct markers.
+            Check the result before converting.</p>
         </li>
         <li>
           <h3>Edit</h3>
@@ -121,7 +127,6 @@ Gravity is the force that attracts objects with mass...</code></pre>
         time you change the transcript.</p>
       <div class="actions">
         <a class="btn btn-primary" href="example.html">See the full example</a>
-        <a class="btn btn-ghost" href="collector.html">Use the collector prompt</a>
         <a class="btn btn-ghost" href="reference.html">All options &amp; settings</a>
       </div>
     </div>

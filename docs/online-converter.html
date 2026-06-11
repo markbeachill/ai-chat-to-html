@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Online converter &mdash; AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+  <style>
+    .converter-grid {
+      display: grid;
+      gap: 18px;
+      margin: 1.4em 0;
+    }
+    @media (min-width: 900px) {
+      .converter-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+    }
+    .converter-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 16px;
+    }
+    .converter-panel h2, .converter-panel h3 { margin-top: 0; }
+    .converter-panel textarea {
+      width: 100%;
+      min-height: 340px;
+      resize: vertical;
+      padding: 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      background: #fff;
+      color: var(--ink);
+    }
+    .converter-options {
+      display: grid;
+      gap: 12px;
+      margin: 1em 0;
+    }
+    @media (min-width: 640px) {
+      .converter-options { grid-template-columns: 1fr 1fr; }
+    }
+    .option-box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+    .option-box legend {
+      font-weight: 700;
+      color: var(--accent-ink);
+      padding: 0 4px;
+    }
+    .option-box label { display: block; margin: 0.45em 0; }
+    .converter-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 1em 0;
+    }
+    .status-line {
+      min-height: 1.4em;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .preview-frame {
+      width: 100%;
+      min-height: 460px;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      background: #fff;
+    }
+    .output-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 1em 0 0.5em;
+    }
+    .output-tabs button,
+    .small-button {
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0.45rem 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .output-tabs button[aria-pressed="true"] {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .generated-output { min-height: 260px; }
+    .css-output-wrap { display: none; margin-top: 1em; }
+    .help-small { color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="collector.html">Collector</a>
+        <a href="online-converter.html" aria-current="page">Online</a>
+        <a href="example.html">Example</a>
+        <a href="word.html">Word</a>
+        <a href="styling.html">Styling</a>
+        <a href="download.html">Download</a>
+        <a href="reference.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Browser-only quick tool</p>
+      <h1>Online converter</h1>
+      <p class="lead">Paste a marked AI chat transcript, choose chat-style or Word-friendly HTML, preview the result, and copy the generated HTML. Nothing is uploaded; the conversion runs in your browser.</p>
+
+      <div class="note"><strong>Use this for quick conversions.</strong> The Python processor remains the full local workflow. This page is a convenient browser-only companion.</div>
+
+      <div class="converter-grid">
+        <section class="converter-panel">
+          <h2>1. Paste transcript</h2>
+          <p>Use the same markers as the main tool: <code># **[USER]**</code> and <code># **[CHATBOT]**</code>. The converter also recognises any line containing <code>[USER]</code> or <code>[CHATBOT]</code>, matching the Python tool's flexible input.</p>
+          <textarea id="sourceText" spellcheck="false"># **[USER]**
+
+Can you explain what this online converter does?
+
+# **[CHATBOT]**
+
+It converts a marked AI chat transcript into HTML in your browser.
+
+You can choose:
+
+- chat-style HTML
+- Word-friendly HTML
+- inline CSS
+- separate CSS
+
+# **[USER]**
+
+Can it handle code blocks?
+
+# **[CHATBOT]**
+
+Yes. For example:
+
+```python
+print("Hello from a chat example")
+```</textarea>
+
+          <div class="converter-options">
+            <fieldset class="option-box">
+              <legend>Output type</legend>
+              <label><input type="radio" name="outputType" value="chat" checked> Chat-style HTML</label>
+              <label><input type="radio" name="outputType" value="word"> Word-friendly HTML</label>
+            </fieldset>
+            <fieldset class="option-box">
+              <legend>CSS mode</legend>
+              <label><input type="radio" name="cssMode" value="inline" checked> Inline CSS</label>
+              <label><input type="radio" name="cssMode" value="separate"> Separate CSS</label>
+            </fieldset>
+          </div>
+
+          <div class="converter-actions">
+            <button class="btn btn-primary" type="button" id="convertButton">Convert</button>
+            <button class="btn btn-ghost" type="button" id="clearButton">Clear</button>
+          </div>
+          <p id="statusLine" class="status-line" role="status"></p>
+        </section>
+
+        <section class="converter-panel">
+          <h2>2. Preview</h2>
+          <iframe id="previewFrame" class="preview-frame" title="Generated HTML preview"></iframe>
+        </section>
+      </div>
+
+      <section class="converter-panel">
+        <h2>3. Copy output</h2>
+        <p class="help-small">Copy the generated HTML. If you chose separate CSS, copy or download the CSS as well.</p>
+        <div class="converter-actions">
+          <button class="btn btn-primary" type="button" id="copyHtmlButton">Copy HTML</button>
+          <button class="btn btn-ghost" type="button" id="downloadHtmlButton">Download HTML</button>
+        </div>
+        <textarea id="htmlOutput" class="generated-output" spellcheck="false" readonly></textarea>
+
+        <div id="cssOutputWrap" class="css-output-wrap">
+          <h3>Separate CSS</h3>
+          <div class="converter-actions">
+            <button class="btn btn-primary" type="button" id="copyCssButton">Copy CSS</button>
+            <button class="btn btn-ghost" type="button" id="downloadCssButton">Download CSS</button>
+          </div>
+          <textarea id="cssOutput" class="generated-output" spellcheck="false" readonly></textarea>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <span>AI Chat to HTML &mdash; MIT licensed.</span>
+      <span><a href="about.html">About</a> &middot; <a href="markdown-guide.html">Markdown guide</a> &middot; <a href="https://github.com/markbeachill/ai-chat-to-html">GitHub</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const CHAT_CSS = `:root {
+  --chat-page-bg: #f4f4f5;
+  --chat-window-bg: #ffffff;
+  --chat-border: #d4d4d8;
+  --chat-text: #18181b;
+  --chat-muted: #52525b;
+  --user-bg: #e0f2fe;
+  --chatbot-bg: #f1f5f9;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+.ai-chat-online-page {
+  background: var(--chat-page-bg);
+  color: var(--chat-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.55;
+  padding: 1.5rem;
+}
+.ai-chat-window {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--chat-window-bg);
+  border: 1px solid var(--chat-border);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+.chat-turn {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--chat-border);
+}
+.chat-turn-user { background: var(--user-bg); }
+.chat-turn-chatbot { background: var(--chatbot-bg); }
+.chat-role {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chat-muted);
+}
+.chat-body > :first-child { margin-top: 0; }
+.chat-body > :last-child { margin-bottom: 0; }
+.chat-body img { max-width: 100%; height: auto; border-radius: 0.5rem; }
+.chat-body pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.65rem;
+  background: var(--code-bg);
+  color: var(--code-text);
+}
+.chat-body code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+.chat-body :not(pre) > code { padding: 0.15rem 0.3rem; border-radius: 0.25rem; background: rgba(15, 23, 42, 0.08); }
+.chat-body blockquote { margin-left: 0; padding-left: 1rem; border-left: 4px solid var(--chat-border); color: var(--chat-muted); }`;
+
+    const WORD_CSS = `.word-chat-transcript {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #111827;
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.55;
+}
+.word-turn {
+  margin: 1.25rem 0;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid #d1d5db;
+}
+.word-role {
+  margin: 0 0 0.45rem;
+  font-weight: 700;
+  color: #374151;
+}
+.word-body > :first-child { margin-top: 0; }
+.word-body > :last-child { margin-bottom: 0; }
+.word-body pre {
+  white-space: pre-wrap;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+}
+.word-body img { max-width: 100%; height: auto; }`;
+
+    const roleLine = /\[\s*(USER|CHATBOT)\s*\]/i;
+
+    function escapeHtml(value) {
+      return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function parseTranscript(text) {
+      const turns = [];
+      let role = null;
+      let lines = [];
+
+      function closeTurn() {
+        if (!role) return;
+        const content = lines.join('\n').trim();
+        if (content) turns.push({ role, content });
+        role = null;
+        lines = [];
+      }
+
+      for (const rawLine of text.split(/\r?\n/)) {
+        const match = rawLine.match(roleLine);
+        if (match) {
+          closeTurn();
+          role = match[1].toLowerCase() === 'user' ? 'user' : 'chatbot';
+          lines = [];
+        } else if (role) {
+          lines.push(rawLine);
+        }
+      }
+      closeTurn();
+      return turns;
+    }
+
+    function normaliseImages(markdown) {
+      return markdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (all, alt, src) => {
+        const target = src.trim();
+        if (/^https?:\/\//i.test(target)) return all;
+        const label = alt && alt.trim() ? `: ${alt.trim()}` : '';
+        return `[Image present in original chat — not included${label}]`;
+      });
+    }
+
+    function inlineMarkdown(text) {
+      let out = escapeHtml(text);
+      out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+      out = out.replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, (_m, alt, src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}">`);
+      out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, href) => `<a href="${escapeHtml(href)}">${label}</a>`);
+      out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      out = out.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      return out;
+    }
+
+    function markdownToHtml(markdown) {
+      markdown = normaliseImages(markdown);
+      const lines = markdown.split(/\r?\n/);
+      const out = [];
+      let para = [];
+      let listType = null;
+      let inCode = false;
+      let codeLines = [];
+      let quoteLines = [];
+
+      function flushPara() {
+        if (!para.length) return;
+        out.push(`<p>${inlineMarkdown(para.map(l => l.trim()).join(' '))}</p>`);
+        para = [];
+      }
+      function flushList() {
+        if (!listType) return;
+        out.push(`</${listType}>`);
+        listType = null;
+      }
+      function flushQuote() {
+        if (!quoteLines.length) return;
+        out.push(`<blockquote><p>${inlineMarkdown(quoteLines.join(' '))}</p></blockquote>`);
+        quoteLines = [];
+      }
+      function flushCode() {
+        out.push(`<pre><code>${escapeHtml(codeLines.join('\n'))}</code></pre>`);
+        codeLines = [];
+      }
+
+      for (const line of lines) {
+        const s = line.trim();
+        if (s.startsWith('```')) {
+          flushPara(); flushList(); flushQuote();
+          if (inCode) { flushCode(); inCode = false; }
+          else { inCode = true; codeLines = []; }
+          continue;
+        }
+        if (inCode) { codeLines.push(line); continue; }
+        if (!s) { flushPara(); flushList(); flushQuote(); continue; }
+
+        const heading = s.match(/^(#{1,6})\s+(.+)$/);
+        if (heading) {
+          flushPara(); flushList(); flushQuote();
+          const level = heading[1].length;
+          out.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`);
+          continue;
+        }
+        if (s.startsWith('>')) {
+          flushPara(); flushList();
+          quoteLines.push(s.replace(/^>\s?/, ''));
+          continue;
+        }
+        const bullet = s.match(/^[-*]\s+(.+)$/);
+        if (bullet) {
+          flushPara(); flushQuote();
+          if (listType !== 'ul') { flushList(); out.push('<ul>'); listType = 'ul'; }
+          out.push(`<li>${inlineMarkdown(bullet[1])}</li>`);
+          continue;
+        }
+        const ordered = s.match(/^\d+\.\s+(.+)$/);
+        if (ordered) {
+          flushPara(); flushQuote();
+          if (listType !== 'ol') { flushList(); out.push('<ol>'); listType = 'ol'; }
+          out.push(`<li>${inlineMarkdown(ordered[1])}</li>`);
+          continue;
+        }
+        flushList(); flushQuote();
+        para.push(line);
+      }
+      if (inCode) flushCode();
+      flushPara(); flushList(); flushQuote();
+      return out.join('\n');
+    }
+
+    function renderTurn(turn, type) {
+      const body = markdownToHtml(turn.content).split('\n').map(line => '        ' + line).join('\n');
+      if (type === 'word') {
+        const label = turn.role === 'user' ? 'User' : 'Chatbot';
+        return `    <section class="word-turn word-turn-${turn.role}">\n      <p class="word-role">${label}</p>\n      <div class="word-body">\n${body}\n      </div>\n    </section>`;
+      }
+      const label = turn.role === 'user' ? 'User' : 'Chatbot';
+      return `    <section class="chat-turn chat-turn-${turn.role}">\n      <p class="chat-role">${label}</p>\n      <div class="chat-body">\n${body}\n      </div>\n    </section>`;
+    }
+
+    function buildOutput(turns, outputType, cssMode) {
+      const css = outputType === 'word' ? WORD_CSS : CHAT_CSS;
+      const bodyClass = outputType === 'word' ? 'word-chat-transcript' : 'ai-chat-window';
+      const wrapperClass = outputType === 'word' ? 'word-output-page' : 'ai-chat-online-page';
+      const content = turns.map(turn => renderTurn(turn, outputType)).join('\n\n');
+      const container = `<div class="${wrapperClass}">\n  <main class="${bodyClass}" aria-label="AI chat example">\n${content}\n  </main>\n</div>`;
+
+      if (cssMode === 'inline') {
+        return { html: `<style>\n${css}\n</style>\n${container}`, css: '' };
+      }
+      return { html: container, css };
+    }
+
+    function buildPreviewDocument(htmlBlock, cssMode, css) {
+      const style = cssMode === 'separate' ? `<style>${css}</style>` : '';
+      return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">${style}</head><body>${htmlBlock}</body></html>`;
+    }
+
+    function selected(name) {
+      return document.querySelector(`input[name="${name}"]:checked`).value;
+    }
+
+    function convert() {
+      const source = document.getElementById('sourceText').value;
+      const outputType = selected('outputType');
+      const cssMode = selected('cssMode');
+      const turns = parseTranscript(source);
+      const status = document.getElementById('statusLine');
+      if (!turns.length) {
+        status.textContent = 'No turns found. Add markers such as # **[USER]** and # **[CHATBOT]**.';
+        document.getElementById('htmlOutput').value = '';
+        document.getElementById('cssOutput').value = '';
+        document.getElementById('previewFrame').srcdoc = '';
+        return;
+      }
+      const result = buildOutput(turns, outputType, cssMode);
+      document.getElementById('htmlOutput').value = result.html;
+      document.getElementById('cssOutput').value = result.css;
+      document.getElementById('cssOutputWrap').style.display = cssMode === 'separate' ? 'block' : 'none';
+      document.getElementById('previewFrame').srcdoc = buildPreviewDocument(result.html, cssMode, result.css);
+      status.textContent = `Converted ${turns.length} turns as ${outputType === 'word' ? 'Word-friendly HTML' : 'chat-style HTML'} with ${cssMode} CSS.`;
+    }
+
+    async function copyFrom(id, label) {
+      const value = document.getElementById(id).value;
+      if (!value) return;
+      await navigator.clipboard.writeText(value);
+      document.getElementById('statusLine').textContent = `${label} copied.`;
+    }
+
+    function downloadText(filename, text) {
+      if (!text) return;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('convertButton').addEventListener('click', convert);
+    document.getElementById('clearButton').addEventListener('click', () => {
+      document.getElementById('sourceText').value = '';
+      document.getElementById('htmlOutput').value = '';
+      document.getElementById('cssOutput').value = '';
+      document.getElementById('previewFrame').srcdoc = '';
+      document.getElementById('statusLine').textContent = '';
+    });
+    document.getElementById('copyHtmlButton').addEventListener('click', () => copyFrom('htmlOutput', 'HTML'));
+    document.getElementById('copyCssButton').addEventListener('click', () => copyFrom('cssOutput', 'CSS'));
+    document.getElementById('downloadHtmlButton').addEventListener('click', () => downloadText('aichat-online-output.html', document.getElementById('htmlOutput').value));
+    document.getElementById('downloadCssButton').addEventListener('click', () => downloadText('aichat-online-output.css', document.getElementById('cssOutput').value));
+    convert();
+  </script>
+</body>
+</html>

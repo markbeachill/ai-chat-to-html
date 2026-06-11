@@ -1,6 +1,6 @@
 # Processor requirements
 
-`aichatprocess.py` converts a marked-up chat transcript into a complete HTML page and,
+`aichat.py` converts a marked-up chat transcript into a complete HTML page and,
 optionally, a CSS file. It preserves the Markdown inside each turn, converts it
 to HTML, and wraps the turns so they display like a generic chat window.
 
@@ -36,9 +36,8 @@ Text before the first role line is ignored (with a warning).
 - The code block's language tag is preserved as a CSS class so a syntax
   highlighter can be added later; none is bundled.
 - **No math/LaTeX handling.** Math written as plain text stays plain text.
-- External Markdown image links are preserved. Local, pasted, uploaded, internal
-  or non-portable images are replaced with a placeholder. Attachments, native LLM
-  exports, and automatic role detection are out of scope.
+- Images, attachments, native LLM exports, and automatic role detection are out
+  of scope.
 
 ## CSS behaviour (`--write-css`)
 
@@ -87,6 +86,6 @@ easy to find and copy:
 <!-- ... matching COPY CHAT HTML END block ... -->
 ```
 
-## Conversation Collector Prompt
+## Optional collector prompt
 
-The Conversation Collector Prompt is documentation only. It helps a user ask a chatbot to produce a draft `aichat.md` transcript using the agreed markers. It does not change the processor behaviour and the generated transcript should still be checked before processing.
+The Conversation Collector Prompt is a documentation/helper feature. It can help a user ask a chatbot to produce a draft marked transcript, but it is not part of the processor and does not change the accepted input format.

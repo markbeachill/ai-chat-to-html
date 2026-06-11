@@ -5,10 +5,9 @@ looks like a generic chat window — plus a separate, reusable CSS file.
 
 It's built for a simple workflow: paste a conversation into a Markdown file,
 edit it as text, then convert it to a finished web page you can publish or copy
-into another site. You can capture the transcript manually, or use the optional
-Conversation Collector Prompt to ask the chatbot for a draft `aichat.md` file.
+into another site.
 
-**[Visit the site](https://markbeachill.github.io/ai-chat-to-html/)** · [Instructions](https://markbeachill.github.io/ai-chat-to-html/instructions.html) · [Example](https://markbeachill.github.io/ai-chat-to-html/example.html)
+**[Visit the site](https://markbeachill.github.io/ai-chat-to-html/)** · [Instructions](https://markbeachill.github.io/ai-chat-to-html/instructions.html) · [Example](https://markbeachill.github.io/ai-chat-to-html/example.html) · [Collector](https://markbeachill.github.io/ai-chat-to-html/collector.html)
 [Workflow](docs/workflow.md) · [Requirements](docs/requirements.md)
 
 ## Quickstart
@@ -33,11 +32,19 @@ Gravity is the force that attracts objects with mass toward each other...
 ```
 
 > Tip: you can keep the transcript as `aichat.md` and edit it in a Markdown editor — with no `--source`, the tool uses `aichat.txt` if present, otherwise `aichat.md`.
->
-> Optional helper: `conversation-collector-prompt.md` contains a prompt you can paste at the end of a chatbot conversation to ask for a draft transcript using the right markers. Check the result before processing.
 
 Open `aichat.html` in a browser and you'll see the conversation laid out as a
 chat, with user turns on the right and chatbot turns on the left.
+
+## Online converter
+
+The documentation site also includes a browser-only Online Converter. It lets a user paste a marked transcript, choose chat-style or Word-friendly HTML, choose inline or separate CSS, preview the result, and copy the generated HTML. This is a quick-use companion to the Python processor; it does not replace the local workflow.
+
+## Conversation Collector Prompt
+
+You can build the source transcript manually, or use the Conversation Collector Prompt as an assisted shortcut. Paste the prompt at the end of a completed chatbot conversation and ask the AI to return a draft `aichat.md` transcript using `# **[USER]**` and `# **[CHATBOT]**`.
+
+The result should still be checked before conversion, especially for missing turns, code blocks, links and images. See [conversation-collector-prompt.md](conversation-collector-prompt.md) or the [Collector page](https://markbeachill.github.io/ai-chat-to-html/collector.html).
 
 ## Options
 
@@ -72,9 +79,9 @@ It preserves Markdown inside each turn (paragraphs, lists, links, headings,
 tables) and renders fenced code blocks as **visible, escaped code** — so a
 transcript full of HTML examples displays safely instead of breaking the page.
 
-Markdown images with a web address (`![](https://…)`) are passed through; local,
-pasted, uploaded, internal or non-portable images become a small
-"[image not included]" placeholder, since the tool never loads local files. It does **not** handle attachments, native LLM
+Markdown images with a web address (`![](https://…)`) are passed through; local
+or pasted images become a small "[image not included]" placeholder, since the
+tool never loads local files. It does **not** handle attachments, native LLM
 export formats, automatic role detection, or math/LaTeX — math written as plain
 text stays plain text.
 
@@ -139,12 +146,14 @@ ai-chat-to-html/
 ├── requirements.txt       Pins Python-Markdown
 ├── aichatprocess.py       The processor
 ├── aichat-template.css    Editable CSS template
+├── conversation-collector-prompt.md  Optional prompt for assisted transcript capture
 ├── build-demos.sh         Regenerates the site's example pages
 ├── build-downloads.sh     Builds the download zips
 ├── docs/                  The project website (served by GitHub Pages)
 │   ├── index.html          Home — the two outputs, shown live
 │   ├── setup.html          Installing Python (for newcomers)
 │   ├── instructions.html   End-user guide (the three steps)
+│   ├── collector.html      Copyable Conversation Collector Prompt
 │   ├── example.html        Full worked example, input and output
 │   ├── word.html           The Word version, explained
 │   ├── styling.html        Themes and how to restyle

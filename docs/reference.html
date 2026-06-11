@@ -14,6 +14,7 @@
         <a href="index.html">Home</a>
         <a href="instructions.html">Instructions</a>
         <a href="collector.html">Collector</a>
+        <a href="online-converter.html">Online</a>
         <a href="example.html">Example</a>
         <a href="word.html">Word</a>
         <a href="styling.html">Styling</a>
@@ -31,6 +32,12 @@
         transcript format, how the CSS is written, and what the tool does and
         doesn't handle. If you just want to make a page, the
         <a href="instructions.html">instructions</a> are friendlier.</p>
+
+      <h2>Online converter</h2>
+      <p>The <a href="online-converter.html">Online Converter</a> is a browser-only companion to the Python processor. It accepts pasted marked transcripts, offers chat-style or Word-friendly HTML, and lets the user choose inline CSS or separate CSS. It does not change the Python processor behaviour.</p>
+
+      <h2>Collector prompt</h2>
+      <p>The <a href="collector.html">Conversation Collector Prompt</a> is an optional helper for creating a draft transcript. It is not part of the processor and does not change the accepted input format. The processor still expects marked turns using <code>[USER]</code> and <code>[CHATBOT]</code>.</p>
 
       <h2>Command</h2>
       <pre><code>python3 aichatprocess.py [options]</code></pre>
@@ -73,13 +80,6 @@
         is that turn's body, treated as Markdown. Text before the first role line
         is ignored with a warning.</p>
 
-      <h2>Conversation Collector Prompt</h2>
-      <p>The normal capture method is manual copy and paste. As an optional helper,
-        the <a href="collector.html">Conversation Collector Prompt</a> can be
-        pasted at the end of a chatbot conversation to ask for a draft
-        <code>aichat.md</code> transcript using the right role markers. The result
-        should still be checked before processing.</p>
-
       <h2>Conversion</h2>
       <p>Turn bodies are converted with
         <a href="https://pypi.org/project/Markdown/">Python-Markdown</a> using the
@@ -93,10 +93,9 @@
           highlighter can be added later; none is bundled.</li>
         <li>No maths/LaTeX handling &mdash; plain-text formulae stay as plain text.</li>
         <li>Markdown images with a web address (<code>![](https://…)</code>) are
-          passed through as <code>&lt;img&gt;</code> tags. Local, pasted, uploaded,
-          internal or non-portable images (<code>![](screenshot.png)</code>, data
-          URIs) are replaced with a small "[image not included]" placeholder
-          &mdash; the tool never loads local files.</li>
+          passed through as <code>&lt;img&gt;</code> tags. Local or pasted images
+          (<code>![](screenshot.png)</code>, data URIs) are replaced with a small
+          "[image not included]" placeholder &mdash; the tool never loads local files.</li>
         <li>Attachments, native LLM export formats and automatic role detection
           are out of scope.</li>
       </ul>

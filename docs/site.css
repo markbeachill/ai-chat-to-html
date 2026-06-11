@@ -22,7 +22,7 @@
   --serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-} 
+}
 
 * { box-sizing: border-box; }
 
@@ -270,20 +270,3 @@ th { background: #f3f4f2; font-weight: 600; color: var(--ink); }
 .simple-path pre { margin: 0 0 0.6em; }
 .simple-path p { margin: 0; font-size: 0.92rem; color: var(--muted); }
 .simple-path .opt { color: var(--accent-ink); font-weight: 600; }
-
-/* ---- collector prompt ---- */
-.copy-row { margin: 0 0 0.8em; }
-.copy-button { cursor: pointer; }
-.prompt-box {
-  max-height: 26rem;
-  overflow: auto;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: var(--code-bg);
-  margin: 0 0 1.4em;
-}
-.prompt-box pre {
-  margin: 0;
-  border-radius: 0;
-  max-height: none;
-}

@@ -37,9 +37,8 @@ You'll get aichat.html and aichat.css. For options (themes, a Word version,
 maths), run:
        python3 aichatprocess.py --help
 
-Optional helper: conversation-collector-prompt.md contains a Conversation Collector Prompt that can ask a chatbot to produce a draft aichat.md transcript. Check the result before processing.
-
 Full instructions: https://markbeachill.github.io/ai-chat-to-html/
+Optional collector prompt: conversation-collector-prompt.md
 MIT licensed.
 EOF
 cp LICENSE "$SLIM/LICENSE"
@@ -66,8 +65,7 @@ AI Chat to HTML — getting started
 
 Three steps:
 
-1. CAPTURE the conversation into example/aichat.txt (or your own file).
-   You can copy and paste manually, or use conversation-collector-prompt.md.
+1. COPY & PASTE the conversation into example/aichat.txt (or your own file).
    Mark each turn with a line containing [USER] or [CHATBOT].
 
 2. EDIT the text: tidy wording, trim, remove anything unwanted.
