@@ -822,3 +822,32 @@ button[hidden] {
   max-width: 48rem;
   margin: 0.35rem 0 0;
 }
+
+
+/* ---- online converter: bounded scrollable editor and preview ---- */
+#sourceText {
+  min-height: 520px;
+  max-height: 70vh;
+  overflow: auto;
+  resize: vertical;
+}
+
+.preview-frame,
+.preview-area {
+  min-height: 520px;
+  max-height: min(1040px, 80vh);
+  overflow: auto;
+}
+
+.preview-area {
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 760px) {
+  #sourceText,
+  .preview-frame,
+  .preview-area {
+    min-height: 420px;
+    max-height: 75vh;
+  }
+}
