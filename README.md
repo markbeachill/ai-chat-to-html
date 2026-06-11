@@ -177,3 +177,6 @@ ai-chat-to-html/
 ## License
 
 MIT — see [LICENSE](LICENSE). Update the copyright line with your name.
+
+
+The online converter includes chat-style and Word-friendly output, inline or separate CSS, and a chat style choice for chat-style HTML.

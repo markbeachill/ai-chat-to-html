@@ -117,89 +117,487 @@
   </header>
 
   <main>
-    <div class="wrap">
-      <p class="eyebrow">Browser-only quick tool</p>
-      <h1>Online converter</h1>
-      <p class="lead">Paste a marked AI chat transcript, choose chat-style or Word-friendly HTML, preview the result, and copy the generated HTML. Nothing is uploaded; the conversion runs in your browser.</p>
 
-      <div class="note"><strong>Use this for quick conversions.</strong> The Python processor remains the full local workflow. This page is a convenient browser-only companion.</div>
+    <h2>Online converter</h2>
 
-      <div class="converter-grid">
-        <section class="converter-panel">
-          <h2>1. Paste transcript</h2>
-          <p>Use the same markers as the main tool: <code># **[USER]**</code> and <code># **[CHATBOT]**</code>. The converter also recognises any line containing <code>[USER]</code> or <code>[CHATBOT]</code>, matching the Python tool's flexible input.</p>
-          <textarea id="sourceText" spellcheck="false"># **[USER]**
+    <p>Paste a marked AI chat transcript, choose an output type, and generate copyable HTML in the browser. This quick converter uses the same markers as the Python tool: <code># **[USER]**</code> and <code># **[CHATBOT]**</code>.</p>
+
+    <section class="converter-grid" aria-label="Online converter">
+      <div>
+        <h3>1. Paste transcript</h3>
+        <textarea id="sourceText" spellcheck="false"># **[USER]**
 
 Can you explain what this online converter does?
 
 # **[CHATBOT]**
 
-It converts a marked AI chat transcript into HTML in your browser.
+It turns a marked AI chat transcript into HTML directly in the browser.
 
-You can choose:
-
-- chat-style HTML
-- Word-friendly HTML
-- inline CSS
-- separate CSS
-
-# **[USER]**
-
-Can it handle code blocks?
-
-# **[CHATBOT]**
-
-Yes. For example:
-
-```python
-print("Hello from a chat example")
-```</textarea>
-
-          <div class="converter-options">
-            <fieldset class="option-box">
-              <legend>Output type</legend>
-              <label><input type="radio" name="outputType" value="chat" checked> Chat-style HTML</label>
-              <label><input type="radio" name="outputType" value="word"> Word-friendly HTML</label>
-            </fieldset>
-            <fieldset class="option-box">
-              <legend>CSS mode</legend>
-              <label><input type="radio" name="cssMode" value="inline" checked> Inline CSS</label>
-              <label><input type="radio" name="cssMode" value="separate"> Separate CSS</label>
-            </fieldset>
-          </div>
-
-          <div class="converter-actions">
-            <button class="btn btn-primary" type="button" id="convertButton">Convert</button>
-            <button class="btn btn-ghost" type="button" id="clearButton">Clear</button>
-          </div>
-          <p id="statusLine" class="status-line" role="status"></p>
-        </section>
-
-        <section class="converter-panel">
-          <h2>2. Preview</h2>
-          <iframe id="previewFrame" class="preview-frame" title="Generated HTML preview"></iframe>
-        </section>
+You can choose chat-style HTML or Word-friendly HTML.</textarea>
       </div>
 
-      <section class="converter-panel">
-        <h2>3. Copy output</h2>
-        <p class="help-small">Copy the generated HTML. If you chose separate CSS, copy or download the CSS as well.</p>
-        <div class="converter-actions">
-          <button class="btn btn-primary" type="button" id="copyHtmlButton">Copy HTML</button>
-          <button class="btn btn-ghost" type="button" id="downloadHtmlButton">Download HTML</button>
-        </div>
-        <textarea id="htmlOutput" class="generated-output" spellcheck="false" readonly></textarea>
+      <div>
+        <h3>2. Choose conversion options</h3>
 
-        <div id="cssOutputWrap" class="css-output-wrap">
-          <h3>Separate CSS</h3>
-          <div class="converter-actions">
-            <button class="btn btn-primary" type="button" id="copyCssButton">Copy CSS</button>
-            <button class="btn btn-ghost" type="button" id="downloadCssButton">Download CSS</button>
-          </div>
-          <textarea id="cssOutput" class="generated-output" spellcheck="false" readonly></textarea>
+        <div class="converter-options">
+          <fieldset>
+            <legend>Output type</legend>
+            <label><input type="radio" name="outputType" value="chat" checked> Chat-style HTML</label>
+            <label><input type="radio" name="outputType" value="word"> Word-friendly HTML</label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Styling</legend>
+            <label><input type="radio" name="cssMode" value="inline" checked> Inline CSS</label>
+            <label><input type="radio" name="cssMode" value="separate"> Separate CSS</label>
+
+            <label for="chatStyle" style="margin-top: 0.75rem;">Chat style</label>
+            <select id="chatStyle">
+              <option value="default">Default</option>
+              <option value="compact">Compact</option>
+              <option value="formal">Formal</option>
+              <option value="contrast">High contrast</option>
+            </select>
+            <p id="styleNote" style="margin: 0.5rem 0 0; font-size: 0.95rem;">Chat style applies to chat-style HTML only.</p>
+          </fieldset>
         </div>
-      </section>
+
+        <div class="converter-actions">
+          <button type="button" id="convertButton">Convert</button>
+          <button type="button" id="clearButton">Clear</button>
+        </div>
+      </div>
+
+      <div>
+        <h3>3. Preview</h3>
+        <div id="messageArea" role="status" aria-live="polite"></div>
+        <div id="preview" class="converter-preview"></div>
+      </div>
+
+      <div class="converter-output">
+        <h3>4. Copy output</h3>
+        <div class="converter-copy-actions">
+          <button type="button" id="copyHtmlButton">Copy HTML</button>
+          <button type="button" id="copyCssButton">Copy CSS</button>
+          <button type="button" id="downloadCssButton">Download CSS</button>
+        </div>
+
+        <label for="htmlOutput"><strong>Generated HTML</strong></label>
+        <textarea id="htmlOutput" spellcheck="false" readonly></textarea>
+
+        <label for="cssOutput"><strong>Generated CSS</strong></label>
+        <textarea id="cssOutput" spellcheck="false" readonly></textarea>
+      </div>
+    </section>
+
+    <script>
+      const USER_MARKER = '# **[USER]**';
+      const CHATBOT_MARKER = '# **[CHATBOT]**';
+
+      const sourceText = document.getElementById('sourceText');
+      const preview = document.getElementById('preview');
+      const messageArea = document.getElementById('messageArea');
+      const htmlOutput = document.getElementById('htmlOutput');
+      const cssOutput = document.getElementById('cssOutput');
+      const chatStyle = document.getElementById('chatStyle');
+      const styleNote = document.getElementById('styleNote');
+
+      function getRadio(name) {
+        return document.querySelector(`input[name="${name}"]:checked`).value;
+      }
+
+      function escapeHtml(value) {
+        return value
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;');
+      }
+
+      function parseTranscript(text) {
+        const lines = text.split(/\r?\n/);
+        const turns = [];
+        let role = null;
+        let buffer = [];
+
+        function closeTurn() {
+          const content = buffer.join('\n').trim();
+          if (role && content) {
+            turns.push({ role, content });
+          }
+          buffer = [];
+        }
+
+        for (const raw of lines) {
+          const line = raw.trim();
+          if (line === USER_MARKER) {
+            closeTurn();
+            role = 'user';
+            continue;
+          }
+          if (line === CHATBOT_MARKER) {
+            closeTurn();
+            role = 'chatbot';
+            continue;
+          }
+          if (role) {
+            buffer.push(raw);
+          }
+        }
+
+        closeTurn();
+        return turns;
+      }
+
+      function normaliseImages(markdown) {
+        return markdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, target) => {
+          const trimmed = target.trim();
+          if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+            return match;
+          }
+          return `[Image present in original chat — not included${alt ? ': ' + alt : ''}]`;
+        });
+      }
+
+      function markdownToHtml(markdown) {
+        markdown = normaliseImages(markdown);
+
+        const lines = markdown.split(/\r?\n/);
+        let html = '';
+        let paragraph = [];
+        let inCode = false;
+        let code = [];
+        let listType = null;
+
+        function inline(text) {
+          let value = escapeHtml(text);
+          value = value.replace(/`([^`]+)`/g, '<code>$1</code>');
+          value = value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+          value = value.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+          value = value.replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, '<img src="$2" alt="$1">');
+          value = value.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+          return value;
+        }
+
+        function flushParagraph() {
+          if (paragraph.length) {
+            html += `<p>${inline(paragraph.join(' ').trim())}</p>\n`;
+            paragraph = [];
+          }
+        }
+
+        function closeList() {
+          if (listType) {
+            html += `</${listType}>\n`;
+            listType = null;
+          }
+        }
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+
+          if (trimmed.startsWith('```')) {
+            flushParagraph();
+            closeList();
+            if (inCode) {
+              html += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
+              code = [];
+              inCode = false;
+            } else {
+              inCode = true;
+            }
+            continue;
+          }
+
+          if (inCode) {
+            code.push(line);
+            continue;
+          }
+
+          if (!trimmed) {
+            flushParagraph();
+            closeList();
+            continue;
+          }
+
+          const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
+          if (heading) {
+            flushParagraph();
+            closeList();
+            const level = heading[1].length;
+            html += `<h${level}>${inline(heading[2])}</h${level}>\n`;
+            continue;
+          }
+
+          const bullet = trimmed.match(/^[-*]\s+(.+)$/);
+          if (bullet) {
+            flushParagraph();
+            if (listType !== 'ul') {
+              closeList();
+              html += '<ul>\n';
+              listType = 'ul';
+            }
+            html += `<li>${inline(bullet[1])}</li>\n`;
+            continue;
+          }
+
+          const ordered = trimmed.match(/^\d+\.\s+(.+)$/);
+          if (ordered) {
+            flushParagraph();
+            if (listType !== 'ol') {
+              closeList();
+              html += '<ol>\n';
+              listType = 'ol';
+            }
+            html += `<li>${inline(ordered[1])}</li>\n`;
+            continue;
+          }
+
+          if (trimmed.startsWith('>')) {
+            flushParagraph();
+            closeList();
+            html += `<blockquote><p>${inline(trimmed.replace(/^>\s?/, ''))}</p></blockquote>\n`;
+            continue;
+          }
+
+          paragraph.push(line);
+        }
+
+        if (inCode) {
+          html += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
+        }
+        flushParagraph();
+        closeList();
+        return html.trim();
+      }
+
+      function chatCss(style) {
+        const themes = {
+          default: {
+            user: '#e0f2fe',
+            chatbot: '#f1f5f9',
+            border: '#d4d4d8',
+            page: '#f4f4f5',
+            window: '#ffffff',
+            text: '#18181b',
+            muted: '#52525b'
+          },
+          compact: {
+            user: '#e0f2fe',
+            chatbot: '#f8fafc',
+            border: '#cbd5e1',
+            page: '#ffffff',
+            window: '#ffffff',
+            text: '#111827',
+            muted: '#475569'
+          },
+          formal: {
+            user: '#eef2ff',
+            chatbot: '#f8fafc',
+            border: '#9ca3af',
+            page: '#f9fafb',
+            window: '#ffffff',
+            text: '#111827',
+            muted: '#374151'
+          },
+          contrast: {
+            user: '#dbeafe',
+            chatbot: '#fef3c7',
+            border: '#111827',
+            page: '#ffffff',
+            window: '#ffffff',
+            text: '#000000',
+            muted: '#111827'
+          }
+        };
+        const t = themes[style] || themes.default;
+        const compact = style === 'compact';
+
+        return `.ai-chat-window {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: ${compact ? '0.75rem' : '1.25rem'};
+  background: ${t.window};
+  border: 1px solid ${t.border};
+  border-radius: ${compact ? '0.5rem' : '1rem'};
+  color: ${t.text};
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.55;
+}
+.chat-turn {
+  margin: ${compact ? '0.65rem' : '1rem'} 0;
+  padding: ${compact ? '0.75rem' : '1rem'};
+  border: 1px solid ${t.border};
+  border-radius: ${compact ? '0.5rem' : '0.85rem'};
+}
+.chat-turn-user {
+  background: ${t.user};
+}
+.chat-turn-chatbot {
+  background: ${t.chatbot};
+}
+.chat-role {
+  margin: 0 0 0.5rem;
+  color: ${t.muted};
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.chat-body > :first-child {
+  margin-top: 0;
+}
+.chat-body > :last-child {
+  margin-bottom: 0;
+}
+.chat-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+.chat-body pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.65rem;
+  background: #111827;
+  color: #f9fafb;
+}
+.chat-body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}`;
+      }
+
+      function wordCss() {
+        return `.ai-word-transcript {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+  color: #111827;
+}
+.ai-word-turn {
+  margin: 1rem 0;
+}
+.ai-word-role {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.ai-word-body > :first-child {
+  margin-top: 0;
+}`;
+      }
+
+      function renderChat(turns) {
+        return `<main class="ai-chat-window" aria-label="AI chat example">
+${turns.map(turn => {
+  const label = turn.role === 'user' ? 'User' : 'Chatbot';
+  const cls = turn.role === 'user' ? 'chat-turn-user' : 'chat-turn-chatbot';
+  return `  <section class="chat-turn ${cls}">
+    <p class="chat-role">${label}</p>
+    <div class="chat-body">
+      ${markdownToHtml(turn.content).replace(/\n/g, '\n      ')}
     </div>
+  </section>`;
+}).join('\n\n')}
+</main>`;
+      }
+
+      function renderWord(turns) {
+        return `<main class="ai-word-transcript" aria-label="AI chat transcript">
+${turns.map(turn => {
+  const label = turn.role === 'user' ? 'User' : 'Chatbot';
+  return `  <section class="ai-word-turn">
+    <p class="ai-word-role">${label}</p>
+    <div class="ai-word-body">
+      ${markdownToHtml(turn.content).replace(/\n/g, '\n      ')}
+    </div>
+  </section>`;
+}).join('\n\n')}
+</main>`;
+      }
+
+      function convert() {
+        const turns = parseTranscript(sourceText.value);
+        if (!turns.length) {
+          messageArea.textContent = 'No valid turns found. Use # **[USER]** and # **[CHATBOT]** markers.';
+          preview.innerHTML = '';
+          htmlOutput.value = '';
+          cssOutput.value = '';
+          return;
+        }
+
+        const outputType = getRadio('outputType');
+        const cssMode = getRadio('cssMode');
+        const style = chatStyle.value;
+
+        const body = outputType === 'word' ? renderWord(turns) : renderChat(turns);
+        const css = outputType === 'word' ? wordCss() : chatCss(style);
+        const html = cssMode === 'inline'
+          ? `<style>\n${css}\n</style>\n\n${body}`
+          : body;
+
+        htmlOutput.value = html;
+        cssOutput.value = cssMode === 'separate' ? css : '';
+        preview.innerHTML = `<style>${css}</style>${body}`;
+        messageArea.textContent = `Converted ${turns.length} turns.`;
+
+        document.getElementById('copyCssButton').disabled = cssMode !== 'separate';
+        document.getElementById('downloadCssButton').disabled = cssMode !== 'separate';
+      }
+
+      function updateStyleAvailability() {
+        const outputType = getRadio('outputType');
+        const disabled = outputType !== 'chat';
+        chatStyle.disabled = disabled;
+        styleNote.textContent = disabled
+          ? 'Word-friendly HTML uses its own simple document style.'
+          : 'Chat style applies to chat-style HTML only.';
+      }
+
+      async function copyText(text, label) {
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
+        messageArea.textContent = `${label} copied.`;
+      }
+
+      function downloadCss() {
+        const css = cssOutput.value;
+        if (!css) return;
+        const blob = new Blob([css], { type: 'text/css' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'aichat.css';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      document.getElementById('convertButton').addEventListener('click', convert);
+      document.getElementById('clearButton').addEventListener('click', () => {
+        sourceText.value = '';
+        preview.innerHTML = '';
+        htmlOutput.value = '';
+        cssOutput.value = '';
+        messageArea.textContent = '';
+      });
+      document.getElementById('copyHtmlButton').addEventListener('click', () => copyText(htmlOutput.value, 'HTML'));
+      document.getElementById('copyCssButton').addEventListener('click', () => copyText(cssOutput.value, 'CSS'));
+      document.getElementById('downloadCssButton').addEventListener('click', downloadCss);
+      document.querySelectorAll('input[name="outputType"]').forEach(input => {
+        input.addEventListener('change', () => {
+          updateStyleAvailability();
+          convert();
+        });
+      });
+      document.querySelectorAll('input[name="cssMode"]').forEach(input => {
+        input.addEventListener('change', convert);
+      });
+      chatStyle.addEventListener('change', convert);
+
+      updateStyleAvailability();
+      convert();
+    </script>
+
   </main>
 
   <footer class="site-foot">

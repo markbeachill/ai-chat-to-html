@@ -270,3 +270,72 @@ th { background: #f3f4f2; font-weight: 600; color: var(--ink); }
 .simple-path pre { margin: 0 0 0.6em; }
 .simple-path p { margin: 0; font-size: 0.92rem; color: var(--muted); }
 .simple-path .opt { color: var(--accent-ink); font-weight: 600; }
+
+
+/* Wider layout for expanded navigation and online converter. */
+.site-main,
+main,
+.container,
+.page-shell {
+  max-width: 1080px;
+}
+
+/* ---- online converter layout ---- */
+.converter-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+  margin: 1rem 0;
+}
+
+.converter-options fieldset {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid #d4d4d8;
+  border-radius: 0.5rem;
+}
+
+.converter-options legend {
+  font-weight: 700;
+}
+
+.converter-options label {
+  display: block;
+  margin: 0.35rem 0;
+}
+
+.converter-actions {
+  margin: 1rem 0;
+}
+
+.converter-actions button,
+.converter-copy-actions button {
+  margin: 0.25rem 0.35rem 0.25rem 0;
+}
+
+.converter-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.converter-grid textarea,
+.converter-output textarea {
+  width: 100%;
+  min-height: 18rem;
+}
+
+.converter-preview {
+  border: 1px solid #d4d4d8;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #ffffff;
+  overflow: auto;
+}
+
+@media (max-width: 760px) {
+  .converter-options {
+    grid-template-columns: 1fr;
+  }
+}
