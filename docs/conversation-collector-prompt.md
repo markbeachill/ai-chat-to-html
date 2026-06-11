@@ -55,3 +55,7 @@ Next chatbot response.
 Continue until the conversation has been reproduced.
 
 ```
+
+## Important exclusion
+
+- Do not include hidden reasoning, “thinking” sections, analysis, tool output, system messages, developer messages, or internal planning as transcript turns. If the interface shows a separate thinking/reasoning section, ignore it. Only include the final visible chatbot response as `# **[CHATBOT]**`.

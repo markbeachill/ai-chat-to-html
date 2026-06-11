@@ -27,6 +27,10 @@
       <p class="eyebrow">Optional helper</p>
       <h1>Conversation Collector Prompt</h1>
       <p class="lead">Paste this prompt at the end of a chatbot conversation to ask the AI to produce a draft transcript using the correct markers. The result can be used with either the online converter or the Python tool.</p>
+      <div class="note">
+        <p><strong>Thinking sections:</strong> The collector prompt should ignore hidden reasoning, “thinking” sections, analysis, tool output, system/developer messages, and internal planning. Only visible user messages and final visible chatbot replies should become transcript turns.</p>
+      </div>
+
 
       <div class="note">
         <strong>Check the result.</strong> This is an assisted capture method. The transcript is produced by the chatbot, so it may miss turns or alter formatting. Review it before running the converter.
@@ -118,7 +122,8 @@ Continue until the conversation has been reproduced.
         <a class="btn btn-ghost" href="reference.html">See the reference</a>
       </div>
     </div>
-  </main>
+  <section class="card"><h2>Collector exclusion rule</h2><p>Do not include hidden reasoning, “thinking” sections, analysis, tool output, system messages, developer messages, or internal planning as transcript turns. If the interface shows a separate thinking/reasoning section, ignore it. Only include the final visible chatbot response as `# **[CHATBOT]**`.</p></section>
+</main>
 
   <footer class="site-foot">
     <div class="wrap">

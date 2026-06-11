@@ -252,6 +252,15 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
           }
         }
 
+        function openList(type) {
+          flushParagraph();
+          if (listType && listType !== type) closeList();
+          if (!listType) {
+            output += `<${type}>\n`;
+            listType = type;
+          }
+        }
+
         function closeList() {
           if (listType) {
             output += `</${listType}>\n`;
@@ -265,6 +274,7 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
           if (trimmed.startsWith('```')) {
             flushParagraph();
             closeList();
+
             if (inCode) {
               output += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
               code = [];
@@ -286,42 +296,32 @@ You can choose chat-style HTML or Word-friendly HTML.</textarea>
             continue;
           }
 
-          const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
-          if (heading) {
-            flushParagraph();
-            closeList();
-            const level = heading[1].length;
-            output += `<h${level}>${inlineMarkdown(heading[2])}</h${level}>\n`;
-            continue;
-          }
-
           const bullet = trimmed.match(/^[-*]\s+(.+)$/);
           if (bullet) {
-            flushParagraph();
-            if (listType !== 'ul') {
-              closeList();
-              output += '<ul>\n';
-              listType = 'ul';
-            }
+            openList('ul');
             output += `<li>${inlineMarkdown(bullet[1])}</li>\n`;
             continue;
           }
 
           const ordered = trimmed.match(/^\d+\.\s+(.+)$/);
           if (ordered) {
-            flushParagraph();
-            if (listType !== 'ol') {
-              closeList();
-              output += '<ol>\n';
-              listType = 'ol';
-            }
+            openList('ol');
             output += `<li>${inlineMarkdown(ordered[1])}</li>\n`;
+            continue;
+          }
+
+          closeList();
+
+          const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
+          if (heading) {
+            flushParagraph();
+            const level = heading[1].length;
+            output += `<h${level}>${inlineMarkdown(heading[2])}</h${level}>\n`;
             continue;
           }
 
           if (trimmed.startsWith('>')) {
             flushParagraph();
-            closeList();
             output += `<blockquote><p>${inlineMarkdown(trimmed.replace(/^>\s?/, ''))}</p></blockquote>\n`;
             continue;
           }
