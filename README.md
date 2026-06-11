@@ -1,5 +1,7 @@
 # AI Chat to HTML
 
+AI Chat to HTML now has two routes: use the browser-based online converter for quick paste-and-copy conversion, or use the Python tool for local file-based processing.
+
 Turn a marked-up chat transcript into a complete, self-contained HTML page that
 looks like a generic chat window — plus a separate, reusable CSS file.
 
@@ -180,3 +182,12 @@ MIT — see [LICENSE](LICENSE). Update the copyright line with your name.
 
 
 The online converter includes chat-style and Word-friendly output, inline or separate CSS, and a chat style choice for chat-style HTML.
+
+
+## Online route
+
+Use the documentation site's Online page to paste a marked transcript, choose chat-style or Word-friendly HTML, preview the result, and copy the generated HTML.
+
+## Python tool route
+
+Use `aichatprocess.py` locally when you want repeatable file outputs, CSS templates, themes, and command-line options.

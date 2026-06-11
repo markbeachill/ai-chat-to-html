@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tool &mdash; AI Chat to HTML</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html">AI Chat <span>&rarr;</span> HTML</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="online-converter.html">Online</a>
+        <a href="tool.html" aria-current="page">Tool</a>
+        <a href="collector.html">Collector</a>
+        <a href="styling.html">Styles</a>
+        <a href="word.html">Word</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="eyebrow">Python tool</p>
+      <h1>Use the local conversion tool.</h1>
+      <p class="lead">The Python tool is the full local workflow. It is best when you want repeatable file-based conversion, CSS templates, download packages, and command-line control.</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="downloads/ai-chat-to-html-tool.zip" download>Download tool ZIP</a>
+        <a class="btn btn-ghost" href="downloads/ai-chat-to-html-full.zip" download>Download full ZIP</a>
+      </div>
+
+      <h2>What the Python tool adds</h2>
+      <p>The online converter is useful for quick paste-and-copy work. The Python tool adds local files, repeatable outputs, CSS template behaviour, downloadable project packages, and a better fit for GitHub or folder-based workflows.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Local files</h3>
+          <p>Read a transcript file and generate HTML, CSS and optional Word-friendly output in the same folder.</p>
+        </div>
+        <div class="card">
+          <h3>Templates and themes</h3>
+          <p>Use built-in themes or provide your own CSS template for a repeatable house style.</p>
+        </div>
+      </div>
+
+      <h2>Quick command</h2>
+      <p>Put your marked transcript in <code>aichat.txt</code>, then run:</p>
+      <pre><code>python3 aichatprocess.py</code></pre>
+
+      <p>Common options include:</p>
+      <pre><code>python3 aichatprocess.py --theme dark --write-css overwrite
+python3 aichatprocess.py --word-output aichat-word.html
+python3 aichatprocess.py --source mychat.txt --output mychat.html</code></pre>
+
+      <h2>Reference list</h2>
+      <table>
+        <tr><th>Option</th><th>Purpose</th></tr>
+        <tr><td><code>--source</code></td><td>Choose the input transcript file.</td></tr>
+        <tr><td><code>--output</code></td><td>Choose the generated chat-style HTML file.</td></tr>
+        <tr><td><code>--css</code></td><td>Choose the CSS file linked by the HTML page.</td></tr>
+        <tr><td><code>--theme</code></td><td>Choose a built-in visual theme such as default, dark, minimal or warm.</td></tr>
+        <tr><td><code>--css-template</code></td><td>Use an external CSS template when writing CSS.</td></tr>
+        <tr><td><code>--write-css</code></td><td>Choose whether CSS is written, skipped, written if missing, or overwritten.</td></tr>
+        <tr><td><code>--word-output</code></td><td>Create a Word-friendly HTML transcript as well as the chat page.</td></tr>
+        <tr><td><code>--math</code></td><td>Control optional maths rendering where supported by the tool.</td></tr>
+      </table>
+
+      <h2>Related pages</h2>
+      <p>Use <a href="styling.html">Styles</a> for theme guidance, <a href="word.html">Word</a> for Word-friendly output, and <a href="online-converter.html">Online</a> if you want the browser-only route.</p>
+
+    </div>
+  </main>
+</body>
+</html>

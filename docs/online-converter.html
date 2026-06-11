@@ -5,98 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Online converter &mdash; AI Chat to HTML</title>
   <link rel="stylesheet" href="site.css">
-  <style>
-    .converter-grid {
-      display: grid;
-      gap: 18px;
-      margin: 1.4em 0;
-    }
-    @media (min-width: 900px) {
-      .converter-grid { grid-template-columns: 1fr 1fr; align-items: start; }
-    }
-    .converter-panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      padding: 16px;
-    }
-    .converter-panel h2, .converter-panel h3 { margin-top: 0; }
-    .converter-panel textarea {
-      width: 100%;
-      min-height: 340px;
-      resize: vertical;
-      padding: 12px;
-      border: 1px solid var(--line-strong);
-      border-radius: 10px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.9rem;
-      line-height: 1.45;
-      background: #fff;
-      color: var(--ink);
-    }
-    .converter-options {
-      display: grid;
-      gap: 12px;
-      margin: 1em 0;
-    }
-    @media (min-width: 640px) {
-      .converter-options { grid-template-columns: 1fr 1fr; }
-    }
-    .option-box {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 12px;
-      background: #fff;
-    }
-    .option-box legend {
-      font-weight: 700;
-      color: var(--accent-ink);
-      padding: 0 4px;
-    }
-    .option-box label { display: block; margin: 0.45em 0; }
-    .converter-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 1em 0;
-    }
-    .status-line {
-      min-height: 1.4em;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-    .preview-frame {
-      width: 100%;
-      min-height: 460px;
-      border: 1px solid var(--line-strong);
-      border-radius: 10px;
-      background: #fff;
-    }
-    .output-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin: 1em 0 0.5em;
-    }
-    .output-tabs button,
-    .small-button {
-      border: 1px solid var(--line-strong);
-      border-radius: 999px;
-      background: #fff;
-      color: var(--ink);
-      padding: 0.45rem 0.75rem;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .output-tabs button[aria-pressed="true"] {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-    .generated-output { min-height: 260px; }
-    .css-output-wrap { display: none; margin-top: 1em; }
-    .help-small { color: var(--muted); font-size: 0.9rem; }
-  </style>
 </head>
 <body>
   <header class="site-head">
@@ -105,499 +13,116 @@
       <nav class="nav">
         <a href="index.html">Home</a>
         <a href="instructions.html">Instructions</a>
-        <a href="collector.html">Collector</a>
         <a href="online-converter.html" aria-current="page">Online</a>
-        <a href="example.html">Example</a>
+        <a href="tool.html">Tool</a>
+        <a href="collector.html">Collector</a>
+        <a href="styling.html">Styles</a>
         <a href="word.html">Word</a>
-        <a href="styling.html">Styling</a>
-        <a href="download.html">Download</a>
-        <a href="reference.html">Reference</a>
       </nav>
     </div>
   </header>
 
   <main>
+    <div class="wrap wrap-wide">
+      <p class="eyebrow">Online route</p>
+      <h1>Convert in the browser.</h1>
+      <p class="lead">Paste a marked transcript, choose chat-style or Word-friendly HTML, preview the result, and copy the generated HTML. This is the fastest way to use AI Chat to HTML.</p>
 
-    <h2>Online converter</h2>
+      <div class="note"><strong>Use this for quick conversions.</strong> For repeatable local files, templates and command-line options, use the <a href="tool.html">Python tool</a>.</div>
 
-    <p>Paste a marked AI chat transcript, choose an output type, and generate copyable HTML in the browser. This quick converter uses the same markers as the Python tool: <code># **[USER]**</code> and <code># **[CHATBOT]**</code>.</p>
-
-    <section class="converter-grid" aria-label="Online converter">
-      <div>
-        <h3>1. Paste transcript</h3>
-        <textarea id="sourceText" spellcheck="false"># **[USER]**
+      <div class="converter-grid">
+        <section class="converter-panel">
+          <div class="converter-headline">
+            <h2>1. Paste transcript</h2>
+            <button class="btn btn-ghost btn-small" type="button" id="pasteButton">Paste from clipboard</button>
+          </div>
+          <p>Use the same markers as the main tool: <code># **[USER]**</code> and <code># **[CHATBOT]**</code>. The converter also recognises any line containing <code>[USER]</code> or <code>[CHATBOT]</code>, matching the Python tool's flexible input.</p>
+          <textarea id="sourceText" spellcheck="false"># **[USER]**
 
 Can you explain what this online converter does?
 
 # **[CHATBOT]**
 
-It turns a marked AI chat transcript into HTML directly in the browser.
+It converts a marked AI chat transcript into HTML in your browser.
 
-You can choose chat-style HTML or Word-friendly HTML.</textarea>
+You can choose:
+
+- chat-style HTML
+- Word-friendly HTML
+- inline CSS
+- separate CSS
+
+# **[USER]**
+
+Can it handle code blocks?
+
+# **[CHATBOT]**
+
+Yes. For example:
+
+```python
+print("Hello from a chat example")
+```</textarea>
+
+          <h2>2. Options</h2>
+          <div class="converter-options">
+            <fieldset class="option-box">
+              <legend>Output type</legend>
+              <label><input type="radio" name="outputType" value="chat" checked> Chat-style HTML</label>
+              <label><input type="radio" name="outputType" value="word"> Word-friendly HTML</label>
+            </fieldset>
+            <fieldset class="option-box">
+              <legend>CSS mode</legend>
+              <label><input type="radio" name="cssMode" value="inline" checked> Inline CSS</label>
+              <label><input type="radio" name="cssMode" value="separate"> Separate CSS</label>
+            </fieldset>
+            <fieldset class="option-box">
+              <legend>Chat style</legend>
+              <label for="chatTheme" class="option-label">Theme</label>
+              <select id="chatTheme">
+                <option value="default">Default</option>
+                <option value="dark">Dark</option>
+                <option value="minimal">Minimal</option>
+                <option value="warm">Warm</option>
+              </select>
+              <p class="help-small" id="themeHelp">Chat style applies to chat-style HTML only.</p>
+            </fieldset>
+          </div>
+
+          <div class="converter-actions">
+            <button class="btn btn-primary" type="button" id="convertButton">Convert</button>
+            <button class="btn btn-ghost" type="button" id="clearButton">Clear</button>
+          </div>
+          <p id="statusLine" class="status-line" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="converter-panel">
+          <h2>3. Preview</h2>
+          <iframe id="previewFrame" class="preview-frame" title="Generated HTML preview"></iframe>
+        </section>
       </div>
 
-      <div>
-        <h3>2. Choose conversion options</h3>
-
-        <div class="converter-options">
-          <fieldset>
-            <legend>Output type</legend>
-            <label><input type="radio" name="outputType" value="chat" checked> Chat-style HTML</label>
-            <label><input type="radio" name="outputType" value="word"> Word-friendly HTML</label>
-          </fieldset>
-
-          <fieldset>
-            <legend>Styling</legend>
-            <label><input type="radio" name="cssMode" value="inline" checked> Inline CSS</label>
-            <label><input type="radio" name="cssMode" value="separate"> Separate CSS</label>
-
-            <label for="chatStyle" style="margin-top: 0.75rem;">Chat style</label>
-            <select id="chatStyle">
-              <option value="default">Default</option>
-              <option value="compact">Compact</option>
-              <option value="formal">Formal</option>
-              <option value="contrast">High contrast</option>
-            </select>
-            <p id="styleNote" style="margin: 0.5rem 0 0; font-size: 0.95rem;">Chat style applies to chat-style HTML only.</p>
-          </fieldset>
+      <section class="converter-panel output-layout">
+        <div>
+          <h2>4. Copy output</h2>
+          <p class="help-small">Copy the generated HTML. If you chose separate CSS, copy or download the CSS as well.</p>
+          <div class="converter-actions">
+            <button class="btn btn-primary" type="button" id="copyHtmlButton">Copy HTML</button>
+            <button class="btn btn-ghost" type="button" id="downloadHtmlButton">Download HTML</button>
+          </div>
+          <textarea id="htmlOutput" class="generated-output" spellcheck="false" readonly></textarea>
         </div>
 
-        <div class="converter-actions">
-          <button type="button" id="convertButton">Convert</button>
-          <button type="button" id="clearButton">Clear</button>
+        <div id="cssOutputWrap" class="css-output-wrap">
+          <h3>Separate CSS</h3>
+          <div class="converter-actions">
+            <button class="btn btn-primary" type="button" id="copyCssButton">Copy CSS</button>
+            <button class="btn btn-ghost" type="button" id="downloadCssButton">Download CSS</button>
+          </div>
+          <textarea id="cssOutput" class="generated-output" spellcheck="false" readonly></textarea>
         </div>
-      </div>
-
-      <div>
-        <h3>3. Preview</h3>
-        <div id="messageArea" role="status" aria-live="polite"></div>
-        <div id="preview" class="converter-preview"></div>
-      </div>
-
-      <div class="converter-output">
-        <h3>4. Copy output</h3>
-        <div class="converter-copy-actions">
-          <button type="button" id="copyHtmlButton">Copy HTML</button>
-          <button type="button" id="copyCssButton">Copy CSS</button>
-          <button type="button" id="downloadCssButton">Download CSS</button>
-        </div>
-
-        <label for="htmlOutput"><strong>Generated HTML</strong></label>
-        <textarea id="htmlOutput" spellcheck="false" readonly></textarea>
-
-        <label for="cssOutput"><strong>Generated CSS</strong></label>
-        <textarea id="cssOutput" spellcheck="false" readonly></textarea>
-      </div>
-    </section>
-
-    <script>
-      const USER_MARKER = '# **[USER]**';
-      const CHATBOT_MARKER = '# **[CHATBOT]**';
-
-      const sourceText = document.getElementById('sourceText');
-      const preview = document.getElementById('preview');
-      const messageArea = document.getElementById('messageArea');
-      const htmlOutput = document.getElementById('htmlOutput');
-      const cssOutput = document.getElementById('cssOutput');
-      const chatStyle = document.getElementById('chatStyle');
-      const styleNote = document.getElementById('styleNote');
-
-      function getRadio(name) {
-        return document.querySelector(`input[name="${name}"]:checked`).value;
-      }
-
-      function escapeHtml(value) {
-        return value
-          .replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;');
-      }
-
-      function parseTranscript(text) {
-        const lines = text.split(/\r?\n/);
-        const turns = [];
-        let role = null;
-        let buffer = [];
-
-        function closeTurn() {
-          const content = buffer.join('\n').trim();
-          if (role && content) {
-            turns.push({ role, content });
-          }
-          buffer = [];
-        }
-
-        for (const raw of lines) {
-          const line = raw.trim();
-          if (line === USER_MARKER) {
-            closeTurn();
-            role = 'user';
-            continue;
-          }
-          if (line === CHATBOT_MARKER) {
-            closeTurn();
-            role = 'chatbot';
-            continue;
-          }
-          if (role) {
-            buffer.push(raw);
-          }
-        }
-
-        closeTurn();
-        return turns;
-      }
-
-      function normaliseImages(markdown) {
-        return markdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, target) => {
-          const trimmed = target.trim();
-          if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-            return match;
-          }
-          return `[Image present in original chat — not included${alt ? ': ' + alt : ''}]`;
-        });
-      }
-
-      function markdownToHtml(markdown) {
-        markdown = normaliseImages(markdown);
-
-        const lines = markdown.split(/\r?\n/);
-        let html = '';
-        let paragraph = [];
-        let inCode = false;
-        let code = [];
-        let listType = null;
-
-        function inline(text) {
-          let value = escapeHtml(text);
-          value = value.replace(/`([^`]+)`/g, '<code>$1</code>');
-          value = value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-          value = value.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-          value = value.replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, '<img src="$2" alt="$1">');
-          value = value.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-          return value;
-        }
-
-        function flushParagraph() {
-          if (paragraph.length) {
-            html += `<p>${inline(paragraph.join(' ').trim())}</p>\n`;
-            paragraph = [];
-          }
-        }
-
-        function closeList() {
-          if (listType) {
-            html += `</${listType}>\n`;
-            listType = null;
-          }
-        }
-
-        for (const line of lines) {
-          const trimmed = line.trim();
-
-          if (trimmed.startsWith('```')) {
-            flushParagraph();
-            closeList();
-            if (inCode) {
-              html += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
-              code = [];
-              inCode = false;
-            } else {
-              inCode = true;
-            }
-            continue;
-          }
-
-          if (inCode) {
-            code.push(line);
-            continue;
-          }
-
-          if (!trimmed) {
-            flushParagraph();
-            closeList();
-            continue;
-          }
-
-          const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
-          if (heading) {
-            flushParagraph();
-            closeList();
-            const level = heading[1].length;
-            html += `<h${level}>${inline(heading[2])}</h${level}>\n`;
-            continue;
-          }
-
-          const bullet = trimmed.match(/^[-*]\s+(.+)$/);
-          if (bullet) {
-            flushParagraph();
-            if (listType !== 'ul') {
-              closeList();
-              html += '<ul>\n';
-              listType = 'ul';
-            }
-            html += `<li>${inline(bullet[1])}</li>\n`;
-            continue;
-          }
-
-          const ordered = trimmed.match(/^\d+\.\s+(.+)$/);
-          if (ordered) {
-            flushParagraph();
-            if (listType !== 'ol') {
-              closeList();
-              html += '<ol>\n';
-              listType = 'ol';
-            }
-            html += `<li>${inline(ordered[1])}</li>\n`;
-            continue;
-          }
-
-          if (trimmed.startsWith('>')) {
-            flushParagraph();
-            closeList();
-            html += `<blockquote><p>${inline(trimmed.replace(/^>\s?/, ''))}</p></blockquote>\n`;
-            continue;
-          }
-
-          paragraph.push(line);
-        }
-
-        if (inCode) {
-          html += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>\n`;
-        }
-        flushParagraph();
-        closeList();
-        return html.trim();
-      }
-
-      function chatCss(style) {
-        const themes = {
-          default: {
-            user: '#e0f2fe',
-            chatbot: '#f1f5f9',
-            border: '#d4d4d8',
-            page: '#f4f4f5',
-            window: '#ffffff',
-            text: '#18181b',
-            muted: '#52525b'
-          },
-          compact: {
-            user: '#e0f2fe',
-            chatbot: '#f8fafc',
-            border: '#cbd5e1',
-            page: '#ffffff',
-            window: '#ffffff',
-            text: '#111827',
-            muted: '#475569'
-          },
-          formal: {
-            user: '#eef2ff',
-            chatbot: '#f8fafc',
-            border: '#9ca3af',
-            page: '#f9fafb',
-            window: '#ffffff',
-            text: '#111827',
-            muted: '#374151'
-          },
-          contrast: {
-            user: '#dbeafe',
-            chatbot: '#fef3c7',
-            border: '#111827',
-            page: '#ffffff',
-            window: '#ffffff',
-            text: '#000000',
-            muted: '#111827'
-          }
-        };
-        const t = themes[style] || themes.default;
-        const compact = style === 'compact';
-
-        return `.ai-chat-window {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: ${compact ? '0.75rem' : '1.25rem'};
-  background: ${t.window};
-  border: 1px solid ${t.border};
-  border-radius: ${compact ? '0.5rem' : '1rem'};
-  color: ${t.text};
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.55;
-}
-.chat-turn {
-  margin: ${compact ? '0.65rem' : '1rem'} 0;
-  padding: ${compact ? '0.75rem' : '1rem'};
-  border: 1px solid ${t.border};
-  border-radius: ${compact ? '0.5rem' : '0.85rem'};
-}
-.chat-turn-user {
-  background: ${t.user};
-}
-.chat-turn-chatbot {
-  background: ${t.chatbot};
-}
-.chat-role {
-  margin: 0 0 0.5rem;
-  color: ${t.muted};
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.chat-body > :first-child {
-  margin-top: 0;
-}
-.chat-body > :last-child {
-  margin-bottom: 0;
-}
-.chat-body img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.5rem;
-}
-.chat-body pre {
-  overflow-x: auto;
-  padding: 1rem;
-  border-radius: 0.65rem;
-  background: #111827;
-  color: #f9fafb;
-}
-.chat-body code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}`;
-      }
-
-      function wordCss() {
-        return `.ai-word-transcript {
-  font-family: Georgia, "Times New Roman", serif;
-  line-height: 1.5;
-  color: #111827;
-}
-.ai-word-turn {
-  margin: 1rem 0;
-}
-.ai-word-role {
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-}
-.ai-word-body > :first-child {
-  margin-top: 0;
-}`;
-      }
-
-      function renderChat(turns) {
-        return `<main class="ai-chat-window" aria-label="AI chat example">
-${turns.map(turn => {
-  const label = turn.role === 'user' ? 'User' : 'Chatbot';
-  const cls = turn.role === 'user' ? 'chat-turn-user' : 'chat-turn-chatbot';
-  return `  <section class="chat-turn ${cls}">
-    <p class="chat-role">${label}</p>
-    <div class="chat-body">
-      ${markdownToHtml(turn.content).replace(/\n/g, '\n      ')}
+      </section>
     </div>
-  </section>`;
-}).join('\n\n')}
-</main>`;
-      }
-
-      function renderWord(turns) {
-        return `<main class="ai-word-transcript" aria-label="AI chat transcript">
-${turns.map(turn => {
-  const label = turn.role === 'user' ? 'User' : 'Chatbot';
-  return `  <section class="ai-word-turn">
-    <p class="ai-word-role">${label}</p>
-    <div class="ai-word-body">
-      ${markdownToHtml(turn.content).replace(/\n/g, '\n      ')}
-    </div>
-  </section>`;
-}).join('\n\n')}
-</main>`;
-      }
-
-      function convert() {
-        const turns = parseTranscript(sourceText.value);
-        if (!turns.length) {
-          messageArea.textContent = 'No valid turns found. Use # **[USER]** and # **[CHATBOT]** markers.';
-          preview.innerHTML = '';
-          htmlOutput.value = '';
-          cssOutput.value = '';
-          return;
-        }
-
-        const outputType = getRadio('outputType');
-        const cssMode = getRadio('cssMode');
-        const style = chatStyle.value;
-
-        const body = outputType === 'word' ? renderWord(turns) : renderChat(turns);
-        const css = outputType === 'word' ? wordCss() : chatCss(style);
-        const html = cssMode === 'inline'
-          ? `<style>\n${css}\n</style>\n\n${body}`
-          : body;
-
-        htmlOutput.value = html;
-        cssOutput.value = cssMode === 'separate' ? css : '';
-        preview.innerHTML = `<style>${css}</style>${body}`;
-        messageArea.textContent = `Converted ${turns.length} turns.`;
-
-        document.getElementById('copyCssButton').disabled = cssMode !== 'separate';
-        document.getElementById('downloadCssButton').disabled = cssMode !== 'separate';
-      }
-
-      function updateStyleAvailability() {
-        const outputType = getRadio('outputType');
-        const disabled = outputType !== 'chat';
-        chatStyle.disabled = disabled;
-        styleNote.textContent = disabled
-          ? 'Word-friendly HTML uses its own simple document style.'
-          : 'Chat style applies to chat-style HTML only.';
-      }
-
-      async function copyText(text, label) {
-        if (!text) return;
-        await navigator.clipboard.writeText(text);
-        messageArea.textContent = `${label} copied.`;
-      }
-
-      function downloadCss() {
-        const css = cssOutput.value;
-        if (!css) return;
-        const blob = new Blob([css], { type: 'text/css' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'aichat.css';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-      }
-
-      document.getElementById('convertButton').addEventListener('click', convert);
-      document.getElementById('clearButton').addEventListener('click', () => {
-        sourceText.value = '';
-        preview.innerHTML = '';
-        htmlOutput.value = '';
-        cssOutput.value = '';
-        messageArea.textContent = '';
-      });
-      document.getElementById('copyHtmlButton').addEventListener('click', () => copyText(htmlOutput.value, 'HTML'));
-      document.getElementById('copyCssButton').addEventListener('click', () => copyText(cssOutput.value, 'CSS'));
-      document.getElementById('downloadCssButton').addEventListener('click', downloadCss);
-      document.querySelectorAll('input[name="outputType"]').forEach(input => {
-        input.addEventListener('change', () => {
-          updateStyleAvailability();
-          convert();
-        });
-      });
-      document.querySelectorAll('input[name="cssMode"]').forEach(input => {
-        input.addEventListener('change', convert);
-      });
-      chatStyle.addEventListener('change', convert);
-
-      updateStyleAvailability();
-      convert();
-    </script>
-
   </main>
 
   <footer class="site-foot">
@@ -608,90 +133,8 @@ ${turns.map(turn => {
   </footer>
 
   <script>
-    const CHAT_CSS = `:root {
-  --chat-page-bg: #f4f4f5;
-  --chat-window-bg: #ffffff;
-  --chat-border: #d4d4d8;
-  --chat-text: #18181b;
-  --chat-muted: #52525b;
-  --user-bg: #e0f2fe;
-  --chatbot-bg: #f1f5f9;
-  --code-bg: #111827;
-  --code-text: #f9fafb;
-}
-.ai-chat-online-page {
-  background: var(--chat-page-bg);
-  color: var(--chat-text);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.55;
-  padding: 1.5rem;
-}
-.ai-chat-window {
-  max-width: 900px;
-  margin: 0 auto;
-  background: var(--chat-window-bg);
-  border: 1px solid var(--chat-border);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-}
-.chat-turn {
-  margin: 1rem 0;
-  padding: 1rem;
-  border-radius: 0.85rem;
-  border: 1px solid var(--chat-border);
-}
-.chat-turn-user { background: var(--user-bg); }
-.chat-turn-chatbot { background: var(--chatbot-bg); }
-.chat-role {
-  margin: 0 0 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--chat-muted);
-}
-.chat-body > :first-child { margin-top: 0; }
-.chat-body > :last-child { margin-bottom: 0; }
-.chat-body img { max-width: 100%; height: auto; border-radius: 0.5rem; }
-.chat-body pre {
-  overflow-x: auto;
-  padding: 1rem;
-  border-radius: 0.65rem;
-  background: var(--code-bg);
-  color: var(--code-text);
-}
-.chat-body code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-.chat-body :not(pre) > code { padding: 0.15rem 0.3rem; border-radius: 0.25rem; background: rgba(15, 23, 42, 0.08); }
-.chat-body blockquote { margin-left: 0; padding-left: 1rem; border-left: 4px solid var(--chat-border); color: var(--chat-muted); }`;
-
-    const WORD_CSS = `.word-chat-transcript {
-  max-width: 760px;
-  margin: 0 auto;
-  color: #111827;
-  font-family: Georgia, "Times New Roman", serif;
-  line-height: 1.55;
-}
-.word-turn {
-  margin: 1.25rem 0;
-  padding: 0 0 1rem;
-  border-bottom: 1px solid #d1d5db;
-}
-.word-role {
-  margin: 0 0 0.45rem;
-  font-weight: 700;
-  color: #374151;
-}
-.word-body > :first-child { margin-top: 0; }
-.word-body > :last-child { margin-bottom: 0; }
-.word-body pre {
-  white-space: pre-wrap;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-}
-.word-body img { max-width: 100%; height: auto; }`;
-
+    const CHAT_THEMES = {"default": "/* aichat.css — generated by aichatprocess.py (internal default)\n *\n * All rules are scoped under .ai-chat-page so this snippet can be pasted into\n * a page that already has its own CSS without the two interfering. This is\n * scoping, not true isolation: for guaranteed isolation use an iframe or\n * Shadow DOM (which would defeat the copy-a-snippet goal).\n *\n * To customise the look, create aichat-template.css next to aichatprocess.py and\n * re-run with --write-css overwrite; the template is copied verbatim.\n */\n\n.ai-chat-page {\n  --ai-bg: #f5f6f8;\n  --ai-window: #ffffff;\n  --ai-border: #e4e7ec;\n  --ai-user-bubble: #2563eb;\n  --ai-user-text: #ffffff;\n  --ai-bot-bubble: #f1f3f5;\n  --ai-bot-text: #1a1d21;\n  --ai-role: #8a909a;\n  --ai-code-bg: #1e2530;\n  --ai-code-text: #e7ecf3;\n  --ai-radius: 16px;\n  --ai-font: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica,\n             Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex;\n  justify-content: center;\n  padding: 24px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-bot-text);\n  line-height: 1.55;\n}\n\n.ai-chat-page *,\n.ai-chat-page *::before,\n.ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window {\n  width: 100%;\n  max-width: 760px;\n  background: var(--ai-window);\n  border: 1px solid var(--ai-border);\n  border-radius: var(--ai-radius);\n  overflow: hidden;\n  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06),\n              0 8px 24px rgba(16, 24, 40, 0.06);\n}\n\n.ai-chat-log {\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  padding: 24px;\n}\n\n.ai-chat-turn { display: flex; flex-direction: column; max-width: 85%; }\n.ai-chat-turn--user { align-self: flex-end; align-items: flex-end; }\n.ai-chat-turn--chatbot { align-self: flex-start; align-items: flex-start; }\n\n.ai-chat-role {\n  font-size: 0.72rem;\n  font-weight: 600;\n  letter-spacing: 0.04em;\n  text-transform: uppercase;\n  color: var(--ai-role);\n  margin: 0 4px 4px;\n}\n\n.ai-chat-bubble {\n  padding: 12px 16px;\n  border-radius: var(--ai-radius);\n  word-wrap: break-word;\n  overflow-wrap: anywhere;\n}\n\n.ai-chat-turn--user .ai-chat-bubble {\n  background: var(--ai-user-bubble);\n  color: var(--ai-user-text);\n  border-bottom-right-radius: 4px;\n}\n\n.ai-chat-turn--chatbot .ai-chat-bubble {\n  background: var(--ai-bot-bubble);\n  color: var(--ai-bot-text);\n  border-bottom-left-radius: 4px;\n}\n\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1,\n.ai-chat-bubble h2,\n.ai-chat-bubble h3,\n.ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul,\n.ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.4em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: inherit; text-decoration: underline; }\n.ai-chat-turn--chatbot .ai-chat-bubble a { color: var(--ai-user-bubble); }\n\n/* Inline code */\n.ai-chat-bubble code {\n  font-family: var(--ai-mono);\n  font-size: 0.88em;\n  background: rgba(135, 144, 154, 0.18);\n  padding: 0.12em 0.36em;\n  border-radius: 5px;\n}\n.ai-chat-turn--user .ai-chat-bubble code {\n  background: rgba(255, 255, 255, 0.22);\n}\n\n/* Fenced code blocks: visible, escaped, scrollable */\n.ai-chat-bubble pre {\n  background: var(--ai-code-bg);\n  color: var(--ai-code-text);\n  padding: 14px 16px;\n  border-radius: 10px;\n  overflow-x: auto;\n  margin: 0 0 0.7em;\n}\n.ai-chat-bubble pre code {\n  background: none;\n  padding: 0;\n  font-size: 0.85em;\n  color: inherit;\n  white-space: pre;\n}\n\n.ai-chat-bubble table {\n  border-collapse: collapse;\n  margin: 0 0 0.7em;\n  font-size: 0.92em;\n}\n.ai-chat-bubble th,\n.ai-chat-bubble td {\n  border: 1px solid var(--ai-border);\n  padding: 6px 10px;\n  text-align: left;\n}\n\n.ai-chat-bubble img {\n  max-width: 100%;\n  height: auto;\n  border-radius: 8px;\n  margin: 0 0 0.7em;\n}\n\n@media (max-width: 520px) {\n  .ai-chat-turn { max-width: 100%; }\n  .ai-chat-log { padding: 16px; }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .ai-chat-page * { animation: none !important; transition: none !important; }\n}\n", "dark": "/* aichat-template.css — DARK theme\n * A swap-in stylesheet for aichatprocess.py. Copy it to aichat-template.css\n * (or pass --css-template) and run with --write-css overwrite.\n * All rules scoped under .ai-chat-page.\n */\n\n.ai-chat-page {\n  --ai-bg: #0f1419;\n  --ai-window: #161b22;\n  --ai-border: #2a313c;\n  --ai-user-bubble: #2f81f7;\n  --ai-user-text: #ffffff;\n  --ai-bot-bubble: #21262d;\n  --ai-bot-text: #e6edf3;\n  --ai-role: #7d8590;\n  --ai-code-bg: #0a0d12;\n  --ai-code-text: #d6e0ea;\n  --ai-radius: 14px;\n  --ai-font: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex; justify-content: center;\n  padding: 24px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-bot-text);\n  line-height: 1.55;\n}\n.ai-chat-page *, .ai-chat-page *::before, .ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window {\n  width: 100%; max-width: 760px;\n  background: var(--ai-window);\n  border: 1px solid var(--ai-border);\n  border-radius: var(--ai-radius);\n  overflow: hidden;\n  box-shadow: 0 0 0 1px rgba(0,0,0,0.3), 0 16px 40px rgba(0,0,0,0.45);\n}\n.ai-chat-log { display: flex; flex-direction: column; gap: 18px; padding: 24px; }\n.ai-chat-turn { display: flex; flex-direction: column; max-width: 85%; }\n.ai-chat-turn--user { align-self: flex-end; align-items: flex-end; }\n.ai-chat-turn--chatbot { align-self: flex-start; align-items: flex-start; }\n.ai-chat-role {\n  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;\n  text-transform: uppercase; color: var(--ai-role); margin: 0 4px 4px;\n}\n.ai-chat-bubble { padding: 12px 16px; border-radius: var(--ai-radius); overflow-wrap: anywhere; }\n.ai-chat-turn--user .ai-chat-bubble { background: var(--ai-user-bubble); color: var(--ai-user-text); border-bottom-right-radius: 4px; }\n.ai-chat-turn--chatbot .ai-chat-bubble { background: var(--ai-bot-bubble); color: var(--ai-bot-text); border-bottom-left-radius: 4px; }\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1, .ai-chat-bubble h2, .ai-chat-bubble h3, .ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul, .ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.4em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: inherit; text-decoration: underline; }\n.ai-chat-turn--chatbot .ai-chat-bubble a { color: #79c0ff; }\n.ai-chat-bubble code { font-family: var(--ai-mono); font-size: 0.88em; background: rgba(125,133,144,0.22); padding: 0.12em 0.36em; border-radius: 5px; }\n.ai-chat-turn--user .ai-chat-bubble code { background: rgba(255,255,255,0.2); }\n.ai-chat-bubble pre { background: var(--ai-code-bg); color: var(--ai-code-text); padding: 14px 16px; border-radius: 10px; overflow-x: auto; margin: 0 0 0.7em; border: 1px solid var(--ai-border); }\n.ai-chat-bubble pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; white-space: pre; }\n.ai-chat-bubble table { border-collapse: collapse; margin: 0 0 0.7em; font-size: 0.92em; }\n.ai-chat-bubble th, .ai-chat-bubble td { border: 1px solid var(--ai-border); padding: 6px 10px; text-align: left; }\n@media (max-width: 520px) { .ai-chat-turn { max-width: 100%; } .ai-chat-log { padding: 16px; } }\n@media (prefers-reduced-motion: reduce) { .ai-chat-page * { animation: none !important; transition: none !important; } }\n", "minimal": "/* aichat-template.css — MINIMAL theme\n * Flat, borderless, typographic. No bubbles — speaker labels carry the\n * structure. Scoped under .ai-chat-page.\n */\n\n.ai-chat-page {\n  --ai-bg: #ffffff;\n  --ai-ink: #1a1a1a;\n  --ai-user-ink: #1a1a1a;\n  --ai-role: #999999;\n  --ai-rule: #ececec;\n  --ai-code-bg: #f5f5f5;\n  --ai-code-text: #1a1a1a;\n  --ai-font: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex; justify-content: center;\n  padding: 32px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-ink);\n  line-height: 1.7;\n}\n.ai-chat-page *, .ai-chat-page *::before, .ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window { width: 100%; max-width: 680px; background: var(--ai-bg); }\n.ai-chat-log { display: flex; flex-direction: column; gap: 0; }\n\n.ai-chat-turn {\n  display: block; max-width: 100%;\n  padding: 22px 0;\n  border-bottom: 1px solid var(--ai-rule);\n}\n.ai-chat-turn:last-child { border-bottom: none; }\n\n.ai-chat-role {\n  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em;\n  text-transform: uppercase; color: var(--ai-role); margin: 0 0 8px;\n}\n.ai-chat-turn--user .ai-chat-role { color: #1a1a1a; }\n\n.ai-chat-bubble { padding: 0; background: none; }\n.ai-chat-turn--user .ai-chat-bubble { font-weight: 500; }\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1, .ai-chat-bubble h2, .ai-chat-bubble h3, .ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul, .ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.3em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: #1a1a1a; text-decoration: underline; text-underline-offset: 2px; }\n.ai-chat-bubble code { font-family: var(--ai-mono); font-size: 0.88em; background: var(--ai-code-bg); padding: 0.12em 0.36em; border-radius: 3px; }\n.ai-chat-bubble pre { background: var(--ai-code-bg); color: var(--ai-code-text); padding: 14px 16px; border-radius: 4px; overflow-x: auto; margin: 0 0 0.7em; border-left: 2px solid #1a1a1a; }\n.ai-chat-bubble pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; white-space: pre; }\n.ai-chat-bubble table { border-collapse: collapse; margin: 0 0 0.7em; font-size: 0.92em; }\n.ai-chat-bubble th, .ai-chat-bubble td { border: 1px solid var(--ai-rule); padding: 6px 10px; text-align: left; }\n@media (prefers-reduced-motion: reduce) { .ai-chat-page * { animation: none !important; transition: none !important; } }\n", "warm": "/* aichat-template.css — WARM theme\n * Soft paper background, rounded warm bubbles, friendly. Scoped under .ai-chat-page.\n */\n\n.ai-chat-page {\n  --ai-bg: #f7f1e8;\n  --ai-window: #fffdf9;\n  --ai-border: #ece2d2;\n  --ai-user-bubble: #c9622f;\n  --ai-user-text: #fffaf4;\n  --ai-bot-bubble: #f0e7d8;\n  --ai-bot-text: #3b3326;\n  --ai-role: #a7937a;\n  --ai-code-bg: #2c2519;\n  --ai-code-text: #f2e9d8;\n  --ai-radius: 20px;\n  --ai-font: \"Avenir Next\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n  --ai-mono: \"SFMono-Regular\", ui-monospace, Menlo, Consolas, monospace;\n\n  box-sizing: border-box;\n  display: flex; justify-content: center;\n  padding: 28px 16px;\n  background: var(--ai-bg);\n  font-family: var(--ai-font);\n  color: var(--ai-bot-text);\n  line-height: 1.6;\n}\n.ai-chat-page *, .ai-chat-page *::before, .ai-chat-page *::after { box-sizing: border-box; }\n\n.ai-chat-window {\n  width: 100%; max-width: 720px;\n  background: var(--ai-window);\n  border: 1px solid var(--ai-border);\n  border-radius: 24px;\n  overflow: hidden;\n  box-shadow: 0 2px 4px rgba(120,90,50,0.06), 0 14px 36px rgba(120,90,50,0.12);\n}\n.ai-chat-log { display: flex; flex-direction: column; gap: 20px; padding: 28px; }\n.ai-chat-turn { display: flex; flex-direction: column; max-width: 84%; }\n.ai-chat-turn--user { align-self: flex-end; align-items: flex-end; }\n.ai-chat-turn--chatbot { align-self: flex-start; align-items: flex-start; }\n.ai-chat-role {\n  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;\n  text-transform: uppercase; color: var(--ai-role); margin: 0 6px 5px;\n}\n.ai-chat-bubble { padding: 13px 18px; border-radius: var(--ai-radius); overflow-wrap: anywhere; }\n.ai-chat-turn--user .ai-chat-bubble { background: var(--ai-user-bubble); color: var(--ai-user-text); border-bottom-right-radius: 6px; }\n.ai-chat-turn--chatbot .ai-chat-bubble { background: var(--ai-bot-bubble); color: var(--ai-bot-text); border-bottom-left-radius: 6px; }\n.ai-chat-bubble > :first-child { margin-top: 0; }\n.ai-chat-bubble > :last-child { margin-bottom: 0; }\n.ai-chat-bubble p { margin: 0 0 0.7em; }\n.ai-chat-bubble h1, .ai-chat-bubble h2, .ai-chat-bubble h3, .ai-chat-bubble h4 { margin: 0.6em 0 0.4em; line-height: 1.3; }\n.ai-chat-bubble ul, .ai-chat-bubble ol { margin: 0 0 0.7em; padding-left: 1.4em; }\n.ai-chat-bubble li { margin: 0.2em 0; }\n.ai-chat-bubble a { color: inherit; text-decoration: underline; }\n.ai-chat-turn--chatbot .ai-chat-bubble a { color: var(--ai-user-bubble); }\n.ai-chat-bubble code { font-family: var(--ai-mono); font-size: 0.88em; background: rgba(167,147,122,0.22); padding: 0.12em 0.36em; border-radius: 5px; }\n.ai-chat-turn--user .ai-chat-bubble code { background: rgba(255,255,255,0.24); }\n.ai-chat-bubble pre { background: var(--ai-code-bg); color: var(--ai-code-text); padding: 14px 16px; border-radius: 12px; overflow-x: auto; margin: 0 0 0.7em; }\n.ai-chat-bubble pre code { background: none; padding: 0; font-size: 0.85em; color: inherit; white-space: pre; }\n.ai-chat-bubble table { border-collapse: collapse; margin: 0 0 0.7em; font-size: 0.92em; }\n.ai-chat-bubble th, .ai-chat-bubble td { border: 1px solid var(--ai-border); padding: 6px 10px; text-align: left; }\n@media (max-width: 520px) { .ai-chat-turn { max-width: 100%; } .ai-chat-log { padding: 18px; } }\n@media (prefers-reduced-motion: reduce) { .ai-chat-page * { animation: none !important; transition: none !important; } }\n"};
+    const WORD_CSS = "body { background:#ffffff; margin:24px; }\n.word-transcript { max-width:680px; font-family:Calibri,Arial,sans-serif; }\n.wt { margin:0 0 18px 0; padding:0 0 14px 0; border-bottom:1px solid #dddddd; }\n.wt:last-child { border-bottom:none; }\n.wt-role { margin:0 0 6px 0; font-family:Arial,sans-serif; font-size:11pt; font-weight:bold; color:#444444; }\n.wt--user .wt-role { color:#1a4f8b; }\n.wt-body { margin:0; font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#1a1a1a; line-height:1.5; }\n.wt-body p { margin:0 0 8px 0; }\n.wt-body ul, .wt-body ol { margin:0 0 8px 0; padding-left:22px; }\n.wt-body li { margin:0 0 3px 0; }\n.wt-body pre { margin:0 0 10px 0; padding:10px 12px; background:#f3f3f3; border:1px solid #cccccc; font-family:Consolas,monospace; font-size:10pt; white-space:pre-wrap; }\n.wt-body code { font-family:Consolas,monospace; font-size:10pt; background:#f3f3f3; }\n.wt-body img { max-width:100%; height:auto; }";
     const roleLine = /\[\s*(USER|CHATBOT)\s*\]/i;
 
     function escapeHtml(value) {
@@ -700,6 +143,10 @@ ${turns.map(turn => {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+    }
+
+    function selected(name) {
+      return document.querySelector(`input[name="${name}"]:checked`).value;
     }
 
     function parseTranscript(text) {
@@ -823,27 +270,38 @@ ${turns.map(turn => {
       return out.join('\n');
     }
 
-    function renderTurn(turn, type) {
-      const body = markdownToHtml(turn.content).split('\n').map(line => '        ' + line).join('\n');
-      if (type === 'word') {
-        const label = turn.role === 'user' ? 'User' : 'Chatbot';
-        return `    <section class="word-turn word-turn-${turn.role}">\n      <p class="word-role">${label}</p>\n      <div class="word-body">\n${body}\n      </div>\n    </section>`;
-      }
-      const label = turn.role === 'user' ? 'User' : 'Chatbot';
-      return `    <section class="chat-turn chat-turn-${turn.role}">\n      <p class="chat-role">${label}</p>\n      <div class="chat-body">\n${body}\n      </div>\n    </section>`;
+    function indent(fragment, spaces) {
+      const pad = ' '.repeat(spaces);
+      return fragment.split('\n').map(line => line ? pad + line : line).join('\n');
     }
 
-    function buildOutput(turns, outputType, cssMode) {
-      const css = outputType === 'word' ? WORD_CSS : CHAT_CSS;
-      const bodyClass = outputType === 'word' ? 'word-chat-transcript' : 'ai-chat-window';
-      const wrapperClass = outputType === 'word' ? 'word-output-page' : 'ai-chat-online-page';
-      const content = turns.map(turn => renderTurn(turn, outputType)).join('\n\n');
-      const container = `<div class="${wrapperClass}">\n  <main class="${bodyClass}" aria-label="AI chat example">\n${content}\n  </main>\n</div>`;
+    function renderChatTurn(turn) {
+      const label = turn.role === 'user' ? 'User' : 'Chatbot';
+      const body = indent(markdownToHtml(turn.content), 8);
+      return `      <article class="ai-chat-turn ai-chat-turn--${turn.role}">\n        <p class="ai-chat-role">${label}</p>\n        <div class="ai-chat-bubble">\n${body}\n        </div>\n      </article>`;
+    }
 
+    function renderWordTurn(turn) {
+      const label = turn.role === 'user' ? 'User' : 'Chatbot';
+      const body = indent(markdownToHtml(turn.content), 6);
+      return `  <div class="wt wt--${turn.role}">\n    <p class="wt-role">${label}</p>\n    <div class="wt-body">\n${body}\n    </div>\n  </div>`;
+    }
+
+    function buildChatHtml(turns) {
+      return `<main class="ai-chat-page">\n  <div class="ai-chat-window">\n    <div class="ai-chat-log">\n${turns.map(renderChatTurn).join('\n')}\n    </div>\n  </div>\n</main>`;
+    }
+
+    function buildWordHtml(turns) {
+      return `<div class="word-transcript">\n${turns.map(renderWordTurn).join('\n')}\n</div>`;
+    }
+
+    function buildOutput(turns, outputType, cssMode, theme) {
+      const css = outputType === 'word' ? WORD_CSS : CHAT_THEMES[theme];
+      const body = outputType === 'word' ? buildWordHtml(turns) : buildChatHtml(turns);
       if (cssMode === 'inline') {
-        return { html: `<style>\n${css}\n</style>\n${container}`, css: '' };
+        return { html: `<style>\n${css}\n</style>\n\n${body}`, css: '' };
       }
-      return { html: container, css };
+      return { html: body, css };
     }
 
     function buildPreviewDocument(htmlBlock, cssMode, css) {
@@ -851,14 +309,21 @@ ${turns.map(turn => {
       return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">${style}</head><body>${htmlBlock}</body></html>`;
     }
 
-    function selected(name) {
-      return document.querySelector(`input[name="${name}"]:checked`).value;
+    function updateThemeControl() {
+      const outputType = selected('outputType');
+      const theme = document.getElementById('chatTheme');
+      const help = document.getElementById('themeHelp');
+      const disabled = outputType !== 'chat';
+      theme.disabled = disabled;
+      help.textContent = disabled ? 'Word-friendly HTML uses its own fixed document style.' : 'Chat style applies to chat-style HTML only.';
     }
 
     function convert() {
+      updateThemeControl();
       const source = document.getElementById('sourceText').value;
       const outputType = selected('outputType');
       const cssMode = selected('cssMode');
+      const theme = document.getElementById('chatTheme').value;
       const turns = parseTranscript(source);
       const status = document.getElementById('statusLine');
       if (!turns.length) {
@@ -866,14 +331,29 @@ ${turns.map(turn => {
         document.getElementById('htmlOutput').value = '';
         document.getElementById('cssOutput').value = '';
         document.getElementById('previewFrame').srcdoc = '';
+        document.getElementById('cssOutputWrap').style.display = 'none';
         return;
       }
-      const result = buildOutput(turns, outputType, cssMode);
+      const result = buildOutput(turns, outputType, cssMode, theme);
       document.getElementById('htmlOutput').value = result.html;
       document.getElementById('cssOutput').value = result.css;
       document.getElementById('cssOutputWrap').style.display = cssMode === 'separate' ? 'block' : 'none';
       document.getElementById('previewFrame').srcdoc = buildPreviewDocument(result.html, cssMode, result.css);
-      status.textContent = `Converted ${turns.length} turns as ${outputType === 'word' ? 'Word-friendly HTML' : 'chat-style HTML'} with ${cssMode} CSS.`;
+      const styleLabel = outputType === 'chat' ? `, ${theme} theme` : '';
+      status.textContent = `Converted ${turns.length} turns as ${outputType === 'word' ? 'Word-friendly HTML' : 'chat-style HTML'}${styleLabel} with ${cssMode} CSS.`;
+    }
+
+    async function pasteFromClipboard() {
+      const status = document.getElementById('statusLine');
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById('sourceText').value = text;
+        status.textContent = 'Transcript pasted from clipboard.';
+        convert();
+      } catch (error) {
+        status.textContent = 'Clipboard paste was blocked by the browser. Use Ctrl+V or your browser paste command instead.';
+        document.getElementById('sourceText').focus();
+      }
     }
 
     async function copyFrom(id, label) {
@@ -894,6 +374,7 @@ ${turns.map(turn => {
       URL.revokeObjectURL(url);
     }
 
+    document.getElementById('pasteButton').addEventListener('click', pasteFromClipboard);
     document.getElementById('convertButton').addEventListener('click', convert);
     document.getElementById('clearButton').addEventListener('click', () => {
       document.getElementById('sourceText').value = '';
@@ -901,11 +382,14 @@ ${turns.map(turn => {
       document.getElementById('cssOutput').value = '';
       document.getElementById('previewFrame').srcdoc = '';
       document.getElementById('statusLine').textContent = '';
+      document.getElementById('cssOutputWrap').style.display = 'none';
     });
     document.getElementById('copyHtmlButton').addEventListener('click', () => copyFrom('htmlOutput', 'HTML'));
     document.getElementById('copyCssButton').addEventListener('click', () => copyFrom('cssOutput', 'CSS'));
     document.getElementById('downloadHtmlButton').addEventListener('click', () => downloadText('aichat-online-output.html', document.getElementById('htmlOutput').value));
     document.getElementById('downloadCssButton').addEventListener('click', () => downloadText('aichat-online-output.css', document.getElementById('cssOutput').value));
+    document.querySelectorAll('input[name="outputType"], input[name="cssMode"]').forEach(input => input.addEventListener('change', convert));
+    document.getElementById('chatTheme').addEventListener('change', convert);
     convert();
   </script>
 </body>
